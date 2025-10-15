@@ -1,0 +1,104 @@
+.page {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.addButton {
+  background-color: #1a222e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f0f3f6;
+  vertical-align: middle;
+}
+
+.table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #5a6472;
+}
+
+.userCell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.userInfo { display: flex; flex-direction: column; }
+.userName { font-weight: 600; }
+.username { font-size: 0.85rem; color: #5a6472; }
+
+.role {
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.admin { background-color: #ffeeda; color: #f58634; }
+.cliente { background-color: #e2f3ff; color: #007bff; }
+
+.active, .inactive { font-weight: 500; }
+.active { color: #28a745; }
+.inactive { color: #dc3545; }
+
+.actions { display: flex; gap: 0.5rem; }
+.editButton, .deleteButton {
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.editButton { background-color: #e9ecef; color: #1a222e; }
+.deleteButton { background-color: #fce8e6; color: #dc3545; }
+
+.error { color: #dc3545; font-weight: 500; }
