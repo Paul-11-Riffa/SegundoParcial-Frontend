@@ -1,24 +1,17 @@
-import { useState } from 'react'
-import './App.css'
+import { Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
+import './styles/App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Bienvenido a React con Vite</h1>
-        <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>
-            Contador: {count}
-          </button>
-        </div>
-        <p>
-          Edita <code>src/App.jsx</code> y guarda para ver los cambios
-        </p>
-      </header>
-    </div>
-  )
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignUpPage />} />
+    </Routes>
+  );
 }
 
 export default App
