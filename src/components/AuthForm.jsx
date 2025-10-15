@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import styles from '../styles/AuthForm.module.css';
+import { FaEye, FaEyeSlash, FaPlusSquare } from 'react-icons/fa';
 
-const AuthForm = ({ formType, onSubmit }) => {
+const AuthForm = ({ formType, onSubmit, title, subtitle }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -11,6 +12,7 @@ const AuthForm = ({ formType, onSubmit }) => {
     last_name: '',
   });
   const [error, setError] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const isSignUp = formType === 'signup';
@@ -20,78 +22,105 @@ const AuthForm = ({ formType, onSubmit }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     try {
-      const response = await onSubmit(formData);
-      // Guardamos el token para futuras peticiones
-      localStorage.setItem('authToken', response.data.token);
-      // Redirigimos al home
-      navigate('/');
+      if (isSignUp) {
+        await onSubmit(formData);
+
+        navigate('/login');
+      } else {
+
+        const credentials = { username: formData.username, password: formData.password };
+        const response = await onSubmit(credentials);
+
+        localStorage.setItem('authToken', response.data.token);
+        navigate('/');
+      }
     } catch (err) {
-      setError(
-        err.response?.data?.error || 'Ocurrió un error. Inténtalo de nuevo.'
-      );
+      const errorMessage = err.response?.data?.error || err.response?.data?.detail || 'Ocurrió un error. Inténtalo de nuevo.';
+      setError(errorMessage);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      {isSignUp && (
-        <>
+    <>
+      <div className={styles.header}>
+        <FaPlusSquare size={32} className={styles.logo} />
+        <h1 className={styles.title}>{title}</h1>
+        <p className={styles.subtitle}>{subtitle}</p>
+      </div>
+
+      <div className={styles.toggleContainer}>
+        <Link to="/login" className={`${styles.toggleButton} ${!isSignUp ? styles.active : ''}`}>
+          Sign In
+        </Link>
+        <Link to="/signup" className={`${styles.toggleButton} ${isSignUp ? styles.active : ''}`}>
+          Sign Up
+        </Link>
+      </div>
+
+      <form onSubmit={handleSubmit} className={styles.form}>
+        {isSignUp && (
+          <>
+            <div className={styles.inputGroup}>
+              <input
+                type="text" name="first_name" placeholder="First Name"
+                value={formData.first_name} onChange={handleChange} required
+                className={styles.input} />
+            </div>
+            <div className={styles.inputGroup}>
+                <input
+                type="text" name="last_name" placeholder="Last Name"
+                value={formData.last_name} onChange={handleChange} required
+                className={styles.input} />
+            </div>
+            <div className={styles.inputGroup}>
+                <input
+                type="email" name="email" placeholder="Email Address"
+                value={formData.email} onChange={handleChange} required
+                className={styles.input} />
+            </div>
+          </>
+        )}
+
+        <div className={styles.inputGroup}>
           <input
-            type="text"
-            name="first_name"
-            placeholder="Nombre"
-            value={formData.first_name}
-            onChange={handleChange}
-            required
+            type="text" name="username" placeholder="Username or Email"
+            value={formData.username} onChange={handleChange} required
+            className={styles.input} />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <input
+            type={isPasswordVisible ? 'text' : 'password'}
+            name="password" placeholder="Password"
+            value={formData.password} onChange={handleChange} required
             className={styles.input}
           />
-          <input
-            type="text"
-            name="last_name"
-            placeholder="Apellido"
-            value={formData.last_name}
-            onChange={handleChange}
-            required
-            className={styles.input}
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className={styles.input}
-          />
-        </>
-      )}
-      <input
-        type="text"
-        name="username"
-        placeholder="Nombre de usuario"
-        value={formData.username}
-        onChange={handleChange}
-        required
-        className={styles.input}
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Contraseña"
-        value={formData.password}
-        onChange={handleChange}
-        required
-        className={styles.input}
-      />
-      {error && <p className={styles.error}>{error}</p>}
-      <button type="submit" className={styles.button}>
-        {isSignUp ? 'Crear Cuenta' : 'Iniciar Sesión'}
-      </button>
-    </form>
+          <span className={styles.eyeIcon} onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+            {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+
+        {!isSignUp && (
+             <div className={styles.options}>
+                <label className={styles.rememberMe}>
+                    <input type="checkbox" />
+                    Remember me
+                </label>
+                <a href="#" className={styles.forgotPassword}>Forgot Password?</a>
+            </div>
+        )}
+
+        {error && <p className={styles.error}>{error}</p>}
+
+        <button type="submit" className={styles.submitButton}>
+          {isSignUp ? 'Sign Up' : 'Login'}
+        </button>
+      </form>
+    </>
   );
 };
 

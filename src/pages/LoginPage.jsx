@@ -3,29 +3,29 @@ import { Link } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import { loginUser } from '../services/api';
 import styles from '../styles/AuthPages.module.css';
-import backgroundImage from '../assets/background.png';
+import brandingImage from '../assets/background.png'; // Usaremos la imagen que ya tienes
 
 const LoginPage = () => {
   return (
-    <div className={styles.container}>
-      <div className={styles.leftPanel}>
-        <img
-          src={backgroundImage}
-          alt="Abstract background"
-          className={styles.backgroundImage}
-        />
-        <div className={styles.overlay}>
-          <h1 className={styles.title}>Bienvenido de Vuelta</h1>
-          <p className={styles.subtitle}>Inicia sesión para continuar</p>
+    <div className={styles.authPage}>
+      <div className={styles.container}>
+        <div className={styles.formPanel}>
+          <div className={styles.formWrapper}>
+            <AuthForm
+              formType="login"
+              onSubmit={loginUser}
+              title="Welcome Back Creative!"
+              subtitle="We Are Happy To See You Again"
+            />
+          </div>
         </div>
-      </div>
-      <div className={styles.rightPanel}>
-        <div className={styles.formContainer}>
-          <h2 className={styles.formTitle}>Login</h2>
-          <AuthForm formType="login" onSubmit={loginUser} />
-          <p className={styles.redirectText}>
-            ¿No tienes una cuenta? <Link to="/signup">Regístrate</Link>
-          </p>
+        <div className={styles.brandingPanel}>
+          <img src={brandingImage} alt="Branding" className={styles.brandingImage} />
+          <div className={styles.brandingOverlay}></div>
+           <div className={styles.brandingContent}>
+            <p>© 2025 Gradiator. All rights reserved.</p>
+            <p>The platform for creatives to connect and collaborate.</p>
+          </div>
         </div>
       </div>
     </div>
