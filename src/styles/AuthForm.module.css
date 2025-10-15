@@ -1,43 +1,133 @@
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1c1e21;
+  margin: 0 0 0.5rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #606770;
+}
+
+.toggleContainer {
+  display: flex;
+  background-color: #e4e6eb;
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 2rem;
+}
+
+.toggleButton {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  background-color: transparent;
+  color: #606770;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.toggleButton.active {
+  background-color: #ffffff;
+  color: #1c1e21;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
+  gap: 1rem;
+}
+
+.inputGroup {
+    position: relative;
 }
 
 .input {
-  background-color: #f0f2f5;
-  border: 1px solid #ccd0d5;
-  border-radius: 8px;
+  width: 100%;
   padding: 1rem;
   font-size: 1rem;
+  border: 1px solid #ccd0d5;
+  border-radius: 8px;
+  background-color: #f0f2f5;
   color: #1c1e21;
-  outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input:focus {
-  border-color: #0c66ff;
+  outline: none;
+  border-color: #1877f2;
+  box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
 }
 
-.button {
-  background: linear-gradient(90deg, #0c66ff, #1a73e8);
-  color: white;
-  border: none;
-  border-radius: 8px;
+.eyeIcon {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #606770;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.rememberMe {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #606770;
+}
+
+.forgotPassword {
+    color: #1877f2;
+    text-decoration: none;
+    font-weight: 600;
+}
+.forgotPassword:hover {
+    text-decoration: underline;
+}
+
+.submitButton {
   padding: 1rem;
   font-size: 1.1rem;
   font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background-color: #1877f2;
+  color: white;
   cursor: pointer;
-  transition: opacity 0.25s;
+  transition: background-color 0.25s;
+  margin-top: 1rem; /* Añadido para dar espacio */
 }
 
-.button:hover {
-  opacity: 0.9;
+.submitButton:hover {
+  background-color: #166fe5;
 }
 
 .error {
-  color: #d93025;
+  color: #fa383e;
   text-align: center;
   font-size: 0.9rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
 }
