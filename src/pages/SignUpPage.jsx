@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import { registerUser } from '../services/api';
 import styles from '../styles/AuthPages.module.css';
-import brandingImage from '../assets/background.png';
+import backgroundImage from '../assets/background.png';
 
 const SignUpPage = () => {
   return (
@@ -20,7 +20,7 @@ const SignUpPage = () => {
           </div>
         </div>
         <div className={styles.brandingPanel}>
-           <img src={brandingImage} alt="Branding" className={styles.brandingImage} />
+           <img src={backgroundImage} alt="Branding" className={styles.brandingImage} />
            <div className={styles.brandingOverlay}></div>
            <div className={styles.brandingContent}>
             <p>© 2025 Gradiator. All rights reserved.</p>
