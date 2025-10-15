@@ -1,0 +1,79 @@
+.dashboard {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #1a222e;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.ctaCard {
+  background: linear-gradient(45deg, #007bff, #0056b3);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ctaCard h4 { margin: 0 0 0.5rem; font-size: 1.2rem; }
+.ctaCard p { font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem; }
+.ctaCard button {
+  background-color: #ffffff;
+  color: #007bff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ctaCard button:hover {
+  transform: translateY(-2px);
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.mainWidget, .sideWidget {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  min-height: 400px;
+}
+
+.mainWidget h3, .sideWidget h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.chartPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  color: #aeb3b9;
+  font-weight: 500;
+  border: 1px dashed #dee2e6;
+}
+
+.activityList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}

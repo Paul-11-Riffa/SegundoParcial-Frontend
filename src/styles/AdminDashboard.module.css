@@ -1,0 +1,144 @@
+/* Estilos generales para el dashboard */
+.dashboard {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #1a222e; /* Color de texto principal oscuro */
+}
+
+/* Estilo para la cabecera "Dashboard" */
+.header {
+  margin-bottom: 2rem;
+}
+
+.header h2 {
+  font-size: 2.25rem; /* Título más grande */
+  font-weight: 700;
+  margin: 0;
+}
+
+.header p {
+  color: #5a6472; /* Subtítulo con color suave */
+  margin-top: 0.25rem;
+  font-size: 1rem;
+}
+
+/* Grid para las tarjetas de resumen superiores */
+.summaryGrid {
+  display: grid;
+  /* Hacemos el grid responsivo para que se adapte a pantallas más pequeñas */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Tarjeta de "Upgrade" */
+.upgradeCard {
+  background-color: #1a222e;
+  color: white;
+  padding: 1.5rem;
+  border-radius: 16px; /* Bordes más redondeados */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.upgradeCard h4 { margin: 0 0 0.5rem; }
+.upgradeCard p { font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem; }
+.upgradeCard button {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s;
+}
+.upgradeCard button:hover {
+  background-color: #0b5ed7;
+}
+
+/* Grid para el contenido principal (gráficos y tablas) */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Estilo común para las tarjetas grandes */
+.mainChart, .sideWidget {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 16px; /* Bordes más redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+  min-height: 400px;
+}
+
+.mainChart h3, .sideWidget h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Placeholder para los gráficos y tablas */
+.chartPlaceholder, .tablePlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  color: #aeb3b9;
+  font-weight: 500;
+  border: 1px dashed #dee2e6;
+}
+
+.salesList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Espacio entre items */
+}
+
+.saleItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.saleAvatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.saleInfo {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.saleName {
+  font-weight: 600;
+  color: #1a222e;
+}
+
+.saleTime {
+  font-size: 0.8rem;
+  color: #5a6472;
+}
+
+.saleAmount {
+  font-weight: 600;
+  color: #28a745;
+}

@@ -1,0 +1,49 @@
+.card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 16px; /* Bordes más redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardContent {
+  flex: 1;
+}
+
+.title {
+  font-size: 0.9rem;
+  color: #5a6472;
+  margin: 0 0 0.5rem;
+  font-weight: 500;
+}
+
+.value {
+  font-size: 2rem;
+  font-weight: 700; /* Texto más grueso */
+  color: #1a222e;
+  margin: 0 0 0.75rem;
+}
+
+.change {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.positive { color: #28a745; }
+.negative { color: #dc3545; }
+
+.iconWrapper {
+  font-size: 1.25rem; /* Icono un poco más pequeño */
+  color: white;
+  padding: 0.8rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+}

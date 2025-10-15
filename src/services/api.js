@@ -18,4 +18,13 @@ export const loginUser = (credentials) => {
   return apiClient.post('/login/', credentials);
 };
 
+export const getUserProfile = () => {
+  const token = localStorage.getItem('authToken');
+  return apiClient.get('/profile/', {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+};
+
 export default apiClient;
