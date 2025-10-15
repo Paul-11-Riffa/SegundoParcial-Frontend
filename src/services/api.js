@@ -1,30 +1,50 @@
 import axios from 'axios';
 
-// Creamos una instancia de Axios con la URL base de tu API
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api', // La URL de tu backend Django
+  baseURL: 'http://127.0.0.1:8000/api',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Función para registrar un nuevo usuario
+// Este interceptor se asegura de que CADA petición que salga
+// de apiClient tenga el token de autenticación si existe.
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      config.headers.Authorization = `Token ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// --- Funciones de Autenticación ---
 export const registerUser = (userData) => {
   return apiClient.post('/register/', userData);
 };
 
-// Función para iniciar sesión
 export const loginUser = (credentials) => {
   return apiClient.post('/login/', credentials);
 };
 
 export const getUserProfile = () => {
-  const token = localStorage.getItem('authToken');
-  return apiClient.get('/profile/', {
-    headers: {
-      Authorization: `Token ${token}`,
-    },
-  });
+  return apiClient.get('/profile/');
 };
 
-export default apiClient;
+// --- Funciones de Gestión de Usuarios (Admin) ---
+export const getAllUsers = () => {
+  return apiClient.get('/users/');
+};
+
+export const updateUser = (userId, userData) => {
+  return apiClient.put(`/users/${userId}/`, userData);
+};
+
+export const deleteUser = (userId) => {
+  return apiClient.delete(`/users/${userId}/`);
+};
+
