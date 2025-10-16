@@ -1,104 +1,162 @@
 .page {
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
 .header h1 {
-  font-size: 1.75rem;
-  margin: 0;
+    font-size: 1.75rem;
+    margin: 0;
 }
 
 .addButton {
-  background-color: #1a222e;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.7rem 1.2rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    background-color: #1a222e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .tableContainer {
-  overflow-x: auto;
+    overflow-x: auto;
 }
 
 .table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .table th, .table td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #f0f3f6;
-  vertical-align: middle;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f3f6;
+    vertical-align: middle;
+    color: #1a222e;
 }
 
 .table th {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  color: #5a6472;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #5a6472;
+    &:nth-child(1) { width: 35%; } /* Columna Name */
+    &:nth-child(2) { width: 25%; } /* Columna Email */
+    &:nth-child(3) { width: 15%; } /* Columna Role */
+    &:nth-child(4) { width: 10%; } /* Columna Status */
+    &:nth-child(5) { width: 15%; } /* Columna Actions */
 }
 
 .userCell {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #e9ecef;
-  color: #495057;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  text-transform: uppercase;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
-.userInfo { display: flex; flex-direction: column; }
-.userName { font-weight: 600; }
-.username { font-size: 0.85rem; color: #5a6472; }
+.userInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.userName { font-weight: 600; color: #1a222e; }
+
+.username {
+    font-size: 0.85rem;
+    color: #5a6472;
+}
 
 .role {
-  padding: 0.25rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: capitalize;
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: capitalize;
 }
 
-.admin { background-color: #ffeeda; color: #f58634; }
-.cliente { background-color: #e2f3ff; color: #007bff; }
+.admin {
+    background-color: #ffeeda;
+    color: #f58634;
+}
 
-.active, .inactive { font-weight: 500; }
-.active { color: #28a745; }
-.inactive { color: #dc3545; }
+.client { background-color: #e2f3ff; color: #007bff; }
 
-.actions { display: flex; gap: 0.5rem; }
+.active, .inactive {
+    font-weight: 500;
+}
+
+.active {
+    color: #28a745;
+}
+
+.inactive {
+    color: #dc3545;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .editButton, .deleteButton {
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
 }
-.editButton { background-color: #e9ecef; color: #1a222e; }
-.deleteButton { background-color: #fce8e6; color: #dc3545; }
 
-.error { color: #dc3545; font-weight: 500; }
+.editButton {
+    background-color: #e9ecef;
+    color: #1a222e;
+}
+
+.deleteButton {
+    background-color: #fce8e6;
+    color: #dc3545;
+}
+
+.error {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+/* Añadir al final del archivo */
+.successMessage {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

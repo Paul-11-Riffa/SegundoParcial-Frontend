@@ -40,6 +40,10 @@ export const getAllUsers = () => {
   return apiClient.get('/users/');
 };
 
+export const createUser = (userData) => {
+  return apiClient.post('/users/', userData);
+};
+
 export const updateUser = (userId, userData) => {
   return apiClient.put(`/users/${userId}/`, userData);
 };

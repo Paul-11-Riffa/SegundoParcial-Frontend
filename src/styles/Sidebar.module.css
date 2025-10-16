@@ -14,9 +14,10 @@
 .logo {
   color: #ffffff;
   font-size: 2rem;
-  text-align: center;
+  text-align: left;
   margin-bottom: 2rem;
   letter-spacing: 2px;
+
 }
 
 .profile {
