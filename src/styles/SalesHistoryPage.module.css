@@ -1,0 +1,151 @@
+.page {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f0f3f6;
+  vertical-align: middle;
+    color: #1a222e;
+}
+
+.table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #5a6472;
+  background-color: #f8f9fa;
+}
+
+.username {
+  color: #5a6472;
+  font-size: 0.85rem;
+}
+
+.receiptButton {
+  background-color: #e9ecef;
+  color: #495057;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.receiptButton:hover {
+  background-color: #ced4da;
+}
+
+.receiptButton svg {
+  color: #dc3545; /* Ícono rojo */
+}
+
+.error {
+  color: #dc3545;
+  font-weight: 500;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.filterSection {
+  display: flex;
+  flex-wrap: wrap; /* Para que se ajusten en pantallas pequeñas */
+  align-items: flex-end; /* Alinea los elementos abajo */
+  gap: 1rem;
+  background-color: #f8f9fa; /* Fondo ligeramente diferente */
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 1px solid #dee2e6;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filterGroup label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.dateInput {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.filterButton, .clearButton {
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.filterButton {
+  background-color: #1a222e;
+  color: white;
+}
+.filterButton:hover {
+  background-color: #343a40;
+}
+
+.clearButton {
+  background-color: #e9ecef;
+  color: #495057;
+}
+.clearButton:hover {
+  background-color: #ced4da;
+}
+
+.noResults {
+    text-align: center;
+    padding: 2rem;
+    color: #5a6472;
+    font-style: italic;
+}

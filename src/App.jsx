@@ -14,6 +14,7 @@ import ShopPage from './pages/ShopPage';
 import CartPage from './pages/CartPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import OrderCancelPage from './pages/OrderCancelPage';
+import SalesHistoryPage from './pages/SalesHistoryPage';
 import './styles/App.css';
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
                 <Route path="admin" element={<AdminRoute/>}>
                     <Route path="users" element={<ManageUsersPage/>}/>
                     <Route path="products" element={<ManageProductsPage/>}/>
+                    <Route path="sales-history" element={<SalesHistoryPage />} />
                 </Route>
             </Route>
         </Routes>

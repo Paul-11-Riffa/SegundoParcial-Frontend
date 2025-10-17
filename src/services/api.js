@@ -103,6 +103,19 @@ export const updateCartItem = (itemId, quantity) => {
   return apiClient.put(`/orders/cart/items/${itemId}/`, { quantity });
 };
 
+// -- Historial de Ventas --
+export const getSalesHistory = (filters = {}) => {
+  // filters puede ser un objeto como { start_date: 'YYYY-MM-DD', end_date: 'YYYY-MM-DD' }
+  return apiClient.get('/orders/sales-history/', { params: filters });
+};
+
+// Función para descargar el PDF
+export const downloadReceipt = (orderId) => {
+  return apiClient.get(`/orders/sales-history/${orderId}/receipt/`, {
+    responseType: 'blob', // ¡Importante! Le dice a Axios que espere un archivo binario
+  });
+};
+
 export const removeCartItem = (itemId) => {
   return apiClient.delete(`/orders/cart/items/${itemId}/`);
 };
