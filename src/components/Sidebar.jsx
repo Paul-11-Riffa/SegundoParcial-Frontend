@@ -2,7 +2,7 @@ import React from 'react';
 import {NavLink, useNavigate} from 'react-router-dom';
 import styles from '../styles/Sidebar.module.css';
 import {useAuth} from '../hooks/useAuth';
-import {FaTachometerAlt, FaUsers, FaSignOutAlt, FaBoxOpen, FaStore, FaShoppingCart} from 'react-icons/fa';
+import {FaTachometerAlt, FaUsers, FaSignOutAlt, FaBoxOpen, FaStore, FaShoppingCart, FaHistory} from 'react-icons/fa';
 
 const Sidebar = () => {
     const {user, isAdmin} = useAuth();
@@ -56,6 +56,11 @@ const Sidebar = () => {
                                  className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                             <FaBoxOpen/>
                             <span>Manage Products</span>
+                        </NavLink>
+                        <NavLink to="/admin/sales-history"
+                                 className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                            <FaHistory/>
+                            <span>Sales History</span>
                         </NavLink>
                     </>
                 )}
