@@ -98,3 +98,15 @@ export const getCart = () => {
 export const addToCart = (productId, quantity = 1) => {
   return apiClient.post('/orders/cart/', { product_id: productId, quantity });
 };
+
+export const updateCartItem = (itemId, quantity) => {
+  return apiClient.put(`/orders/cart/items/${itemId}/`, { quantity });
+};
+
+export const removeCartItem = (itemId) => {
+  return apiClient.delete(`/orders/cart/items/${itemId}/`);
+};
+
+export const initiateCheckout = () => {
+  return apiClient.post('/orders/checkout/');
+};
