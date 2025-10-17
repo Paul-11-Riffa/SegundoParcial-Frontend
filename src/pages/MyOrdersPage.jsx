@@ -1,0 +1,77 @@
+import React, { useState, useEffect } from 'react';
+import { getMyOrders } from '../services/api';
+import styles from '../styles/MyOrdersPage.module.css'; // Crearemos este archivo
+import { FaShoppingBag, FaClock, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+
+const MyOrdersPage = () => {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        setLoading(true);
+        const response = await getMyOrders();
+        setOrders(response.data);
+      } catch (err) {
+        setError('Failed to load your orders.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrders();
+  }, []);
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'PENDING': return <FaClock className={styles.pendingIcon} />;
+      case 'COMPLETED': return <FaCheckCircle className={styles.completedIcon} />;
+      case 'CANCELLED': return <FaTimesCircle className={styles.cancelledIcon} />;
+      default: return <FaShoppingBag />;
+    }
+  };
+
+  if (loading) return <div className={styles.centerMessage}>Loading your orders...</div>;
+  if (error) return <div className={`${styles.centerMessage} ${styles.error}`}>{error}</div>;
+
+  return (
+    <div className={styles.myOrdersPage}>
+      <h1><FaShoppingBag /> My Orders</h1>
+
+      {orders.length === 0 ? (
+        <div className={styles.noOrders}>
+          <p>You haven't placed any orders yet.</p>
+          <a href="/shop" className={styles.shopLink}>Start Shopping</a>
+        </div>
+      ) : (
+        <div className={styles.orderList}>
+          {orders.map(order => (
+            <div key={order.id} className={styles.orderCard}>
+              <div className={styles.orderHeader}>
+                <div className={styles.orderId}>Order #{order.id}</div>
+                <div className={`${styles.statusBadge} ${styles[order.status.toLowerCase()]}`}>
+                  {getStatusIcon(order.status)} {order.status}
+                </div>
+              </div>
+              <div className={styles.orderDetails}>
+                <div>
+                  <strong>Date:</strong> {new Date(order.created_at).toLocaleDateString()}
+                </div>
+                <div>
+                  <strong>Total:</strong> ${parseFloat(order.total_price).toFixed(2)}
+                </div>
+                <div>
+                  <strong>Items:</strong> {order.items.length}
+                </div>
+              </div>
+              {/* Podríamos añadir un botón para ver detalles si quisiéramos */}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MyOrdersPage;
