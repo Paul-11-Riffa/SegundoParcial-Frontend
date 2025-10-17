@@ -126,3 +126,23 @@
   margin-top: -1rem;
   margin-bottom: 1rem;
 }
+
+/* Añadir al final del archivo */
+.inputGroup textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  color: #343a40;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize: vertical; /* Permite redimensionar verticalmente */
+  font-family: inherit; /* Hereda la fuente del resto del formulario */
+}
+
+.inputGroup textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}

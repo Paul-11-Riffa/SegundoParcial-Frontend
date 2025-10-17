@@ -63,3 +63,28 @@ export const resetPasswordConfirm = (data) => {
 export const updateUserProfile = (userData) => {
   return apiClient.put('/profile/', userData);
 };
+
+// --- Funciones de Gestión de la Tienda (Admin) ---
+
+// -- Categorías --
+export const getCategories = () => {
+  return apiClient.get('/shop/categories/');
+};
+
+// -- Productos --
+export const getProducts = () => {
+  return apiClient.get('/shop/products/');
+};
+
+export const createProduct = (productData) => {
+  
+  return apiClient.post('/shop/products/', productData);
+};
+
+export const updateProduct = (productId, productData) => {
+  return apiClient.put(`/shop/products/${productId}/`, productData);
+};
+
+export const deleteProduct = (productId) => {
+  return apiClient.delete(`/shop/products/${productId}/`);
+};

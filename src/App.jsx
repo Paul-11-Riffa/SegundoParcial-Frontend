@@ -9,6 +9,7 @@ import AdminRoute from './components/auth/AdminRoute.jsx';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import ProfilePage from './pages/ProfilePage';
+import ManageProductsPage from './pages/ManageProductsPage';
 import './styles/App.css';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
                 {/* Rutas de Admin */}
                 <Route path="admin" element={<AdminRoute/>}>
                     <Route path="users" element={<ManageUsersPage/>}/>
+                    <Route path="products" element={<ManageProductsPage />} />
                 </Route>
             </Route>
         </Routes>
