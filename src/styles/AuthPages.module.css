@@ -19,6 +19,11 @@
   overflow: hidden;
 }
 
+/* Añadir al final del archivo AuthPages.module.css */
+.container.singlePanel {
+    max-width: 500px; /* Ancho más adecuado para un solo panel */
+}
+
 .formPanel {
   flex: 1;
   display: flex;
