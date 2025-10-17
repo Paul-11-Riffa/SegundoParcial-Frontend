@@ -131,3 +131,24 @@
   margin-top: -0.5rem;
   margin-bottom: 0.5rem;
 }
+
+/* Añadir al final del archivo AuthForm.module.css */
+.successMessage {
+  text-align: center;
+  padding: 1rem;
+  background-color: #e6f4ea;
+  border-radius: 8px;
+  color: #3c763d;
+}
+
+.backLink {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #1877f2;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}

@@ -120,7 +120,7 @@ const AuthForm = ({formType, onSubmit, title, subtitle}) => {
                             <input type="checkbox"/>
                             Remember me
                         </label>
-                        <a href="#" className={styles.forgotPassword}>Forgot Password?</a>
+                        <Link to="/forgot-password" className={styles.forgotPassword}>Forgot Password?</Link>
                     </div>
                 )}
 

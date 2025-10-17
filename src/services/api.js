@@ -52,3 +52,11 @@ export const deleteUser = (userId) => {
   return apiClient.delete(`/users/${userId}/`);
 };
 
+export const requestPasswordReset = (email) => {
+  return apiClient.post('/password-reset/', { email });
+};
+
+export const resetPasswordConfirm = (data) => {
+  // data debe contener: uidb64, token, password
+  return apiClient.post('/password-reset/confirm/', data);
+};
