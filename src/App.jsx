@@ -15,6 +15,7 @@ import CartPage from './pages/CartPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import OrderCancelPage from './pages/OrderCancelPage';
 import SalesHistoryPage from './pages/SalesHistoryPage';
+import MyOrdersPage from './pages/MyOrdersPage';
 import './styles/App.css';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
                 <Route path="profile" element={<ProfilePage/>}/>
                 <Route path="shop" element={<ShopPage/>}/>
                 <Route path="cart" element={<CartPage/>}/>
+                <Route path="my-orders" element={<MyOrdersPage />} />
 
                 {/* Rutas de Admin */}
                 <Route path="admin" element={<AdminRoute/>}>

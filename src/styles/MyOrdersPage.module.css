@@ -1,0 +1,116 @@
+.myOrdersPage {
+  padding-bottom: 2rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.myOrdersPage h1 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1a222e;
+  margin-bottom: 2rem;
+}
+
+.orderList {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.orderCard {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.orderId {
+  font-weight: 700;
+  color: #1a222e;
+  font-size: 1.1rem;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.pending { background-color: #fff3cd; color: #856404; }
+.completed { background-color: #d1e7dd; color: #0f5132; }
+.cancelled { background-color: #f8d7da; color: #721c24; }
+
+.pendingIcon { color: #ffc107; }
+.completedIcon { color: #198754; }
+.cancelledIcon { color: #dc3545; }
+
+.orderDetails {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  color: #495057;
+}
+
+.orderDetails strong {
+  color: #1a222e;
+}
+
+/* Estilos para mensajes y estado vacío */
+.centerMessage, .noOrders {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 1.2rem;
+  color: #5a6472;
+}
+
+.noOrders {
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 16px;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.noOrders p {
+    margin-bottom: 1.5rem;
+}
+
+.error {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.shopLink {
+    background-color: #1a222e;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.shopLink:hover {
+    background-color: #343a40;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

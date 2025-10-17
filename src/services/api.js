@@ -123,3 +123,7 @@ export const removeCartItem = (itemId) => {
 export const initiateCheckout = () => {
   return apiClient.post('/orders/checkout/');
 };
+
+export const getMyOrders = () => {
+  return apiClient.get('/orders/my-orders/');
+};
