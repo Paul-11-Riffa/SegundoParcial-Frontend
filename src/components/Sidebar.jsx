@@ -1,54 +1,56 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import styles from '../styles/Sidebar.module.css';
-import { useAuth } from '../hooks/useAuth';
-import { FaTachometerAlt, FaUsers, FaSignOutAlt } from 'react-icons/fa';
+import {useAuth} from '../hooks/useAuth';
+import {FaTachometerAlt, FaUsers, FaSignOutAlt} from 'react-icons/fa';
 
 const Sidebar = () => {
-  const { user, isAdmin } = useAuth();
-  const navigate = useNavigate();
+    const {user, isAdmin} = useAuth();
+    const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    navigate('/login');
-  };
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('user');
+        navigate('/login');
+    };
 
-  return (
-    <aside className={styles.sidebar}>
-      <div className={styles.header}>
-        <h1 className={styles.logo}>Zarss</h1>
-        <div className={styles.profile}>
-          <div className={styles.avatar}>
-            {/* --- CAMBIO AQUÍ --- */}
-            {isAdmin ? 'A' : user?.first_name?.charAt(0)}
-          </div>
-          <div className={styles.profileInfo}>
-            <span className={styles.name}>{user?.first_name} {user?.last_name}</span>
-            <span className={styles.role}>{user?.profile?.role}</span>
-          </div>
-        </div>
-      </div>
-      <nav className={styles.nav}>
-        <NavLink to="/dashboard" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-          <FaTachometerAlt />
-          <span>Dashboard</span>
-        </NavLink>
-        {isAdmin && (
-          <NavLink to="/admin/users" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-            <FaUsers />
-            <span>Manage Users</span>
-          </NavLink>
-        )}
-      </nav>
-      <div className={styles.footer}>
-        <button onClick={handleLogout} className={styles.logoutButton}>
-          <FaSignOutAlt />
-          <span>Log Out</span>
-        </button>
-      </div>
-    </aside>
-  );
+    return (
+        <aside className={styles.sidebar}>
+            <div className={styles.header}>
+                <h1 className={styles.logo}>Zarss</h1>
+                <div className={styles.profile}>
+                    <div className={styles.avatar}>
+                        {/* --- CAMBIO AQUÍ --- */}
+                        {isAdmin ? 'A' : user?.first_name?.charAt(0)}
+                    </div>
+                    <div className={styles.profileInfo}>
+                        <span className={styles.name}>{user?.first_name} {user?.last_name}</span>
+                        <span className={styles.role}>{user?.profile?.role}</span>
+                    </div>
+                </div>
+            </div>
+            <nav className={styles.nav}>
+                <NavLink to="/dashboard"
+                         className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                    <FaTachometerAlt/>
+                    <span>Dashboard</span>
+                </NavLink>
+                {isAdmin && (
+                    <NavLink to="/admin/users"
+                             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                        <FaUsers/>
+                        <span>Manage Users</span>
+                    </NavLink>
+                )}
+            </nav>
+            <div className={styles.footer}>
+                <button onClick={handleLogout} className={styles.logoutButton}>
+                    <FaSignOutAlt/>
+                    <span>Log Out</span>
+                </button>
+            </div>
+        </aside>
+    );
 };
 
 export default Sidebar;

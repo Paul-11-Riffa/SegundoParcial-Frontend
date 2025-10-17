@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../../styles/Header.module.css';
 import { useAuth } from '../../hooks/useAuth';
 import { FaSearch, FaBell } from 'react-icons/fa';
+import { Link } from 'react-router-dom'; // 1. Importa Link
 
 const Header = () => {
   const { user, isAdmin } = useAuth();
@@ -18,12 +19,14 @@ const Header = () => {
           <input type="text" placeholder="Search anything..." />
         </div>
         <FaBell className={styles.icon} />
-        <div className={styles.userProfile}>
-          <div className={styles.avatar}>
-            {/* --- CAMBIO AQUÍ --- */}
-            {isAdmin ? 'A' : user?.first_name?.charAt(0)}
+        {/* 2. Envuelve el perfil en un Link */}
+        <Link to="/profile">
+          <div className={styles.userProfile}>
+            <div className={styles.avatar}>
+              {isAdmin ? 'A' : user?.first_name?.charAt(0)}
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
     </header>
   );

@@ -8,6 +8,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import AdminRoute from './components/auth/AdminRoute.jsx';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import ProfilePage from './pages/ProfilePage';
 import './styles/App.css';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             >
                 <Route index element={<Navigate to="/dashboard"/>}/>
                 <Route path="dashboard" element={<Dashboard/>}/>
+                <Route path="profile" element={<ProfilePage />} />
 
                 {/* Rutas de Admin */}
                 <Route path="admin" element={<AdminRoute/>}>
