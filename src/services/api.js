@@ -57,6 +57,9 @@ export const requestPasswordReset = (email) => {
 };
 
 export const resetPasswordConfirm = (data) => {
-  // data debe contener: uidb64, token, password
   return apiClient.post('/password-reset/confirm/', data);
+};
+
+export const updateUserProfile = (userData) => {
+  return apiClient.put('/profile/', userData);
 };
