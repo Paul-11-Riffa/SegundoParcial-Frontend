@@ -11,6 +11,9 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import ProfilePage from './pages/ProfilePage';
 import ManageProductsPage from './pages/ManageProductsPage';
 import ShopPage from './pages/ShopPage';
+import CartPage from './pages/CartPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
+import OrderCancelPage from './pages/OrderCancelPage';
 import './styles/App.css';
 
 function App() {
@@ -21,6 +24,8 @@ function App() {
             <Route path="/signup" element={<SignUpPage/>}/>
             <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
             <Route path="/reset-password/:uidb64/:token" element={<ResetPasswordPage/>}/>
+            <Route path="/order/success" element={<OrderSuccessPage/>}/>
+            <Route path="/order/cancel" element={<OrderCancelPage/>}/>
             {/* Rutas protegidas */}
             <Route
                 path="/"
@@ -28,13 +33,14 @@ function App() {
             >
                 <Route index element={<Navigate to="/dashboard"/>}/>
                 <Route path="dashboard" element={<Dashboard/>}/>
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="shop" element={<ShopPage />} />
+                <Route path="profile" element={<ProfilePage/>}/>
+                <Route path="shop" element={<ShopPage/>}/>
+                <Route path="cart" element={<CartPage/>}/>
 
                 {/* Rutas de Admin */}
                 <Route path="admin" element={<AdminRoute/>}>
                     <Route path="users" element={<ManageUsersPage/>}/>
-                    <Route path="products" element={<ManageProductsPage />} />
+                    <Route path="products" element={<ManageProductsPage/>}/>
                 </Route>
             </Route>
         </Routes>
