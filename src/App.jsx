@@ -10,6 +10,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import ProfilePage from './pages/ProfilePage';
 import ManageProductsPage from './pages/ManageProductsPage';
+import ShopPage from './pages/ShopPage';
 import './styles/App.css';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                 <Route index element={<Navigate to="/dashboard"/>}/>
                 <Route path="dashboard" element={<Dashboard/>}/>
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="shop" element={<ShopPage />} />
 
                 {/* Rutas de Admin */}
                 <Route path="admin" element={<AdminRoute/>}>

@@ -1,0 +1,45 @@
+.shopPage {
+  padding-bottom: 2rem; /* Espacio al final */
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.shopPage h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1a222e;
+  margin-bottom: 2rem;
+}
+
+.productGrid {
+  display: grid;
+  /* Grid responsivo */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.centerMessage {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 1.2rem;
+  color: #5a6472;
+}
+
+.error {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.feedbackMessage {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

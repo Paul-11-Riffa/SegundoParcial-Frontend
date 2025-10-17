@@ -88,3 +88,13 @@ export const updateProduct = (productId, productData) => {
 export const deleteProduct = (productId) => {
   return apiClient.delete(`/shop/products/${productId}/`);
 };
+
+// --- Funciones del Carrito (Cliente) ---
+
+export const getCart = () => {
+  return apiClient.get('/orders/cart/');
+};
+
+export const addToCart = (productId, quantity = 1) => {
+  return apiClient.post('/orders/cart/', { product_id: productId, quantity });
+};
