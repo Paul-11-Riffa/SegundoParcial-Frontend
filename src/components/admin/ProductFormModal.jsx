@@ -8,6 +8,8 @@ const ProductFormModal = ({ isOpen, onClose, onProductSaved, editingProduct }) =
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   // Carga las categorías cuando el modal se abre
   useEffect(() => {
@@ -34,10 +36,15 @@ const ProductFormModal = ({ isOpen, onClose, onProductSaved, editingProduct }) =
         stock: editingProduct.stock || 0,
         category: editingProduct.category || '',
       });
+      // Mostrar imagen existente si hay una
+      setImagePreview(editingProduct.image || null);
+      setImageFile(null);
     } else {
       setFormData({
         name: '', description: '', price: '', stock: 0, category: '',
       });
+      setImagePreview(null);
+      setImageFile(null);
     }
   }, [isOpen, editingProduct, isEditMode]);
 
@@ -47,21 +54,51 @@ const ProductFormModal = ({ isOpen, onClose, onProductSaved, editingProduct }) =
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      // Crear vista previa
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
     try {
+      // Si hay una imagen, enviamos FormData; si no, enviamos JSON
+      let dataToSend;
+
+      if (imageFile) {
+        // Crear FormData para enviar imagen
+        dataToSend = new FormData();
+        dataToSend.append('name', formData.name);
+        dataToSend.append('description', formData.description || '');
+        dataToSend.append('price', formData.price);
+        dataToSend.append('stock', formData.stock);
+        dataToSend.append('category', formData.category);
+        dataToSend.append('image', imageFile);
+      } else {
+        // Enviar solo JSON si no hay imagen nueva
+        dataToSend = formData;
+      }
+
       if (isEditMode) {
-        await updateProduct(editingProduct.id, formData);
+        await updateProduct(editingProduct.id, dataToSend);
       } else {
         if (!formData.category) {
           setError('Please select a category.');
           setIsLoading(false);
           return;
         }
-        await createProduct(formData);
+        await createProduct(dataToSend);
       }
       onProductSaved(isEditMode);
     } catch (err) {
@@ -102,6 +139,34 @@ const ProductFormModal = ({ isOpen, onClose, onProductSaved, editingProduct }) =
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
+          </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="image">Product Image</label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+            {imagePreview && (
+              <div style={{ marginTop: '10px', textAlign: 'center' }}>
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  style={{
+                    maxWidth: '150px',
+                    maxHeight: '150px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                    border: '2px solid #ddd'
+                  }}
+                />
+                <p style={{ fontSize: '0.85rem', color: '#6c757d', marginTop: '5px' }}>
+                  Image preview
+                </p>
+              </div>
+            )}
           </div>
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.actions}>
