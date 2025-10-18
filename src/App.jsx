@@ -16,10 +16,14 @@ import OrderSuccessPage from './pages/OrderSuccessPage';
 import OrderCancelPage from './pages/OrderCancelPage';
 import SalesHistoryPage from './pages/SalesHistoryPage';
 import MyOrdersPage from './pages/MyOrdersPage';
+import { ToastProvider } from './context/ToastContext';
+import { CartProvider } from './context/CartContext';
 import './styles/App.css';
 
 function App() {
     return (
+        <ToastProvider>
+        <CartProvider>
         <Routes>
             {/* Rutas públicas */}
             <Route path="/login" element={<LoginPage/>}/>
@@ -48,6 +52,8 @@ function App() {
                 </Route>
             </Route>
         </Routes>
+        </CartProvider>
+        </ToastProvider>
     );
 }
 

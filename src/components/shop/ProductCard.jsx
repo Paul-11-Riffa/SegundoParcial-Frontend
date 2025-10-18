@@ -1,33 +1,114 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/ProductCard.module.css';
-import { FaCartPlus } from 'react-icons/fa';
+import { FaCartPlus, FaHeart, FaEye, FaRegHeart, FaCheck } from 'react-icons/fa';
 
-const ProductCard = ({ product, onAddToCart }) => {
-  // Imagen placeholder si no hay imagen real
-  const imageUrl = product.image || 'https://via.placeholder.com/300x200.png?text=No+Image';
+const ProductCard = ({ product, onAddToCart, onProductClick, viewMode = 'grid' }) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [showQuickView, setShowQuickView] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
+
+  const imageUrl = product.image || 'https://via.placeholder.com/400x400.png?text=No+Image';
+  const isLowStock = product.stock > 0 && product.stock <= 5;
+  const isOutOfStock = product.stock <= 0;
+
+  const cardClass = viewMode === 'list' ? `${styles.card} ${styles.listView}` : styles.card;
+
+  const handleAddToCartClick = async (e) => {
+    e.stopPropagation(); // Prevent card click event
+    if (isOutOfStock || isAdding) return;
+
+    setIsAdding(true);
+    await onAddToCart(product.id);
+    setIsAdding(false);
+    setJustAdded(true);
+
+    // Resetear el estado después de 2 segundos
+    setTimeout(() => {
+      setJustAdded(false);
+    }, 2000);
+  };
+
+  const handleCardClick = () => {
+    if (onProductClick) {
+      onProductClick(product);
+    }
+  };
 
   return (
-    <div className={styles.card}>
+    <div
+      className={cardClass}
+      onMouseEnter={() => setShowQuickView(true)}
+      onMouseLeave={() => setShowQuickView(false)}
+      onClick={handleCardClick}
+      style={{ cursor: onProductClick ? 'pointer' : 'default' }}
+    >
       <div className={styles.imageContainer}>
         <img src={imageUrl} alt={product.name} className={styles.image} />
+
+        {/* Badges */}
+        <div className={styles.badges}>
+          {isOutOfStock && (
+            <span className={`${styles.badge} ${styles.outOfStockBadge}`}>Out of Stock</span>
+          )}
+          {isLowStock && (
+            <span className={`${styles.badge} ${styles.lowStockBadge}`}>Only {product.stock} left</span>
+          )}
+        </div>
+
+        {/* Quick Actions Overlay */}
+        {showQuickView && !isOutOfStock && (
+          <div className={styles.quickActions}>
+            <button
+              className={styles.quickActionBtn}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFavorite(!isFavorite);
+              }}
+              title="Add to wishlist"
+            >
+              {isFavorite ? <FaHeart /> : <FaRegHeart />}
+            </button>
+          </div>
+        )}
+
+        {/* Category Badge */}
+        <div className={styles.categoryBadge}>
+          {product.category_name}
+        </div>
       </div>
+
       <div className={styles.content}>
-        <span className={styles.category}>{product.category_name}</span>
         <h3 className={styles.name}>{product.name}</h3>
         <p className={styles.description}>
-          {product.description?.substring(0, 60)}{product.description?.length > 60 ? '...' : ''}
+          {product.description?.substring(0, viewMode === 'list' ? 150 : 80)}
+          {product.description?.length > (viewMode === 'list' ? 150 : 80) ? '...' : ''}
         </p>
+
         <div className={styles.footer}>
-          <span className={styles.price}>${parseFloat(product.price).toFixed(2)}</span>
+          <div className={styles.priceSection}>
+            <span className={styles.price}>${parseFloat(product.price).toFixed(2)}</span>
+            {isLowStock && <span className={styles.stockWarning}>Low stock</span>}
+          </div>
+
           <button
-            className={styles.addButton}
-            onClick={() => onAddToCart(product.id)}
-            disabled={product.stock <= 0} // Deshabilita si no hay stock
+            className={`${styles.addButton} ${isAdding ? styles.adding : ''} ${justAdded ? styles.added : ''}`}
+            onClick={handleAddToCartClick}
+            disabled={isOutOfStock || isAdding}
           >
-            {product.stock > 0 ? <FaCartPlus /> : 'Out'}
+            {justAdded ? (
+              <>
+                <FaCheck />
+                <span>{viewMode === 'list' ? 'Added!' : ''}</span>
+              </>
+            ) : (
+              <>
+                <FaCartPlus />
+                <span>{viewMode === 'list' ? (isAdding ? 'Adding...' : 'Add to Cart') : ''}</span>
+              </>
+            )}
           </button>
         </div>
-         {product.stock <= 0 && <span className={styles.outOfStock}>Out of Stock</span>}
       </div>
     </div>
   );
