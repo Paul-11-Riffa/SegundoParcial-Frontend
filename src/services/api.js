@@ -77,12 +77,21 @@ export const getProducts = () => {
 };
 
 export const createProduct = (productData) => {
-  
-  return apiClient.post('/shop/products/', productData);
+  // Si productData es FormData (contiene imagen), debemos cambiar el Content-Type
+  const config = productData instanceof FormData
+    ? { headers: { 'Content-Type': 'multipart/form-data' } }
+    : {};
+
+  return apiClient.post('/shop/products/', productData, config);
 };
 
 export const updateProduct = (productId, productData) => {
-  return apiClient.put(`/shop/products/${productId}/`, productData);
+  // Si productData es FormData (contiene imagen), debemos cambiar el Content-Type
+  const config = productData instanceof FormData
+    ? { headers: { 'Content-Type': 'multipart/form-data' } }
+    : {};
+
+  return apiClient.put(`/shop/products/${productId}/`, productData, config);
 };
 
 export const deleteProduct = (productId) => {
