@@ -46,7 +46,7 @@ const MyOrdersPage = () => {
         </div>
       ) : (
         <div className={styles.orderList}>
-          {orders.map(order => (
+          {orders.filter(order => order.status !== 'PENDING').map(order => (
             <div key={order.id} className={styles.orderCard}>
               <div className={styles.orderHeader}>
                 <div className={styles.orderId}>Orden #{order.id}</div>
@@ -56,7 +56,13 @@ const MyOrdersPage = () => {
               </div>
               <div className={styles.orderDetails}>
                 <div>
-                  <strong>Fecha:</strong> {new Date(order.created_at).toLocaleDateString()}
+                  <strong>Fecha:</strong> {new Date(order.created_at).toLocaleDateString('es-ES', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
                 </div>
                 <div>
                   <strong>Total:</strong> ${parseFloat(order.total_price).toFixed(2)}
@@ -65,7 +71,21 @@ const MyOrdersPage = () => {
                   <strong>Artículos:</strong> {order.items.length}
                 </div>
               </div>
-              {/* Podríamos añadir un botón para ver detalles si quisiéramos */}
+              
+              {/* Detalles de productos */}
+              <div className={styles.orderItems}>
+                <h4>Productos:</h4>
+                {order.items.map((item, index) => (
+                  <div key={index} className={styles.orderItem}>
+                    <span className={styles.itemName}>{item.product.name}</span>
+                    <span className={styles.itemQuantity}>x{item.quantity}</span>
+                    <span className={styles.itemPrice}>${parseFloat(item.price).toFixed(2)}</span>
+                    <span className={styles.itemSubtotal}>
+                      Subtotal: ${(parseFloat(item.price) * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>

@@ -15,7 +15,7 @@ const OrderSuccessPage = () => {
   useEffect(() => {
     const completeOrder = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('authToken'); // Cambiado de 'token' a 'authToken'
         if (!token) return;
 
         await axios.post(
