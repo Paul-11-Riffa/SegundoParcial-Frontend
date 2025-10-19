@@ -17,7 +17,7 @@ const ForgotPasswordPage = () => {
       const response = await requestPasswordReset(email);
       setMessage(response.data.detail);
     } catch (error) {
-      setMessage('An error occurred. Please try again.');
+      setMessage('Ocurrió un error. Por favor, intenta de nuevo.');
     } finally {
       setIsLoading(false);
     }
@@ -29,16 +29,16 @@ const ForgotPasswordPage = () => {
         <div className={styles.formPanel}>
           <div className={styles.formWrapper}>
             <div className={formStyles.header}>
-              <h1 className={formStyles.title}>Forgot Your Password?</h1>
+              <h1 className={formStyles.title}>¿Olvidaste tu Contraseña?</h1>
               <p className={formStyles.subtitle}>
-                No worries! Enter your email and we'll send you a reset link.
+                ¡No te preocupes! Ingresa tu correo y te enviaremos un enlace de recuperación.
               </p>
             </div>
 
             {message ? (
               <div className={formStyles.successMessage}>
                 <p>{message}</p>
-                <Link to="/login" className={formStyles.backLink}>Back to Login</Link>
+                <Link to="/login" className={formStyles.backLink}>Volver al Inicio de Sesión</Link>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className={formStyles.form}>
@@ -46,7 +46,7 @@ const ForgotPasswordPage = () => {
                   <input
                     type="email"
                     name="email"
-                    placeholder="Enter your email address"
+                    placeholder="Ingresa tu correo electrónico"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -54,7 +54,7 @@ const ForgotPasswordPage = () => {
                   />
                 </div>
                 <button type="submit" className={formStyles.submitButton} disabled={isLoading}>
-                  {isLoading ? 'Sending...' : 'Send Reset Link'}
+                  {isLoading ? 'Enviando...' : 'Enviar Enlace de Recuperación'}
                 </button>
               </form>
             )}

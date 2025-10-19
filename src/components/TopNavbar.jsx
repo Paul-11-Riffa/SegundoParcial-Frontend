@@ -85,19 +85,19 @@ const TopNavbar = () => {
             to="/dashboard"
             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
           >
-            Dashboard
+            Panel
           </NavLink>
           <NavLink
             to="/shop"
             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
           >
-            Shop
+            Tienda
           </NavLink>
           <NavLink
             to="/my-orders"
             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
           >
-            My Orders
+            Mis Órdenes
           </NavLink>
           {isAdmin && (
             <>
@@ -105,19 +105,19 @@ const TopNavbar = () => {
                 to="/admin/products"
                 className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
               >
-                Products
+                Productos
               </NavLink>
               <NavLink
                 to="/admin/users"
                 className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
               >
-                Users
+                Usuarios
               </NavLink>
               <NavLink
                 to="/admin/sales-history"
                 className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
               >
-                Sales
+                Ventas
               </NavLink>
             </>
           )}
@@ -128,7 +128,7 @@ const TopNavbar = () => {
           <FaSearch className={styles.searchIcon} />
           <input
             type="text"
-            placeholder="Search for products..."
+            placeholder="Buscar productos..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={styles.searchInput}
@@ -161,7 +161,7 @@ const TopNavbar = () => {
                 </div>
               ))}
               <div className={styles.viewAllResults} onClick={() => { navigate('/shop'); clearSearch(); }}>
-                View all results in Shop →
+                Ver todos los resultados en la Tienda →
               </div>
             </div>
           )}
@@ -169,7 +169,7 @@ const TopNavbar = () => {
           {showResults && searchResults.length === 0 && (
             <div className={styles.searchResults}>
               <div className={styles.noResults}>
-                No products found for "{searchQuery}"
+                No se encontraron productos para "{searchQuery}"
               </div>
             </div>
           )}
@@ -177,11 +177,11 @@ const TopNavbar = () => {
 
         {/* Action Icons */}
         <div className={styles.actions}>
-          <Link to="/wishlist" className={styles.iconButton} title="Wishlist">
+          <Link to="/wishlist" className={styles.iconButton} title="Lista de Deseos">
             <FaHeart />
             <span className={styles.badge}>0</span>
           </Link>
-          <Link to="/cart" className={styles.iconButton} title="Cart">
+          <Link to="/cart" className={styles.iconButton} title="Carrito">
             <FaShoppingCart />
             {cartCount > 0 && (
               <span className={`${styles.badge} ${cartBounce ? styles.bounce : ''}`}>
@@ -189,10 +189,10 @@ const TopNavbar = () => {
               </span>
             )}
           </Link>
-          <Link to="/profile" className={styles.iconButton} title="Profile">
+          <Link to="/profile" className={styles.iconButton} title="Perfil">
             <FaUser />
           </Link>
-          <button onClick={handleLogout} className={styles.iconButton} title="Logout">
+          <button onClick={handleLogout} className={styles.iconButton} title="Cerrar Sesión">
             <FaSignOutAlt />
           </button>
         </div>

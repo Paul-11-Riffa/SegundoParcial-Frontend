@@ -17,7 +17,7 @@ const CartPage = () => {
       const response = await getCart();
       setCart(response.data);
     } catch (err) {
-      setError('Could not load your cart.');
+      setError('No se pudo cargar tu carrito.');
     } finally {
       setLoading(false);
     }
@@ -32,10 +32,10 @@ const CartPage = () => {
     try {
       const response = await updateCartItem(itemId, newQuantity);
       setCart(response.data);
-      setFeedback('Cart updated.');
+      setFeedback('Carrito actualizado.');
       setTimeout(() => setFeedback(''), 2000);
     } catch (err) {
-      setError('Could not update quantity.');
+      setError('No se pudo actualizar la cantidad.');
       setTimeout(() => setError(''), 3000);
     } finally {
       setUpdatingItemId(null); // Oculta indicador de carga
@@ -47,10 +47,10 @@ const CartPage = () => {
     try {
       const response = await removeCartItem(itemId);
       setCart(response.data);
-      setFeedback('Item removed.');
+      setFeedback('Artículo eliminado.');
       setTimeout(() => setFeedback(''), 2000);
     } catch (err) {
-      setError('Could not remove item.');
+      setError('No se pudo eliminar el artículo.');
       setTimeout(() => setError(''), 3000);
     } finally {
       setUpdatingItemId(null);
@@ -65,7 +65,7 @@ const CartPage = () => {
       // Redirige al usuario a la URL de pago de Stripe
       window.location.href = response.data.checkout_url;
     } catch (err) {
-      setError(err.response?.data?.error || 'Could not initiate checkout. Is your cart empty?');
+      setError(err.response?.data?.error || 'No se pudo iniciar el pago. ¿Está vacío tu carrito?');
       setLoading(false);
     }
     // No ponemos setLoading(false) en el 'try' porque la redirección debe ocurrir
@@ -75,21 +75,21 @@ const CartPage = () => {
     return (parseFloat(item.price) * item.quantity).toFixed(2);
   };
 
-  if (loading && cart === null) return <div className={styles.centerMessage}>Loading your cart...</div>;
+  if (loading && cart === null) return <div className={styles.centerMessage}>Cargando tu carrito...</div>;
   if (error) return <div className={`${styles.centerMessage} ${styles.error}`}>{error}</div>;
 
   const isEmpty = !cart || !cart.items || cart.items.length === 0;
 
   return (
     <div className={styles.cartPage}>
-      <h1><FaShoppingCart /> Your Shopping Cart</h1>
+      <h1><FaShoppingCart /> Tu Carrito de Compras</h1>
 
       {feedback && <div className={styles.feedbackMessage}>{feedback}</div>}
 
       {isEmpty ? (
         <div className={styles.emptyCart}>
-          <p>Your cart is currently empty.</p>
-          <Link to="/shop" className={styles.shopLink}>Continue Shopping</Link>
+          <p>Tu carrito está actualmente vacío.</p>
+          <Link to="/shop" className={styles.shopLink}>Continuar Comprando</Link>
         </div>
       ) : (
         <div className={styles.cartGrid}>
@@ -104,7 +104,7 @@ const CartPage = () => {
                 />
                 <div className={styles.itemDetails}>
                   <span className={styles.itemName}>{item.product.name}</span>
-                  <span className={styles.itemPrice}>${parseFloat(item.product.price).toFixed(2)} each</span>
+                  <span className={styles.itemPrice}>${parseFloat(item.product.price).toFixed(2)} c/u</span>
                   <div className={styles.quantityControl}>
                     <button onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)} disabled={updatingItemId === item.id || item.quantity <= 1}>
                       <FaMinus />
@@ -127,21 +127,21 @@ const CartPage = () => {
 
           {/* Columna de Resumen */}
           <div className={styles.summary}>
-            <h2>Order Summary</h2>
+            <h2>Resumen de Orden</h2>
             <div className={styles.summaryLine}>
               <span>Subtotal</span>
               <span>${parseFloat(cart.total_price).toFixed(2)}</span>
             </div>
             <div className={styles.summaryLine}>
-              <span>Shipping</span>
-              <span>FREE</span>
+              <span>Envío</span>
+              <span>GRATIS</span>
             </div>
             <div className={`${styles.summaryLine} ${styles.total}`}>
               <span>Total</span>
               <span>${parseFloat(cart.total_price).toFixed(2)}</span>
             </div>
             <button className={styles.checkoutButton} onClick={handleCheckout} disabled={loading}>
-              {loading ? 'Processing...' : <><FaCreditCard /> Proceed to Checkout</>}
+              {loading ? 'Procesando...' : <><FaCreditCard /> Proceder al Pago</>}
             </button>
           </div>
         </div>

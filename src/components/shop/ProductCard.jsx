@@ -49,10 +49,10 @@ const ProductCard = ({ product, onAddToCart, onProductClick, viewMode = 'grid' }
         {/* Badges */}
         <div className={styles.badges}>
           {isOutOfStock && (
-            <span className={`${styles.badge} ${styles.outOfStockBadge}`}>Out of Stock</span>
+            <span className={`${styles.badge} ${styles.outOfStockBadge}`}>Sin Stock</span>
           )}
           {isLowStock && (
-            <span className={`${styles.badge} ${styles.lowStockBadge}`}>Only {product.stock} left</span>
+            <span className={`${styles.badge} ${styles.lowStockBadge}`}>Solo {product.stock} disponibles</span>
           )}
         </div>
 
@@ -65,7 +65,7 @@ const ProductCard = ({ product, onAddToCart, onProductClick, viewMode = 'grid' }
                 e.stopPropagation();
                 setIsFavorite(!isFavorite);
               }}
-              title="Add to wishlist"
+              title="Agregar a favoritos"
             >
               {isFavorite ? <FaHeart /> : <FaRegHeart />}
             </button>
@@ -88,7 +88,7 @@ const ProductCard = ({ product, onAddToCart, onProductClick, viewMode = 'grid' }
         <div className={styles.footer}>
           <div className={styles.priceSection}>
             <span className={styles.price}>${parseFloat(product.price).toFixed(2)}</span>
-            {isLowStock && <span className={styles.stockWarning}>Low stock</span>}
+            {isLowStock && <span className={styles.stockWarning}>Stock bajo</span>}
           </div>
 
           <button
@@ -99,12 +99,12 @@ const ProductCard = ({ product, onAddToCart, onProductClick, viewMode = 'grid' }
             {justAdded ? (
               <>
                 <FaCheck />
-                <span>{viewMode === 'list' ? 'Added!' : ''}</span>
+                <span>{viewMode === 'list' ? '¡Agregado!' : ''}</span>
               </>
             ) : (
               <>
                 <FaCartPlus />
-                <span>{viewMode === 'list' ? (isAdding ? 'Adding...' : 'Add to Cart') : ''}</span>
+                <span>{viewMode === 'list' ? (isAdding ? 'Agregando...' : 'Agregar al Carrito') : ''}</span>
               </>
             )}
           </button>

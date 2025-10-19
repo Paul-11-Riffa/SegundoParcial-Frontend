@@ -24,7 +24,7 @@ const ManageUsersPage = () => {
             const response = await getAllUsers();
             setUsers(response.data);
         } catch (err) {
-            setError('Failed to fetch users.');
+            setError('Error al cargar usuarios.');
         } finally {
             setLoading(false);
         }
@@ -62,7 +62,7 @@ const ManageUsersPage = () => {
     const handleUserSaved = (isEdit) => {
         handleCloseModals();
         fetchUsers();
-        setSuccessMessage(`User ${isEdit ? 'updated' : 'created'} successfully!`);
+        setSuccessMessage(`¡Usuario ${isEdit ? 'actualizado' : 'creado'} exitosamente!`);
         setTimeout(() => setSuccessMessage(''), 4000);
     };
 
@@ -72,23 +72,23 @@ const ManageUsersPage = () => {
             await deleteUser(userToDelete.id);
             handleCloseModals();
             fetchUsers(); // Volvemos a cargar los usuarios
-            setSuccessMessage(`User '${userToDelete.username}' deleted successfully.`);
+            setSuccessMessage(`Usuario '${userToDelete.username}' eliminado exitosamente.`);
             setTimeout(() => setSuccessMessage(''), 4000);
         } catch (err) {
-            setError('Failed to delete user.');
+            setError('Error al eliminar usuario.');
         }
     };
 
-    if (loading) return <p>Loading users...</p>;
+    if (loading) return <p>Cargando usuarios...</p>;
     if (error) return <p className={styles.error}>{error}</p>;
 
     return (
         <>
             <div className={styles.page}>
                 <header className={styles.header}>
-                    <h1>User Management</h1>
+                    <h1>Gestión de Usuarios</h1>
                     <button className={styles.addButton} onClick={handleOpenAddModal}>
-                        <FaPlus/> Add User
+                        <FaPlus/> Agregar Usuario
                     </button>
                 </header>
 
@@ -99,11 +99,11 @@ const ManageUsersPage = () => {
                         {/* ... (el thead de la tabla sigue igual) ... */}
                         <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -126,23 +126,23 @@ const ManageUsersPage = () => {
                                         <span className={`${styles.role} ${styles[user.profile.role.toLowerCase()]}`}>
                         {user.profile.role}
                       </span>
-                                    ) : ('No Role')}
+                                    ) : ('Sin Rol')}
                                 </td>
                                 <td>
                     <span className={user.is_active ? styles.active : styles.inactive}>
-                      {user.is_active ? 'Active' : 'Inactive'}
+                      {user.is_active ? 'Activo' : 'Inactivo'}
                     </span>
                                 </td>
                                 <td>
                                     <div className={styles.actions}>
                                         <button className={styles.editButton} onClick={() => handleOpenEditModal(user)}>
-                                            Edit
+                                            Editar
                                         </button>
                                         <button
                                             onClick={() => handleOpenDeleteModal(user)}
                                             className={styles.deleteButton}
                                         >
-                                            Delete
+                                            Eliminar
                                         </button>
                                     </div>
                                 </td>

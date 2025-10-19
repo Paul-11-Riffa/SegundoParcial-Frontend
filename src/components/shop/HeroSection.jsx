@@ -7,20 +7,20 @@ const HeroSection = () => {
     <div className={styles.hero}>
       <div className={styles.overlay}>
         <div className={styles.content}>
-          <span className={styles.badge}>NEW COLLECTION</span>
+          <span className={styles.badge}>NUEVA COLECCIÓN</span>
           <h1 className={styles.title}>
-            Discover Your <br />
-            Perfect Style
+            Descubre Tu <br />
+            Estilo Perfecto
           </h1>
           <p className={styles.subtitle}>
-            Premium quality products curated just for you. Shop the latest trends and timeless classics.
+            Productos de calidad premium seleccionados especialmente para ti. Compra las últimas tendencias y clásicos atemporales.
           </p>
           <div className={styles.ctaButtons}>
             <a href="#products" className={styles.primaryBtn}>
-              Shop Now
+              Comprar Ahora
             </a>
             <Link to="/my-orders" className={styles.secondaryBtn}>
-              View Orders
+              Ver Órdenes
             </Link>
           </div>
         </div>

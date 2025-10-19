@@ -40,7 +40,7 @@ const ProfilePage = () => {
 
     // Si no hay cambios, no hacemos nada
     if (Object.keys(payload).length === 0) {
-      setMessage('No changes to save.');
+      setMessage('No hay cambios para guardar.');
       setTimeout(() => setMessage(''), 3000);
       return;
     }
@@ -50,14 +50,14 @@ const ProfilePage = () => {
     setError('');
     try {
       await updateUserProfile(payload); // Enviamos solo el payload con los cambios
-      setMessage('Profile details updated successfully!');
+      setMessage('¡Detalles del perfil actualizados exitosamente!');
       // Idealmente, aquí deberíamos refrescar los datos del usuario en el estado global
     } catch (err) {
       const serverErrors = err.response?.data;
-      let errorMessage = 'Failed to update profile.';
+      let errorMessage = 'Error al actualizar el perfil.';
       if (serverErrors) {
-        if (serverErrors.username) errorMessage = `Username: ${serverErrors.username[0]}`;
-        else if (serverErrors.email) errorMessage = `Email: ${serverErrors.email[0]}`;
+        if (serverErrors.username) errorMessage = `Usuario: ${serverErrors.username[0]}`;
+        else if (serverErrors.email) errorMessage = `Correo: ${serverErrors.email[0]}`;
         else if (serverErrors.detail) errorMessage = serverErrors.detail;
       }
       setError(errorMessage);
@@ -70,7 +70,7 @@ const ProfilePage = () => {
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
     if (passwordData.password !== passwordData.confirmPassword) {
-      setError('Passwords do not match.');
+      setError('Las contraseñas no coinciden.');
       setTimeout(() => setError(''), 4000);
       return;
     }
@@ -79,21 +79,21 @@ const ProfilePage = () => {
     setError('');
     try {
       await updateUserProfile({ password: passwordData.password });
-      setMessage('Password changed successfully!');
+      setMessage('¡Contraseña cambiada exitosamente!');
       setPasswordData({ password: '', confirmPassword: '' });
     } catch (err) {
-      setError('Failed to change password.');
+      setError('Error al cambiar la contraseña.');
     } finally {
       setIsSaving(false);
       setTimeout(() => { setMessage(''); setError(''); }, 4000);
     }
   };
 
-  if (isLoading) return <div>Loading profile...</div>;
+  if (isLoading) return <div>Cargando perfil...</div>;
 
   return (
     <div className={styles.profilePage}>
-      <h1>My Profile</h1>
+      <h1>Mi Perfil</h1>
 
       {message && <div className={styles.successMessage}>{message}</div>}
       {error && <div className={styles.errorMessage}>{error}</div>}
@@ -102,28 +102,28 @@ const ProfilePage = () => {
         {/* Tarjeta de Información del Perfil */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <h3>Profile Information</h3>
-            <p>Update your account's profile information.</p>
+            <h3>Información del Perfil</h3>
+            <p>Actualiza la información de tu cuenta.</p>
           </div>
           <div className={styles.cardBody}>
             <form onSubmit={handleInfoSubmit}>
               <div className={styles.readonlyField}>
-                <span>Full Name</span>
+                <span>Nombre Completo</span>
                 <p>{user?.first_name} {user?.last_name}</p>
               </div>
 
               <div className={styles.inputGroup}>
-                <label htmlFor="username"><FaUser /> Username</label>
+                <label htmlFor="username"><FaUser /> Usuario</label>
                 <input id="username" name="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
               </div>
               <div className={styles.inputGroup}>
-                <label htmlFor="email"><FaEnvelope /> Email Address</label>
+                <label htmlFor="email"><FaEnvelope /> Correo Electrónico</label>
                 <input id="email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
 
               <div className={styles.cardFooter}>
                 <button type="submit" disabled={isSaving}>
-                  {isSaving ? 'Saving...' : 'Save Changes'}
+                  {isSaving ? 'Guardando...' : 'Guardar Cambios'}
                 </button>
               </div>
             </form>
@@ -133,22 +133,22 @@ const ProfilePage = () => {
         {/* Tarjeta de Cambio de Contraseña */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <h3>Update Password</h3>
-            <p>Ensure your account is using a long, random password to stay secure.</p>
+            <h3>Actualizar Contraseña</h3>
+            <p>Asegúrate de que tu cuenta use una contraseña larga y segura.</p>
           </div>
           <div className={styles.cardBody}>
             <form onSubmit={handlePasswordSubmit}>
               <div className={styles.inputGroup}>
-                <label htmlFor="password"><FaLock /> New Password</label>
+                <label htmlFor="password"><FaLock /> Nueva Contraseña</label>
                 <input id="password" name="password" type="password" value={passwordData.password} onChange={(e) => setPasswordData({...passwordData, password: e.target.value})} />
               </div>
               <div className={styles.inputGroup}>
-                <label htmlFor="confirmPassword"><FaLock /> Confirm Password</label>
+                <label htmlFor="confirmPassword"><FaLock /> Confirmar Contraseña</label>
                 <input id="confirmPassword" name="confirmPassword" type="password" value={passwordData.confirmPassword} onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})} />
               </div>
                <div className={styles.cardFooter}>
                 <button type="submit" disabled={isSaving}>
-                  {isSaving ? 'Saving...' : 'Change Password'}
+                  {isSaving ? 'Guardando...' : 'Cambiar Contraseña'}
                 </button>
               </div>
             </form>

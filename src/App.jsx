@@ -16,6 +16,7 @@ import OrderSuccessPage from './pages/OrderSuccessPage';
 import OrderCancelPage from './pages/OrderCancelPage';
 import SalesHistoryPage from './pages/SalesHistoryPage';
 import MyOrdersPage from './pages/MyOrdersPage';
+import ReportsPage from './pages/ReportsPage';
 import { ToastProvider } from './context/ToastContext';
 import { CartProvider } from './context/CartContext';
 import './styles/App.css';
@@ -43,6 +44,9 @@ function App() {
                 <Route path="shop" element={<ShopPage/>}/>
                 <Route path="cart" element={<CartPage/>}/>
                 <Route path="my-orders" element={<MyOrdersPage />} />
+                
+                {/* Ruta de Reportes (Admin) */}
+                <Route path="reports" element={<AdminRoute><ReportsPage /></AdminRoute>} />
 
                 {/* Rutas de Admin */}
                 <Route path="admin" element={<AdminRoute/>}>

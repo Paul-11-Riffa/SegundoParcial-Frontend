@@ -10,7 +10,8 @@ import {
     FaStore,
     FaShoppingCart,
     FaHistory,
-    FaListAlt
+    FaListAlt,
+    FaChartBar
 } from 'react-icons/fa';
 
 const Sidebar = () => {
@@ -42,39 +43,44 @@ const Sidebar = () => {
                 <NavLink to="/dashboard"
                          className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                     <FaTachometerAlt/>
-                    <span>Dashboard</span>
+                    <span>Panel</span>
                 </NavLink>
                 <NavLink to="/shop"
                          className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                     <FaStore/>
-                    <span>Shop</span>
+                    <span>Tienda</span>
                 </NavLink>
                 <NavLink to="/cart"
                          className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                     <FaShoppingCart/>
-                    <span>Cart</span>
+                    <span>Carrito</span>
                 </NavLink>
                 <NavLink to="/my-orders"
                          className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                     <FaListAlt/>
-                    <span>My Orders</span>
+                    <span>Mis Órdenes</span>
                 </NavLink>
                 {isAdmin && (
                     <>
                         <NavLink to="/admin/users"
                                  className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                             <FaUsers/>
-                            <span>Manage Users</span>
+                            <span>Gestionar Usuarios</span>
                         </NavLink>
                         <NavLink to="/admin/products"
                                  className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                             <FaBoxOpen/>
-                            <span>Manage Products</span>
+                            <span>Gestionar Productos</span>
                         </NavLink>
                         <NavLink to="/admin/sales-history"
                                  className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                             <FaHistory/>
-                            <span>Sales History</span>
+                            <span>Historial de Ventas</span>
+                        </NavLink>
+                        <NavLink to="/reports"
+                                 className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                            <FaChartBar/>
+                            <span>Reportes Dinámicos</span>
                         </NavLink>
                     </>
                 )}
@@ -83,7 +89,7 @@ const Sidebar = () => {
                         <NavLink to="/profile"
                                  className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                             <FaUsers/>
-                            <span>Profile</span>
+                            <span>Perfil</span>
                         </NavLink>
 
 
@@ -94,7 +100,7 @@ const Sidebar = () => {
             <div className={styles.footer}>
                 <button onClick={handleLogout} className={styles.logoutButton}>
                     <FaSignOutAlt/>
-                    <span>Log Out</span>
+                    <span>Cerrar Sesión</span>
                 </button>
             </div>
         </aside>

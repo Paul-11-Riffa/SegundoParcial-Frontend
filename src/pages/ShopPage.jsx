@@ -29,7 +29,7 @@ const ShopPage = () => {
         setProducts(response.data);
         setFilteredProducts(response.data);
       } catch (err) {
-        showToast('Could not load products. Please try again later.', 'error');
+        showToast('No se pudieron cargar los productos. Por favor, intenta más tarde.', 'error');
       } finally {
         setLoading(false);
       }
@@ -65,9 +65,9 @@ const ShopPage = () => {
     try {
       await addToCart(productId, 1);
       refreshCart(); // Update cart count in navbar
-      showToast('Product added to cart!', 'success');
+      showToast('¡Producto agregado al carrito!', 'success');
     } catch (err) {
-      showToast('Could not add product to cart.', 'error');
+      showToast('No se pudo agregar el producto al carrito.', 'error');
     }
   };
 
@@ -95,7 +95,7 @@ const ShopPage = () => {
           >
             {categories.map(cat => (
               <option key={cat} value={cat}>
-                {cat === 'all' ? 'All Categories' : cat}
+                {cat === 'all' ? 'Todas las Categorías' : cat}
               </option>
             ))}
           </select>
@@ -105,16 +105,16 @@ const ShopPage = () => {
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
           >
-            <option value="default">Default</option>
-            <option value="name">Name (A-Z)</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
+            <option value="default">Predeterminado</option>
+            <option value="name">Nombre (A-Z)</option>
+            <option value="price-low">Precio: Menor a Mayor</option>
+            <option value="price-high">Precio: Mayor a Menor</option>
           </select>
         </div>
 
         <div className={styles.filterRight}>
           <span className={styles.productCount}>
-            {filteredProducts.length} {filteredProducts.length === 1 ? 'Product' : 'Products'}
+            {filteredProducts.length} {filteredProducts.length === 1 ? 'Producto' : 'Productos'}
           </span>
           <div className={styles.viewToggle}>
             <button

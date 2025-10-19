@@ -14,8 +14,8 @@ const LoginPage = () => {
             <AuthForm
               formType="login"
               onSubmit={loginUser}
-              title="Welcome Back Creative!"
-              subtitle="We Are Happy To See You Again"
+              title="¡Bienvenido de Nuevo!"
+              subtitle="Nos alegra verte de nuevo"
             />
           </div>
         </div>
@@ -23,8 +23,8 @@ const LoginPage = () => {
           <img src={backgroundImage} alt="Branding" className={styles.brandingImage} />
           <div className={styles.brandingOverlay}></div>
            <div className={styles.brandingContent}>
-            <p>© 2025 Gradiator. All rights reserved.</p>
-            <p>The platform for creatives to connect and collaborate.</p>
+            <p>© 2025 SmartSales365. Todos los derechos reservados.</p>
+            <p>La plataforma inteligente de gestión comercial y reportes dinámicos.</p>
           </div>
         </div>
       </div>
