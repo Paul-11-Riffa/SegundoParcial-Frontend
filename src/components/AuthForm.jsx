@@ -64,10 +64,10 @@ const AuthForm = ({formType, onSubmit, title, subtitle}) => {
 
             <div className={styles.toggleContainer}>
                 <Link to="/login" className={`${styles.toggleButton} ${!isSignUp ? styles.active : ''}`}>
-                    Sign In
+                    Iniciar Sesión
                 </Link>
                 <Link to="/signup" className={`${styles.toggleButton} ${isSignUp ? styles.active : ''}`}>
-                    Sign Up
+                    Registrarse
                 </Link>
             </div>
 
@@ -76,19 +76,19 @@ const AuthForm = ({formType, onSubmit, title, subtitle}) => {
                     <>
                         <div className={styles.inputGroup}>
                             <input
-                                type="text" name="first_name" placeholder="First Name"
+                                type="text" name="first_name" placeholder="Nombre"
                                 value={formData.first_name} onChange={handleChange} required
                                 className={styles.input}/>
                         </div>
                         <div className={styles.inputGroup}>
                             <input
-                                type="text" name="last_name" placeholder="Last Name"
+                                type="text" name="last_name" placeholder="Apellido"
                                 value={formData.last_name} onChange={handleChange} required
                                 className={styles.input}/>
                         </div>
                         <div className={styles.inputGroup}>
                             <input
-                                type="email" name="email" placeholder="Email Address"
+                                type="email" name="email" placeholder="Correo Electrónico"
                                 value={formData.email} onChange={handleChange} required
                                 className={styles.input}/>
                         </div>
@@ -97,7 +97,7 @@ const AuthForm = ({formType, onSubmit, title, subtitle}) => {
 
                 <div className={styles.inputGroup}>
                     <input
-                        type="text" name="username" placeholder="Username or Email"
+                        type="text" name="username" placeholder="Usuario o Correo"
                         value={formData.username} onChange={handleChange} required
                         className={styles.input}/>
                 </div>
@@ -105,7 +105,7 @@ const AuthForm = ({formType, onSubmit, title, subtitle}) => {
                 <div className={styles.inputGroup}>
                     <input
                         type={isPasswordVisible ? 'text' : 'password'}
-                        name="password" placeholder="Password"
+                        name="password" placeholder="Contraseña"
                         value={formData.password} onChange={handleChange} required
                         className={styles.input}
                     />
@@ -118,16 +118,16 @@ const AuthForm = ({formType, onSubmit, title, subtitle}) => {
                     <div className={styles.options}>
                         <label className={styles.rememberMe}>
                             <input type="checkbox"/>
-                            Remember me
+                            Recuérdame
                         </label>
-                        <Link to="/forgot-password" className={styles.forgotPassword}>Forgot Password?</Link>
+                        <Link to="/forgot-password" className={styles.forgotPassword}>¿Olvidaste tu contraseña?</Link>
                     </div>
                 )}
 
                 {error && <p className={styles.error}>{error}</p>}
 
                 <button type="submit" className={styles.submitButton}>
-                    {isSignUp ? 'Sign Up' : 'Login'}
+                    {isSignUp ? 'Registrarse' : 'Iniciar Sesión'}
                 </button>
             </form>
         </>

@@ -11,9 +11,9 @@ const Footer = () => {
       <div className={styles.container}>
         {/* Brand Section */}
         <div className={styles.section}>
-          <h3 className={styles.brand}>ZARSS</h3>
+          <h3 className={styles.brand}>SmartSales365</h3>
           <p className={styles.tagline}>
-            Your destination for premium quality products and exceptional shopping experience.
+            Tu destino para productos de calidad premium y una experiencia de compra excepcional.
           </p>
           <div className={styles.socials}>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
@@ -36,34 +36,34 @@ const Footer = () => {
 
         {/* Shop Links */}
         <div className={styles.section}>
-          <h4 className={styles.heading}>Shop</h4>
+          <h4 className={styles.heading}>Tienda</h4>
           <ul className={styles.links}>
-            <li><Link to="/shop">All Products</Link></li>
-            <li><Link to="/shop">New Arrivals</Link></li>
-            <li><Link to="/shop">Best Sellers</Link></li>
-            <li><Link to="/my-orders">Track Order</Link></li>
+            <li><Link to="/shop">Todos los Productos</Link></li>
+            <li><Link to="/shop">Nuevos Ingresos</Link></li>
+            <li><Link to="/shop">Más Vendidos</Link></li>
+            <li><Link to="/my-orders">Rastrear Orden</Link></li>
           </ul>
         </div>
 
         {/* Customer Service */}
         <div className={styles.section}>
-          <h4 className={styles.heading}>Customer Service</h4>
+          <h4 className={styles.heading}>Servicio al Cliente</h4>
           <ul className={styles.links}>
-            <li><Link to="/profile">My Account</Link></li>
-            <li><Link to="/cart">Shopping Cart</Link></li>
-            <li><Link to="/my-orders">Order History</Link></li>
-            <li><a href="#">Help Center</a></li>
+            <li><Link to="/profile">Mi Cuenta</Link></li>
+            <li><Link to="/cart">Carrito de Compras</Link></li>
+            <li><Link to="/my-orders">Historial de Órdenes</Link></li>
+            <li><a href="#">Centro de Ayuda</a></li>
           </ul>
         </div>
 
         {/* Company */}
         <div className={styles.section}>
-          <h4 className={styles.heading}>Company</h4>
+          <h4 className={styles.heading}>Compañía</h4>
           <ul className={styles.links}>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Acerca de Nosotros</a></li>
+            <li><a href="#">Carreras</a></li>
+            <li><a href="#">Política de Privacidad</a></li>
+            <li><a href="#">Términos de Servicio</a></li>
           </ul>
         </div>
       </div>
@@ -71,10 +71,10 @@ const Footer = () => {
       {/* Bottom Bar */}
       <div className={styles.bottom}>
         <p className={styles.copyright}>
-          &copy; {currentYear} ZARSS. All rights reserved.
+          &copy; {currentYear} SmartSales365. Todos los derechos reservados.
         </p>
         <p className={styles.madeWith}>
-          Made with <span className={styles.heart}>♥</span> for great shopping
+          Hecho con <span className={styles.heart}>♥</span> para una gran experiencia de compra
         </p>
       </div>
     </footer>

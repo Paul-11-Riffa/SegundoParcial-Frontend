@@ -28,7 +28,7 @@ const SalesHistoryPage = () => {
       setSales(response.data);
       setError(''); // Limpia errores previos si la carga es exitosa
     } catch (err) {
-      setError('Failed to fetch sales history.');
+      setError('Error al cargar el historial de ventas.');
       setSales([]); // Limpia las ventas si hay error
     } finally {
       setLoading(false);
@@ -72,7 +72,7 @@ const SalesHistoryPage = () => {
       link.parentNode.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      setError(`Failed to download receipt for order ${orderId}.`);
+      setError(`Error al descargar el comprobante de la orden ${orderId}.`);
       setTimeout(() => setError(''), 4000); // Limpia el error después de un tiempo
     }
   };
@@ -80,13 +80,13 @@ const SalesHistoryPage = () => {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <h1>Sales History</h1>
+        <h1>Historial de Ventas</h1>
       </header>
 
       {/* --- SECCIÓN DE FILTROS --- */}
       <div className={styles.filterSection}>
         <div className={styles.filterGroup}>
-          <label htmlFor="start_date">From Date:</label>
+          <label htmlFor="start_date">Fecha Desde:</label>
           <input
             type="date"
             id="start_date"
@@ -97,7 +97,7 @@ const SalesHistoryPage = () => {
           />
         </div>
         <div className={styles.filterGroup}>
-          <label htmlFor="end_date">To Date:</label>
+          <label htmlFor="end_date">Fecha Hasta:</label>
           <input
             type="date"
             id="end_date"
@@ -108,10 +108,10 @@ const SalesHistoryPage = () => {
           />
         </div>
         <button className={styles.filterButton} onClick={handleApplyFilters}>
-          <FaFilter /> Apply Filters
+          <FaFilter /> Aplicar Filtros
         </button>
         <button className={styles.clearButton} onClick={handleClearFilters}>
-          <FaTimes /> Clear
+          <FaTimes /> Limpiar
         </button>
       </div>
       {/* --------------------------- */}
@@ -120,18 +120,18 @@ const SalesHistoryPage = () => {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <p>Loading...</p>
+          <p>Cargando...</p>
         ) : sales.length === 0 ? (
-           <p className={styles.noResults}>No sales found matching your criteria.</p>
+           <p className={styles.noResults}>No se encontraron ventas que coincidan con tus criterios.</p>
         ) : (
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Order ID</th>
-                <th>Customer</th>
-                <th>Date</th>
+                <th>ID Orden</th>
+                <th>Cliente</th>
+                <th>Fecha</th>
                 <th>Total</th>
-                <th>Receipt</th>
+                <th>Comprobante</th>
               </tr>
             </thead>
             <tbody>

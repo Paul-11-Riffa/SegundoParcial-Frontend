@@ -15,7 +15,7 @@ const MyOrdersPage = () => {
         const response = await getMyOrders();
         setOrders(response.data);
       } catch (err) {
-        setError('Failed to load your orders.');
+        setError('Error al cargar tus órdenes.');
       } finally {
         setLoading(false);
       }
@@ -32,37 +32,37 @@ const MyOrdersPage = () => {
     }
   };
 
-  if (loading) return <div className={styles.centerMessage}>Loading your orders...</div>;
+  if (loading) return <div className={styles.centerMessage}>Cargando tus órdenes...</div>;
   if (error) return <div className={`${styles.centerMessage} ${styles.error}`}>{error}</div>;
 
   return (
     <div className={styles.myOrdersPage}>
-      <h1><FaShoppingBag /> My Orders</h1>
+      <h1><FaShoppingBag /> Mis Órdenes</h1>
 
       {orders.length === 0 ? (
         <div className={styles.noOrders}>
-          <p>You haven't placed any orders yet.</p>
-          <a href="/shop" className={styles.shopLink}>Start Shopping</a>
+          <p>Aún no has realizado ningún pedido.</p>
+          <a href="/shop" className={styles.shopLink}>Comenzar a Comprar</a>
         </div>
       ) : (
         <div className={styles.orderList}>
           {orders.map(order => (
             <div key={order.id} className={styles.orderCard}>
               <div className={styles.orderHeader}>
-                <div className={styles.orderId}>Order #{order.id}</div>
+                <div className={styles.orderId}>Orden #{order.id}</div>
                 <div className={`${styles.statusBadge} ${styles[order.status.toLowerCase()]}`}>
-                  {getStatusIcon(order.status)} {order.status}
+                  {getStatusIcon(order.status)} {order.status === 'PENDING' ? 'PENDIENTE' : order.status === 'COMPLETED' ? 'COMPLETADA' : 'CANCELADA'}
                 </div>
               </div>
               <div className={styles.orderDetails}>
                 <div>
-                  <strong>Date:</strong> {new Date(order.created_at).toLocaleDateString()}
+                  <strong>Fecha:</strong> {new Date(order.created_at).toLocaleDateString()}
                 </div>
                 <div>
                   <strong>Total:</strong> ${parseFloat(order.total_price).toFixed(2)}
                 </div>
                 <div>
-                  <strong>Items:</strong> {order.items.length}
+                  <strong>Artículos:</strong> {order.items.length}
                 </div>
               </div>
               {/* Podríamos añadir un botón para ver detalles si quisiéramos */}

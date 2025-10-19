@@ -136,3 +136,70 @@ export const initiateCheckout = () => {
 export const getMyOrders = () => {
   return apiClient.get('/orders/my-orders/');
 };
+
+// --- NUEVAS FUNCIONES PARA REPORTES DINÁMICOS ---
+
+/**
+ * Genera un reporte dinámico basado en un prompt de texto
+ * @param {string} prompt - El comando de texto para generar el reporte
+ * @returns {Promise} - Respuesta con los datos del reporte o archivo descargable
+ */
+export const generateDynamicReport = async (prompt) => {
+  // Si el prompt incluye PDF o Excel, usar responseType blob para descargar
+  const lowerPrompt = prompt.toLowerCase();
+  const isFileDownload = lowerPrompt.includes('pdf') || lowerPrompt.includes('excel');
+  
+  const config = isFileDownload ? { responseType: 'blob' } : {};
+  
+  const response = await apiClient.post('/orders/reports/generate/', { prompt }, config);
+  
+  // Si es un archivo, descargarlo automáticamente
+  if (isFileDownload && response.data instanceof Blob) {
+    const url = window.URL.createObjectURL(response.data);
+    const link = document.createElement('a');
+    link.href = url;
+    
+    // Extraer el nombre del archivo del header Content-Disposition
+    const contentDisposition = response.headers['content-disposition'];
+    let filename = 'reporte';
+    if (contentDisposition) {
+      const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
+      if (filenameMatch) filename = filenameMatch[1];
+    } else {
+      // Si no hay header, usar extensión según el tipo
+      filename = lowerPrompt.includes('pdf') ? 'reporte.pdf' : 'reporte.xlsx';
+    }
+    
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+    
+    return { success: true, downloaded: true };
+  }
+  
+  return response;
+};
+
+/**
+ * Descarga un reporte en formato PDF
+ * @param {string} prompt - El comando de texto con "en PDF" al final
+ * @returns {Promise} - Respuesta con el archivo PDF
+ */
+export const downloadReportPDF = (prompt) => {
+  return apiClient.post('/orders/reports/generate/', { prompt }, {
+    responseType: 'blob'
+  });
+};
+
+/**
+ * Descarga un reporte en formato Excel
+ * @param {string} prompt - El comando de texto con "en Excel" al final
+ * @returns {Promise} - Respuesta con el archivo Excel
+ */
+export const downloadReportExcel = (prompt) => {
+  return apiClient.post('/orders/reports/generate/', { prompt }, {
+    responseType: 'blob'
+  });
+};

@@ -23,7 +23,7 @@ const ManageProductsPage = () => {
       const response = await getProducts();
       setProducts(response.data);
     } catch (err) {
-      setError('Failed to fetch products.');
+      setError('Error al cargar productos.');
     } finally {
       setLoading(false);
     }
@@ -56,7 +56,7 @@ const ManageProductsPage = () => {
   const handleProductSaved = (isEdit) => {
     handleCloseModals();
     fetchProducts();
-    setSuccessMessage(`Product ${isEdit ? 'updated' : 'created'} successfully!`);
+    setSuccessMessage(`¡Producto ${isEdit ? 'actualizado' : 'creado'} exitosamente!`);
     setTimeout(() => setSuccessMessage(''), 4000);
   };
 
@@ -65,23 +65,23 @@ const ManageProductsPage = () => {
       await deleteProduct(productToDelete.id);
       handleCloseModals();
       fetchProducts();
-      setSuccessMessage('Product deleted successfully!');
+      setSuccessMessage('¡Producto eliminado exitosamente!');
       setTimeout(() => setSuccessMessage(''), 4000);
     } catch (err) {
-      setError('Failed to delete product.');
+      setError('Error al eliminar producto.');
     }
   };
 
-  if (loading) return <p>Loading products...</p>;
+  if (loading) return <p>Cargando productos...</p>;
   if (error) return <p className={styles.error}>{error}</p>;
 
   return (
     <>
       <div className={styles.page}>
         <header className={styles.header}>
-          <h1>Product Management</h1>
+          <h1>Gestión de Productos</h1>
           <button className={styles.addButton} onClick={handleOpenAddModal}>
-            <FaPlus /> Add Product
+            <FaPlus /> Agregar Producto
           </button>
         </header>
 
@@ -91,11 +91,11 @@ const ManageProductsPage = () => {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Price</th>
+                <th>Nombre del Producto</th>
+                <th>Categoría</th>
+                <th>Precio</th>
                 <th>Stock</th>
-                <th>Actions</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>

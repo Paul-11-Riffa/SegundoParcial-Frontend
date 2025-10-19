@@ -6,9 +6,9 @@ import { FaWallet, FaRocket, FaCheckCircle, FaExclamationTriangle, FaArrowRight 
 
 // Datos de ejemplo para la actividad del cliente
 const recentActivity = [
-  { icon: <FaCheckCircle color="#28a745" />, title: 'Project "Zenith" Completed', description: 'Payment Received', value: '+$2,500' },
-  { icon: <FaRocket color="#007bff" />, title: 'New Project Started', description: 'Invoice #INV-007', value: '-$500' },
-  { icon: <FaExclamationTriangle color="#ffc107" />, title: 'Upcoming Deadline', description: 'Project "Odyssey"', value: '3 days left' },
+  { icon: <FaCheckCircle color="#28a745" />, title: 'Proyecto "Zenith" Completado', description: 'Pago Recibido', value: '+$2,500' },
+  { icon: <FaRocket color="#007bff" />, title: 'Nuevo Proyecto Iniciado', description: 'Factura #INV-007', value: '-$500' },
+  { icon: <FaExclamationTriangle color="#ffc107" />, title: 'Fecha Límite Próxima', description: 'Proyecto "Odyssey"', value: '3 días restantes' },
 ];
 
 const ClientDashboard = () => {
@@ -17,22 +17,22 @@ const ClientDashboard = () => {
       {/* Tarjetas de Resumen */}
       <div className={styles.summaryGrid}>
         <SummaryCard
-          title="Portfolio Balance"
+          title="Saldo del Portafolio"
           value="$17,643"
           icon={<FaWallet />}
           color="#1a222e"
         />
         <SummaryCard
-          title="Active Projects"
+          title="Proyectos Activos"
           value="3"
           icon={<FaRocket />}
           color="#007bff"
         />
         <div className={styles.ctaCard}>
-          <h4>Start a New Project</h4>
-          <p>Let's create something amazing together.</p>
+          <h4>Iniciar un Nuevo Proyecto</h4>
+          <p>Creemos algo increíble juntos.</p>
           <button>
-            Get Started <FaArrowRight />
+            Comenzar <FaArrowRight />
           </button>
         </div>
       </div>
@@ -40,11 +40,11 @@ const ClientDashboard = () => {
       {/* Contenido Principal */}
       <div className={styles.mainGrid}>
         <div className={styles.mainWidget}>
-          <h3>Portfolio Overview</h3>
-          <div className={styles.chartPlaceholder}>[ Chart Placeholder ]</div>
+          <h3>Resumen del Portafolio</h3>
+          <div className={styles.chartPlaceholder}>[ Gráfico Placeholder ]</div>
         </div>
         <div className={styles.sideWidget}>
-          <h3>Recent Activity</h3>
+          <h3>Actividad Reciente</h3>
           <ul className={styles.activityList}>
             {recentActivity.map((item, index) => (
               <ActivityItem

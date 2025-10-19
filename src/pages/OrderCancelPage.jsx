@@ -11,12 +11,12 @@ const OrderCancelPage = () => {
         <div className={`${styles.iconWrapper} ${styles.cancel}`}>
           <FaTimesCircle />
         </div>
-        <h1>Payment Cancelled</h1>
-        <p>Your payment process was cancelled. Your cart has been saved.</p>
-        <p className={styles.subtleText}>You can return to your cart anytime to complete the purchase.</p>
+        <h1>Pago Cancelado</h1>
+        <p>Tu proceso de pago fue cancelado. Tu carrito ha sido guardado.</p>
+        <p className={styles.subtleText}>Puedes regresar a tu carrito en cualquier momento para completar la compra.</p>
         <div className={styles.actions}>
-          <Link to="/cart" className={styles.button}>Return to Cart</Link>
-          <Link to="/shop" className={styles.buttonSecondary}>Continue Shopping</Link>
+          <Link to="/cart" className={styles.button}>Regresar al Carrito</Link>
+          <Link to="/shop" className={styles.buttonSecondary}>Continuar Comprando</Link>
         </div>
       </div>
     </div>
