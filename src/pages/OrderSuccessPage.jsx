@@ -3,45 +3,44 @@ import { Link, useSearchParams } from 'react-router-dom';
 import styles from '../styles/OrderStatusPage.module.css'; // Usaremos un estilo común
 import { FaCheckCircle } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
-import axios from 'axios';
+import { completeOrder } from '../services/api';
 
 const OrderSuccessPage = () => {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id');
   const { refreshCart } = useCart();
   const [orderCompleted, setOrderCompleted] = useState(false);
+  const [error, setError] = useState(null);
 
   // Completar la orden cuando el usuario regresa de Stripe
   useEffect(() => {
-    const completeOrder = async () => {
+    const finishOrder = async () => {
       try {
-        const token = localStorage.getItem('authToken'); // Cambiado de 'token' a 'authToken'
-        if (!token) return;
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          setError('No estás autenticado');
+          return;
+        }
 
-        await axios.post(
-          'http://127.0.0.1:8000/api/orders/complete-order/',
-          {},
-          {
-            headers: {
-              'Authorization': `Token ${token}`
-            }
-          }
-        );
+        const response = await completeOrder();
         
-        setOrderCompleted(true);
-        // Refrescar el carrito después de completar la orden
-        setTimeout(() => {
-          refreshCart();
-        }, 500);
+        if (response.data.success) {
+          setOrderCompleted(true);
+          // Refrescar el carrito después de completar la orden
+          setTimeout(() => {
+            refreshCart();
+          }, 500);
+        }
       } catch (error) {
         console.error('Error al completar la orden:', error);
+        setError('Hubo un error al completar tu orden, pero el pago fue exitoso.');
         // Aún así refrescamos el carrito
         refreshCart();
       }
     };
 
     if (sessionId) {
-      completeOrder();
+      finishOrder();
     }
   }, [sessionId, refreshCart]);
 
@@ -54,6 +53,7 @@ const OrderSuccessPage = () => {
         <h1>¡Pago Exitoso!</h1>
         <p>Gracias por tu compra. Tu pedido ha sido procesado exitosamente.</p>
         {orderCompleted && <p className={styles.subtleText}>Tu orden ha sido confirmada.</p>}
+        {error && <p className={styles.errorText}>{error}</p>}
         <div className={styles.actions}>
           <Link to="/shop" className={styles.button}>Continuar Comprando</Link>
           <Link to="/my-orders" className={styles.buttonSecondary}>Ver Mis Órdenes</Link>

@@ -1,0 +1,163 @@
+/* ========================================
+   CATEGORY BANNER - Nike/Apple Context Style
+   Establece el "mood" antes de mostrar productos
+   ======================================== */
+
+.categoryBanner {
+  width: 100%;
+  height: 320px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--space-16);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ========================================
+   IMAGE CONTAINER
+   ======================================== */
+
+.imageContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bannerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform var(--transition-ultra-slow, 1s);
+}
+
+.categoryBanner:hover .bannerImage {
+  transform: scale(1.05);
+}
+
+/* ========================================
+   OVERLAY - Gradiente para legibilidad
+   ======================================== */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  z-index: 1;
+}
+
+/* ========================================
+   CONTENT - Texto superpuesto
+   ======================================== */
+
+.content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 var(--space-20);
+}
+
+.textContainer {
+  max-width: 600px;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   TYPOGRAPHY - Estilo Premium
+   ======================================== */
+
+.title {
+  font-size: var(--text-5xl);
+  font-weight: var(--font-black);
+  color: #ffffff;
+  margin: 0;
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+  font-size: var(--text-xl);
+  font-weight: var(--font-light);
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  margin-bottom: var(--space-6);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+}
+
+.productCount {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+   RESPONSIVE - Mobile First
+   ======================================== */
+
+@media (max-width: 768px) {
+  .categoryBanner {
+    height: 250px;
+    margin-bottom: var(--space-8);
+  }
+
+  .content {
+    padding: 0 var(--space-6);
+  }
+
+  .title {
+    font-size: var(--text-3xl);
+  }
+
+  .subtitle {
+    font-size: var(--text-base);
+  }
+}
+
+@media (max-width: 480px) {
+  .categoryBanner {
+    height: 200px;
+    border-radius: var(--radius-lg);
+  }
+
+  .title {
+    font-size: var(--text-2xl);
+  }
+
+  .subtitle {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
+  }
+}

@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {useNavigate, Link} from 'react-router-dom';
 import styles from '../styles/AuthForm.module.css';
-import {FaEye, FaEyeSlash, FaPlusSquare} from 'react-icons/fa';
+import {FaEye, FaEyeSlash} from 'react-icons/fa';
 import {loginUser, getUserProfile} from '../services/api';
+import domusLogo from '../assets/domus-logo.jpg';
 
 const AuthForm = ({formType, onSubmit, title, subtitle}) => {
 
@@ -42,8 +43,8 @@ const AuthForm = ({formType, onSubmit, title, subtitle}) => {
                 // 3. Guardar los datos del usuario en localStorage
                 localStorage.setItem('user', JSON.stringify(profileResponse.data));
 
-                // 4. Redirigir al dashboard
-                navigate('/dashboard'); // Redirigimos a una nueva ruta /dashboard
+                // 4. Redirigir a la tienda
+                navigate('/shop');
             }
         } catch (err) {
             // Limpiamos cualquier dato guardado si hay un error
@@ -56,19 +57,15 @@ const AuthForm = ({formType, onSubmit, title, subtitle}) => {
 
     return (
         <>
-            <div className={styles.header}>
-                <FaPlusSquare size={32} className={styles.logo}/>
-                <h1 className={styles.title}>{title}</h1>
-                <p className={styles.subtitle}>{subtitle}</p>
+            {/* Logo DOMUS */}
+            <div className={styles.logoContainer}>
+                <img src={domusLogo} alt="DOMUS" className={styles.logo} />
             </div>
 
-            <div className={styles.toggleContainer}>
-                <Link to="/login" className={`${styles.toggleButton} ${!isSignUp ? styles.active : ''}`}>
-                    Iniciar Sesión
-                </Link>
-                <Link to="/signup" className={`${styles.toggleButton} ${isSignUp ? styles.active : ''}`}>
-                    Registrarse
-                </Link>
+            {/* Título y subtítulo */}
+            <div className={styles.header}>
+                <h1 className={styles.title}>{title}</h1>
+                <p className={styles.subtitle}>{subtitle}</p>
             </div>
 
             <form onSubmit={handleSubmit} className={styles.form}>

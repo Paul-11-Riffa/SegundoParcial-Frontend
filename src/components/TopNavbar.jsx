@@ -4,7 +4,7 @@ import styles from '../styles/TopNavbar.module.css';
 import { FaSearch, FaShoppingCart, FaUser, FaHeart, FaSignOutAlt, FaTimes } from 'react-icons/fa';
 import { useAuth } from '../hooks/useAuth';
 import { useCart } from '../context/CartContext';
-import { getProducts } from '../services/api';
+import { getProducts, logoutUser } from '../services/api';
 
 const TopNavbar = () => {
   const { user, isAdmin } = useAuth();
@@ -54,10 +54,17 @@ const TopNavbar = () => {
     }
   }, [cartCount]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    } finally {
+      // Limpiar localStorage siempre, incluso si falla la petición al backend
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+      navigate('/login');
+    }
   };
 
   const clearSearch = () => {
@@ -75,51 +82,25 @@ const TopNavbar = () => {
     <nav className={styles.topNavbar}>
       <div className={styles.container}>
         {/* Logo Section */}
-        <Link to="/dashboard" className={styles.logo}>
-          <span className={styles.logoText}>ZARSS</span>
+        <Link to="/" className={styles.logo}>
+          <span className={styles.logoText}>DOMUS</span>
         </Link>
 
-        {/* Main Navigation Links */}
+        {/* Main Navigation Links - MINIMAL */}
         <div className={styles.navLinks}>
-          <NavLink
-            to="/dashboard"
-            className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-          >
-            Panel
-          </NavLink>
           <NavLink
             to="/shop"
             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
           >
             Tienda
           </NavLink>
-          <NavLink
-            to="/my-orders"
-            className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-          >
-            Mis Órdenes
-          </NavLink>
           {isAdmin && (
-            <>
-              <NavLink
-                to="/admin/products"
-                className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-              >
-                Productos
-              </NavLink>
-              <NavLink
-                to="/admin/users"
-                className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-              >
-                Usuarios
-              </NavLink>
-              <NavLink
-                to="/admin/sales-history"
-                className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-              >
-                Ventas
-              </NavLink>
-            </>
+            <NavLink
+              to="/admin/dashboard"
+              className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
+            >
+              Admin
+            </NavLink>
           )}
         </div>
 
@@ -177,11 +158,13 @@ const TopNavbar = () => {
 
         {/* Action Icons */}
         <div className={styles.actions}>
-          <Link to="/wishlist" className={styles.iconButton} title="Lista de Deseos">
-            <FaHeart />
-            <span className={styles.badge}>0</span>
-          </Link>
-          <Link to="/cart" className={styles.iconButton} title="Carrito">
+          {/* Search Icon (mobile-friendly) */}
+          <button className={styles.iconButton} title="Buscar">
+            <FaSearch />
+          </button>
+          
+          {/* Cart with counter */}
+          <Link to="/account/cart" className={styles.iconButton} title="Carrito">
             <FaShoppingCart />
             {cartCount > 0 && (
               <span className={`${styles.badge} ${cartBounce ? styles.bounce : ''}`}>
@@ -189,12 +172,45 @@ const TopNavbar = () => {
               </span>
             )}
           </Link>
-          <Link to="/profile" className={styles.iconButton} title="Perfil">
-            <FaUser />
-          </Link>
-          <button onClick={handleLogout} className={styles.iconButton} title="Cerrar Sesión">
-            <FaSignOutAlt />
-          </button>
+          
+          {/* Profile Dropdown */}
+          {user ? (
+            <div className={styles.profileMenu}>
+              <button className={styles.iconButton} title="Perfil">
+                <FaUser />
+              </button>
+              <div className={styles.dropdown}>
+                <Link to="/account/profile" className={styles.dropdownItem}>
+                  <FaUser /> Mi Perfil
+                </Link>
+                <Link to="/account/my-orders" className={styles.dropdownItem}>
+                  Mis Órdenes
+                </Link>
+                {isAdmin && (
+                  <>
+                    <div className={styles.dropdownDivider}></div>
+                    <Link to="/admin/products" className={styles.dropdownItem}>
+                      Productos
+                    </Link>
+                    <Link to="/admin/users" className={styles.dropdownItem}>
+                      Usuarios
+                    </Link>
+                    <Link to="/admin/sales-history" className={styles.dropdownItem}>
+                      Ventas
+                    </Link>
+                  </>
+                )}
+                <div className={styles.dropdownDivider}></div>
+                <button onClick={handleLogout} className={styles.dropdownItem}>
+                  <FaSignOutAlt /> Cerrar Sesión
+                </button>
+              </div>
+            </div>
+          ) : (
+            <Link to="/login" className={styles.iconButton} title="Iniciar Sesión">
+              <FaUser />
+            </Link>
+          )}
         </div>
       </div>
     </nav>

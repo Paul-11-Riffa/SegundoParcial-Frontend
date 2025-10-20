@@ -1,0 +1,83 @@
+/* ========================================
+   RATING COMPONENT - Premium Style
+   NO estrellas amarillas genéricas
+   Usa paleta propia de DOMUS
+   ======================================== */
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star {
+  font-style: normal;
+  transition: all var(--transition-fast);
+}
+
+/* Estados de estrellas - Paleta DOMUS */
+.star.filled {
+  color: var(--primary-600); /* Azul principal */
+  font-weight: var(--font-bold);
+}
+
+.star.half {
+  background: linear-gradient(90deg, var(--primary-600) 50%, var(--gray-300) 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: var(--font-bold);
+}
+
+.star.empty {
+  color: var(--gray-300);
+  font-weight: var(--font-normal);
+}
+
+/* Count styling - Sutil y elegante */
+.count {
+  color: var(--text-tertiary);
+  font-size: 0.9em;
+  font-weight: var(--font-medium);
+  margin-left: var(--space-1);
+}
+
+/* ========================================
+   SIZE VARIANTS
+   ======================================== */
+
+.rating.small .star {
+  font-size: 0.875rem; /* 14px */
+}
+
+.rating.small .count {
+  font-size: var(--text-xs);
+}
+
+.rating.medium .star {
+  font-size: 1rem; /* 16px */
+}
+
+.rating.medium .count {
+  font-size: var(--text-sm);
+}
+
+.rating.large .star {
+  font-size: 1.5rem; /* 24px */
+}
+
+.rating.large .count {
+  font-size: var(--text-base);
+}
+
+/* Hover effect para interactividad */
+.rating:hover .star.filled {
+  color: var(--primary-700);
+  transform: scale(1.05);
+}

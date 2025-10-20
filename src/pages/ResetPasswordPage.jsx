@@ -3,9 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import { resetPasswordConfirm } from '../services/api';
 import styles from '../styles/AuthPages.module.css';
 import formStyles from '../styles/AuthForm.module.css';
+import domusLogo from '../assets/domus-logo.jpg';
+import resetPasswordImage from '../assets/cocina-marmol.jpg';
 
 const ResetPasswordPage = () => {
-  const { uidb64, token } = useParams(); // Obtenemos los parámetros de la URL
+  const { uidb64, token } = useParams();
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -21,7 +23,7 @@ const ResetPasswordPage = () => {
       const response = await resetPasswordConfirm({ uidb64, token, password });
       setMessage(response.data.detail);
     } catch (err) {
-      setError(err.response?.data?.detail || 'Invalid or expired link.');
+      setError(err.response?.data?.detail || 'Enlace inválido o expirado.');
     } finally {
       setIsLoading(false);
     }
@@ -29,20 +31,34 @@ const ResetPasswordPage = () => {
 
   return (
     <div className={styles.authPage}>
-      <div className={`${styles.container} ${styles.singlePanel}`}>
-        <div className={styles.formPanel}>
-          <div className={styles.formWrapper}>
+      <div className={styles.splitScreen}>
+        {/* LADO B - LA IMAGEN */}
+        <div className={styles.imageSide}>
+          <img src={resetPasswordImage} alt="" className={styles.aspirationalImage} />
+        </div>
+
+        {/* LADO A - EL FORMULARIO */}
+        <div className={styles.formSide}>
+          <div className={styles.formContainer}>
+            {/* Logo DOMUS */}
+            <div className={formStyles.logoContainer}>
+              <img src={domusLogo} alt="DOMUS" className={formStyles.logo} />
+            </div>
+
+            {/* Título */}
             <div className={formStyles.header}>
-              <h1 className={formStyles.title}>Set a New Password</h1>
+              <h1 className={formStyles.title}>Nueva contraseña</h1>
               <p className={formStyles.subtitle}>
-                Your new password must be different from previous ones.
+                Ingresa una contraseña segura y diferente a la anterior
               </p>
             </div>
 
             {message ? (
               <div className={formStyles.successMessage}>
                 <p>{message}</p>
-                <Link to="/login" className={formStyles.backLink}>Proceed to Login</Link>
+                <Link to="/login" className={formStyles.backLink}>
+                  Ir al inicio de sesión
+                </Link>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className={formStyles.form}>
@@ -50,19 +66,32 @@ const ResetPasswordPage = () => {
                   <input
                     type="password"
                     name="password"
-                    placeholder="Enter your new password"
+                    placeholder="Nueva contraseña"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     className={formStyles.input}
+                    minLength="8"
                   />
                 </div>
                 {error && <p className={formStyles.error}>{error}</p>}
-                <button type="submit" className={formStyles.submitButton} disabled={isLoading}>
-                  {isLoading ? 'Resetting...' : 'Reset Password'}
+                <button 
+                  type="submit" 
+                  className={formStyles.submitButton} 
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Actualizando...' : 'Cambiar contraseña'}
                 </button>
               </form>
             )}
+
+            <div className={styles.footerLinks}>
+              <p>
+                <Link to="/login" className={styles.linkText}>
+                  ← Volver al inicio de sesión
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

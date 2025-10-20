@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getProducts, addToCart } from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import { getProducts, getCategories, addToCart } from '../services/api';
 import ProductCard from '../components/shop/ProductCard';
 import HeroSection from '../components/shop/HeroSection';
+import CategoryBanner from '../components/shop/CategoryBanner';
 import RecentlyViewed from '../components/shop/RecentlyViewed';
 import { ProductSkeletonGrid } from '../components/shop/ProductSkeleton';
 import { useToast } from '../context/ToastContext';
@@ -11,55 +13,71 @@ import styles from '../styles/ShopPage.module.css';
 import { FaThLarge, FaList, FaFilter } from 'react-icons/fa';
 
 const ShopPage = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('default');
+  const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('grid');
   const { showToast } = useToast();
   const { refreshCart } = useCart();
   const { addToRecentlyViewed } = useRecentlyViewed();
 
+  // Cargar categorías
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getCategories();
+        setCategories(response.data);
+      } catch (err) {
+        console.error('Error al cargar categorías:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Cargar productos con filtros
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await getProducts();
+        
+        // Construir filtros para el backend
+        const filters = {};
+        
+        if (selectedCategory !== 'all') {
+          filters.category_slug = selectedCategory;
+        }
+        
+        if (searchQuery.trim()) {
+          filters.search = searchQuery.trim();
+        }
+        
+        // Solo productos en stock
+        filters.in_stock = 'true';
+        
+        // Ordenamiento
+        if (sortBy === 'price-low') {
+          filters.ordering = 'price';
+        } else if (sortBy === 'price-high') {
+          filters.ordering = '-price';
+        } else if (sortBy === 'name') {
+          filters.ordering = 'name';
+        }
+        
+        const response = await getProducts(filters);
         setProducts(response.data);
-        setFilteredProducts(response.data);
       } catch (err) {
         showToast('No se pudieron cargar los productos. Por favor, intenta más tarde.', 'error');
       } finally {
         setLoading(false);
       }
     };
+    
     fetchProducts();
-  }, []);
-
-  // Get unique categories
-  const categories = ['all', ...new Set(products.map(p => p.category_name))];
-
-  // Filter and sort products
-  useEffect(() => {
-    let filtered = [...products];
-
-    // Filter by category
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(p => p.category_name === selectedCategory);
-    }
-
-    // Sort products
-    if (sortBy === 'price-low') {
-      filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-    } else if (sortBy === 'price-high') {
-      filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-    } else if (sortBy === 'name') {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    setFilteredProducts(filtered);
-  }, [selectedCategory, sortBy, products]);
+  }, [selectedCategory, sortBy, searchQuery, showToast]);
 
   const handleAddToCart = async (productId) => {
     try {
@@ -73,13 +91,21 @@ const ShopPage = () => {
 
   const handleProductClick = (product) => {
     addToRecentlyViewed(product);
-    // Future: navigate to product detail page
-    // navigate(`/product/${product.id}`);
+    // Navigate to product detail page
+    navigate(`/product/${product.id}`);
   };
 
   return (
     <div className={styles.shopPage}>
       <HeroSection />
+
+      {/* Category Context Banner - Estilo Nike */}
+      {!loading && selectedCategory !== 'all' && (
+        <CategoryBanner 
+          category={selectedCategory}
+          productCount={products.length}
+        />
+      )}
 
       {loading && <ProductSkeletonGrid count={6} />}
 
@@ -88,18 +114,31 @@ const ShopPage = () => {
       <div className={styles.filterBar} id="products">
         <div className={styles.filterLeft}>
           <FaFilter className={styles.filterIcon} />
+          
+          {/* Buscador */}
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Buscar productos..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          
+          {/* Filtro de categoría */}
           <select
             className={styles.filterSelect}
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
+            <option value="all">Todas las Categorías</option>
             {categories.map(cat => (
-              <option key={cat} value={cat}>
-                {cat === 'all' ? 'Todas las Categorías' : cat}
+              <option key={cat.slug} value={cat.slug}>
+                {cat.name}
               </option>
             ))}
           </select>
 
+          {/* Ordenamiento */}
           <select
             className={styles.filterSelect}
             value={sortBy}
@@ -114,7 +153,7 @@ const ShopPage = () => {
 
         <div className={styles.filterRight}>
           <span className={styles.productCount}>
-            {filteredProducts.length} {filteredProducts.length === 1 ? 'Producto' : 'Productos'}
+            {products.length} {products.length === 1 ? 'Producto' : 'Productos'}
           </span>
           <div className={styles.viewToggle}>
             <button
@@ -137,8 +176,8 @@ const ShopPage = () => {
       {/* Product Grid */}
       {!loading && (
       <div className={viewMode === 'grid' ? styles.productGrid : styles.productList}>
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map(product => (
+        {products.length > 0 ? (
+          products.map(product => (
             <ProductCard
               key={product.id}
               product={product}
@@ -149,7 +188,7 @@ const ShopPage = () => {
           ))
         ) : (
           <div className={styles.noProducts}>
-            <p>No products found in this category.</p>
+            <p>No se encontraron productos.</p>
           </div>
         )}
       </div>

@@ -1,7 +1,8 @@
 import {Routes, Route, Navigate} from 'react-router-dom';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
-import Dashboard from './pages/Dashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import ManageUsersPage from './pages/ManageUsersPage';
 import MainLayout from './layouts/MainLayout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -11,12 +12,14 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import ProfilePage from './pages/ProfilePage';
 import ManageProductsPage from './pages/ManageProductsPage';
 import ShopPage from './pages/ShopPage';
+import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import OrderCancelPage from './pages/OrderCancelPage';
 import SalesHistoryPage from './pages/SalesHistoryPage';
 import MyOrdersPage from './pages/MyOrdersPage';
 import ReportsPage from './pages/ReportsPage';
+import AdvancedReportsPage from './pages/AdvancedReportsPage';
 import { ToastProvider } from './context/ToastContext';
 import { CartProvider } from './context/CartContext';
 import './styles/App.css';
@@ -26,34 +29,65 @@ function App() {
         <ToastProvider>
         <CartProvider>
         <Routes>
-            {/* Rutas públicas */}
+            {/* ============================================
+                RUTAS PÚBLICAS - LA TIENDA ABIERTA
+                Sin login required - Máxima conversión
+                ============================================ */}
+            
+            {/* HomePage - La ventana a la tienda */}
+            <Route path="/" element={<MainLayout/>}>
+                <Route index element={<HomePage/>}/>
+            </Route>
+            
+            {/* Shop - Navegar productos sin fricción */}
+            <Route path="/shop" element={<MainLayout/>}>
+                <Route index element={<ShopPage/>}/>
+            </Route>
+            
+            {/* Product Detail - La "Galería de Arte" */}
+            <Route path="/product/:id" element={<MainLayout/>}>
+                <Route index element={<ProductDetailPage/>}/>
+            </Route>
+            
+            {/* Autenticación */}
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/signup" element={<SignUpPage/>}/>
             <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
             <Route path="/reset-password/:uidb64/:token" element={<ResetPasswordPage/>}/>
+            
+            {/* Páginas de resultado de compra */}
             <Route path="/order/success" element={<OrderSuccessPage/>}/>
             <Route path="/order/cancel" element={<OrderCancelPage/>}/>
-            {/* Rutas protegidas */}
+            
+            {/* ============================================
+                RUTAS PROTEGIDAS - CUENTA DEL CLIENTE
+                Solo después de login/compra
+                ============================================ */}
             <Route
-                path="/"
+                path="/account"
                 element={<ProtectedRoute><MainLayout/></ProtectedRoute>}
             >
-                <Route index element={<Navigate to="/dashboard"/>}/>
-                <Route path="dashboard" element={<Dashboard/>}/>
+                <Route index element={<Navigate to="/account/profile"/>}/>
                 <Route path="profile" element={<ProfilePage/>}/>
-                <Route path="shop" element={<ShopPage/>}/>
                 <Route path="cart" element={<CartPage/>}/>
                 <Route path="my-orders" element={<MyOrdersPage />} />
-                
-                {/* Ruta de Reportes (Admin) */}
-                <Route path="reports" element={<AdminRoute><ReportsPage /></AdminRoute>} />
-
-                {/* Rutas de Admin */}
-                <Route path="admin" element={<AdminRoute/>}>
-                    <Route path="users" element={<ManageUsersPage/>}/>
-                    <Route path="products" element={<ManageProductsPage/>}/>
-                    <Route path="sales-history" element={<SalesHistoryPage />} />
-                </Route>
+            </Route>
+            
+            {/* ============================================
+                RUTAS DE ADMINISTRACIÓN
+                Solo para admins
+                ============================================ */}
+            <Route
+                path="/admin"
+                element={<ProtectedRoute><AdminRoute><MainLayout/></AdminRoute></ProtectedRoute>}
+            >
+                <Route index element={<Navigate to="/admin/dashboard"/>}/>
+                <Route path="dashboard" element={<AdminDashboard/>}/>
+                <Route path="users" element={<ManageUsersPage/>}/>
+                <Route path="products" element={<ManageProductsPage/>}/>
+                <Route path="sales-history" element={<SalesHistoryPage />} />
+                <Route path="reports" element={<ReportsPage />} />
+                <Route path="advanced-reports" element={<AdvancedReportsPage />} />
             </Route>
         </Routes>
         </CartProvider>

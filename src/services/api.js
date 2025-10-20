@@ -31,6 +31,10 @@ export const loginUser = (credentials) => {
   return apiClient.post('/login/', credentials);
 };
 
+export const logoutUser = () => {
+  return apiClient.post('/logout/');
+};
+
 export const getUserProfile = () => {
   return apiClient.get('/profile/');
 };
@@ -72,8 +76,9 @@ export const getCategories = () => {
 };
 
 // -- Productos --
-export const getProducts = () => {
-  return apiClient.get('/shop/products/');
+export const getProducts = (filters = {}) => {
+  // Soporta filtros: name, category_slug, price_min, price_max, stock_min, in_stock, search, ordering
+  return apiClient.get('/shop/products/', { params: filters });
 };
 
 export const createProduct = (productData) => {
@@ -131,6 +136,10 @@ export const removeCartItem = (itemId) => {
 
 export const initiateCheckout = () => {
   return apiClient.post('/orders/checkout/');
+};
+
+export const completeOrder = () => {
+  return apiClient.post('/orders/complete-order/');
 };
 
 export const getMyOrders = () => {
@@ -202,4 +211,160 @@ export const downloadReportExcel = (prompt) => {
   return apiClient.post('/orders/reports/generate/', { prompt }, {
     responseType: 'blob'
   });
+};
+
+// --- REPORTES AVANZADOS ⭐ NUEVO ---
+
+/**
+ * Análisis RFM de Clientes - Segmenta clientes en VIP, Regular, Nuevo, En Riesgo, Inactivo
+ * @param {Object} params - { start_date, end_date, format: 'json'|'excel'|'pdf' }
+ * @returns {Promise} - Respuesta con datos del análisis o archivo descargable
+ */
+export const getCustomerAnalysis = async (params) => {
+  const { format = 'json', ...otherParams } = params;
+  const isFileDownload = format === 'pdf' || format === 'excel';
+  
+  const config = isFileDownload ? { responseType: 'blob' } : {};
+  
+  const response = await apiClient.post('/orders/reports/customer-analysis/', 
+    { ...otherParams, format }, 
+    config
+  );
+  
+  // Si es un archivo, descargarlo automáticamente
+  if (isFileDownload && response.data instanceof Blob) {
+    const url = window.URL.createObjectURL(response.data);
+    const link = document.createElement('a');
+    link.href = url;
+    
+    const extension = format === 'pdf' ? 'pdf' : 'xlsx';
+    const filename = `analisis_clientes_${new Date().toISOString().split('T')[0]}.${extension}`;
+    
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+    
+    return { success: true, downloaded: true };
+  }
+  
+  return response;
+};
+
+/**
+ * Análisis ABC de Productos - Clasifica productos según Pareto (80/20)
+ * @param {Object} params - { start_date, end_date, format: 'json'|'excel'|'pdf' }
+ * @returns {Promise} - Respuesta con clasificación ABC
+ */
+export const getProductABCAnalysis = async (params) => {
+  const { format = 'json', ...otherParams } = params;
+  const isFileDownload = format === 'pdf' || format === 'excel';
+  
+  const config = isFileDownload ? { responseType: 'blob' } : {};
+  
+  const response = await apiClient.post('/orders/reports/product-abc/', 
+    { ...otherParams, format }, 
+    config
+  );
+  
+  if (isFileDownload && response.data instanceof Blob) {
+    const url = window.URL.createObjectURL(response.data);
+    const link = document.createElement('a');
+    link.href = url;
+    
+    const extension = format === 'pdf' ? 'pdf' : 'xlsx';
+    const filename = `analisis_abc_productos_${new Date().toISOString().split('T')[0]}.${extension}`;
+    
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+    
+    return { success: true, downloaded: true };
+  }
+  
+  return response;
+};
+
+/**
+ * Reporte Comparativo - Compara métricas entre dos períodos
+ * @param {Object} params - { start_date, end_date, comparison: 'previous_month'|'previous_period', format: 'json'|'excel'|'pdf' }
+ * @returns {Promise} - Respuesta con comparación de períodos
+ */
+export const getComparativeReport = async (params) => {
+  const { format = 'json', ...otherParams } = params;
+  const isFileDownload = format === 'pdf' || format === 'excel';
+  
+  const config = isFileDownload ? { responseType: 'blob' } : {};
+  
+  const response = await apiClient.post('/orders/reports/comparative/', 
+    { ...otherParams, format }, 
+    config
+  );
+  
+  if (isFileDownload && response.data instanceof Blob) {
+    const url = window.URL.createObjectURL(response.data);
+    const link = document.createElement('a');
+    link.href = url;
+    
+    const extension = format === 'pdf' ? 'pdf' : 'xlsx';
+    const filename = `reporte_comparativo_${new Date().toISOString().split('T')[0]}.${extension}`;
+    
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+    
+    return { success: true, downloaded: true };
+  }
+  
+  return response;
+};
+
+/**
+ * Dashboard Ejecutivo - Panel con KPIs, tops y alertas
+ * @param {Object} params - { start_date, end_date }
+ * @returns {Promise} - Respuesta con datos del dashboard
+ */
+export const getExecutiveDashboard = (params) => {
+  return apiClient.post('/orders/reports/dashboard/', params);
+};
+
+/**
+ * Análisis de Inventario - Análisis inteligente del inventario
+ * @param {Object} params - { format: 'json'|'excel'|'pdf' }
+ * @returns {Promise} - Respuesta con análisis de inventario
+ */
+export const getInventoryAnalysis = async (params = {}) => {
+  const { format = 'json' } = params;
+  const isFileDownload = format === 'pdf' || format === 'excel';
+  
+  const config = isFileDownload ? { responseType: 'blob' } : {};
+  
+  const response = await apiClient.post('/orders/reports/inventory-analysis/', 
+    { format }, 
+    config
+  );
+  
+  if (isFileDownload && response.data instanceof Blob) {
+    const url = window.URL.createObjectURL(response.data);
+    const link = document.createElement('a');
+    link.href = url;
+    
+    const extension = format === 'pdf' ? 'pdf' : 'xlsx';
+    const filename = `analisis_inventario_${new Date().toISOString().split('T')[0]}.${extension}`;
+    
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+    
+    return { success: true, downloaded: true };
+  }
+  
+  return response;
 };

@@ -3,29 +3,31 @@ import { Link } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import { loginUser } from '../services/api';
 import styles from '../styles/AuthPages.module.css';
-import backgroundImage from '../assets/background.png';
+import loginImage from '../assets/toallas.jpg';
 
 const LoginPage = () => {
   return (
     <div className={styles.authPage}>
-      <div className={styles.container}>
-        <div className={styles.formPanel}>
-          <div className={styles.formWrapper}>
+      <div className={styles.splitScreen}>
+        {/* LADO A - EL FORMULARIO (La Acción) */}
+        <div className={styles.formSide}>
+          <div className={styles.formContainer}>
             <AuthForm
               formType="login"
               onSubmit={loginUser}
-              title="¡Bienvenido de Nuevo!"
-              subtitle="Nos alegra verte de nuevo"
+              title="Bienvenido de nuevo"
+              subtitle="Ingresa a tu cuenta"
             />
+            
+            <div className={styles.footerLinks}>
+              <p>¿No tienes cuenta? <Link to="/signup" className={styles.linkText}>Regístrate aquí</Link></p>
+            </div>
           </div>
         </div>
-        <div className={styles.brandingPanel}>
-          <img src={backgroundImage} alt="Branding" className={styles.brandingImage} />
-          <div className={styles.brandingOverlay}></div>
-           <div className={styles.brandingContent}>
-            <p>© 2025 SmartSales365. Todos los derechos reservados.</p>
-            <p>La plataforma inteligente de gestión comercial y reportes dinámicos.</p>
-          </div>
+
+        {/* LADO B - LA IMAGEN (La Emoción) */}
+        <div className={styles.imageSide}>
+          <img src={loginImage} alt="" className={styles.aspirationalImage} />
         </div>
       </div>
     </div>

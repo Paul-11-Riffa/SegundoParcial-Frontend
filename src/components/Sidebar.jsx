@@ -2,6 +2,7 @@ import React from 'react';
 import {NavLink, useNavigate} from 'react-router-dom';
 import styles from '../styles/Sidebar.module.css';
 import {useAuth} from '../hooks/useAuth';
+import { logoutUser } from '../services/api';
 import {
     FaTachometerAlt,
     FaUsers,
@@ -11,17 +12,25 @@ import {
     FaShoppingCart,
     FaHistory,
     FaListAlt,
-    FaChartBar
+    FaChartBar,
+    FaChartLine
 } from 'react-icons/fa';
 
 const Sidebar = () => {
     const {user, isAdmin} = useAuth();
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
-        navigate('/login');
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        } finally {
+            // Limpiar localStorage siempre, incluso si falla la petición al backend
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            navigate('/login');
+        }
     };
 
     return (
@@ -81,6 +90,11 @@ const Sidebar = () => {
                                  className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                             <FaChartBar/>
                             <span>Reportes Dinámicos</span>
+                        </NavLink>
+                        <NavLink to="/advanced-reports"
+                                 className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                            <FaChartLine/>
+                            <span>Reportes Avanzados</span>
                         </NavLink>
                     </>
                 )}
