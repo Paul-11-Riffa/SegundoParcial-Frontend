@@ -359,3 +359,112 @@
     transform: translateX(0);
   }
 }
+
+/* ========================================
+   MÓDULOS COLAPSABLES - Nueva Estructura
+   ======================================== */
+
+.moduleSection {
+  margin-bottom: var(--space-3);
+  position: relative;
+  z-index: 1;
+}
+
+.moduleHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+  color: #ffffff;
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.moduleHeader:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.moduleTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.moduleIcon {
+  font-size: var(--text-lg);
+  color: var(--primary-300);
+}
+
+.moduleHeader svg:last-child {
+  font-size: var(--text-sm);
+  opacity: 0.7;
+  transition: transform var(--transition-base);
+}
+
+.moduleLinks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  padding-left: var(--space-4);
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+  margin-left: var(--space-4);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.moduleLinks .navLink {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.moduleLinks .navLink svg {
+  font-size: var(--text-base);
+}
+
+/* Responsive para módulos */
+@media (max-width: 1024px) {
+  .moduleHeader {
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .moduleTitle {
+    gap: var(--space-2);
+  }
+
+  .moduleIcon {
+    font-size: var(--text-base);
+  }
+
+  .moduleLinks {
+    padding-left: var(--space-3);
+    margin-left: var(--space-3);
+  }
+
+  .moduleLinks .navLink {
+    padding: var(--space-2);
+    font-size: var(--text-xs);
+  }
+}

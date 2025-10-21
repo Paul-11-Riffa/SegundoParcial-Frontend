@@ -1,0 +1,283 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+  border-radius: 16px 16px 0 0;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1a222e;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: #dc3545;
+}
+
+.content {
+  padding: 2rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section h3 {
+  font-size: 1.1rem;
+  color: #1a222e;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sectionIcon {
+  color: #007bff;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.infoItem {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.infoItem .icon {
+  color: #007bff;
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
+}
+
+.infoItem .label {
+  display: block;
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.infoItem .value {
+  display: block;
+  font-size: 1rem;
+  color: #1a222e;
+  font-weight: 500;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.customerInfo {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.customerInfo p {
+  margin: 0.5rem 0;
+  color: #1a222e;
+}
+
+.customerInfo strong {
+  color: #6c757d;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.itemsTable {
+  overflow-x: auto;
+}
+
+.itemsTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.itemsTable thead {
+  background-color: #f8f9fa;
+}
+
+.itemsTable th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6c757d;
+  text-transform: uppercase;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.itemsTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #f0f3f6;
+  color: #1a222e;
+}
+
+.itemsTable tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.centered {
+  text-align: center;
+}
+
+.subtotal {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.totalSection {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #dee2e6;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #e7f3ff;
+  border-radius: 8px;
+}
+
+.totalLabel {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a222e;
+}
+
+.totalAmount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #007bff;
+}
+
+.footer {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #f8f9fa;
+  border-radius: 0 0 16px 16px;
+}
+
+.closeBtn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.closeBtn:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .header {
+    padding: 1rem 1.5rem;
+  }
+
+  .header h2 {
+    font-size: 1.25rem;
+  }
+
+  .content {
+    padding: 1.5rem;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .itemsTable {
+    font-size: 0.9rem;
+  }
+
+  .totalAmount {
+    font-size: 1.25rem;
+  }
+}

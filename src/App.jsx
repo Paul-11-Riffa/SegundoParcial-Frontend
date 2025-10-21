@@ -20,6 +20,9 @@ import SalesHistoryPage from './pages/SalesHistoryPage';
 import MyOrdersPage from './pages/MyOrdersPage';
 import ReportsPage from './pages/ReportsPage';
 import AdvancedReportsPage from './pages/AdvancedReportsPage';
+import MLDashboardPage from './pages/MLDashboardPage';
+import AIReportsPage from './pages/AIReportsPage';
+import AuditPage from './pages/AuditPage';
 import { ToastProvider } from './context/ToastContext';
 import { CartProvider } from './context/CartContext';
 import './styles/App.css';
@@ -86,8 +89,11 @@ function App() {
                 <Route path="users" element={<ManageUsersPage/>}/>
                 <Route path="products" element={<ManageProductsPage/>}/>
                 <Route path="sales-history" element={<SalesHistoryPage />} />
+                <Route path="ml-dashboard" element={<MLDashboardPage />} />
+                <Route path="ai-reports" element={<AIReportsPage />} />
                 <Route path="reports" element={<ReportsPage />} />
                 <Route path="advanced-reports" element={<AdvancedReportsPage />} />
+                <Route path="audit" element={<AuditPage />} />
             </Route>
         </Routes>
         </CartProvider>

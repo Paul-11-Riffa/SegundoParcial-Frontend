@@ -148,3 +148,35 @@
   border-color: #007bff;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
+
+/* --- ESTILOS PARA INPUT DE ARCHIVO E IMAGEN --- */
+.fileInput {
+  padding: 0.6rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.imagePreview {
+  margin-top: 1rem;
+  text-align: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+}
+
+.imagePreview img {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.imagePreview p {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  font-style: italic;
+}

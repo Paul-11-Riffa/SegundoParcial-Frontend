@@ -43,8 +43,13 @@ const AuthForm = ({formType, onSubmit, title, subtitle}) => {
                 // 3. Guardar los datos del usuario en localStorage
                 localStorage.setItem('user', JSON.stringify(profileResponse.data));
 
-                // 4. Redirigir a la tienda
-                navigate('/shop');
+                // 4. Redirigir según el rol del usuario
+                const userRole = profileResponse.data.profile?.role;
+                if (userRole === 'ADMIN') {
+                    navigate('/admin/ml-dashboard');
+                } else {
+                    navigate('/shop');
+                }
             }
         } catch (err) {
             // Limpiamos cualquier dato guardado si hay un error

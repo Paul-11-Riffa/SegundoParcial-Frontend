@@ -1,0 +1,114 @@
+/* ReportFilters.module.css */
+
+.filtersContainer {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filtersContainer h3 {
+  color: #1f2937;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filterGroup label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.filterInput,
+.filterSelect {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1f2937;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.filterInput:focus,
+.filterSelect:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filterInput::placeholder {
+  color: #9ca3af;
+}
+
+.filterActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.filterButton {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.applyButton {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.applyButton:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+}
+
+.clearButton {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.clearButton:hover {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+@media (max-width: 768px) {
+  .filterGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filterActions {
+    flex-direction: column;
+  }
+  
+  .filterButton {
+    width: 100%;
+  }
+}

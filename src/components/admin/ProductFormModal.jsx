@@ -17,9 +17,11 @@ const ProductFormModal = ({ isOpen, onClose, onProductSaved, editingProduct }) =
       const fetchCategories = async () => {
         try {
           const response = await getCategories();
-          setCategories(response.data);
+          const categoriesData = response.data.results || response.data;
+          setCategories(categoriesData);
         } catch (err) {
-          setError('Failed to load categories.');
+          console.error('Error al cargar categorías:', err);
+          setError('Error al cargar las categorías.');
         }
       };
       fetchCategories();
@@ -94,7 +96,7 @@ const ProductFormModal = ({ isOpen, onClose, onProductSaved, editingProduct }) =
         await updateProduct(editingProduct.id, dataToSend);
       } else {
         if (!formData.category) {
-          setError('Please select a category.');
+          setError('Por favor selecciona una categoría.');
           setIsLoading(false);
           return;
         }
@@ -102,7 +104,8 @@ const ProductFormModal = ({ isOpen, onClose, onProductSaved, editingProduct }) =
       }
       onProductSaved(isEditMode);
     } catch (err) {
-      setError('An error occurred. Please check the product data.');
+      console.error('Error al guardar producto:', err);
+      setError('Ocurrió un error. Por favor verifica los datos del producto.');
     } finally {
       setIsLoading(false);
     }
@@ -111,70 +114,103 @@ const ProductFormModal = ({ isOpen, onClose, onProductSaved, editingProduct }) =
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <h2>{isEditMode ? 'Edit Product' : 'Add New Product'}</h2>
+        <h2>{isEditMode ? 'Editar Producto' : 'Agregar Nuevo Producto'}</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
-            <label htmlFor="name">Product Name</label>
-            <input type="text" id="name" name="name" value={formData.name} required onChange={handleChange} />
+            <label htmlFor="name">Nombre del Producto *</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              value={formData.name} 
+              required 
+              onChange={handleChange}
+              placeholder="Ej: Laptop HP Pavilion"
+            />
           </div>
           <div className={styles.inputGroup}>
-            <label htmlFor="description">Description</label>
-            <textarea id="description" name="description" value={formData.description} rows="3" onChange={handleChange} className={styles.textarea}></textarea>
+            <label htmlFor="description">Descripción</label>
+            <textarea 
+              id="description" 
+              name="description" 
+              value={formData.description} 
+              rows="3" 
+              onChange={handleChange} 
+              className={styles.textarea}
+              placeholder="Descripción detallada del producto..."
+            ></textarea>
           </div>
           <div className={styles.formGrid}>
             <div className={styles.inputGroup}>
-              <label htmlFor="price">Price</label>
-              <input type="number" id="price" name="price" value={formData.price} required onChange={handleChange} step="0.01" />
+              <label htmlFor="price">Precio ($) *</label>
+              <input 
+                type="number" 
+                id="price" 
+                name="price" 
+                value={formData.price} 
+                required 
+                onChange={handleChange} 
+                step="0.01"
+                min="0"
+                placeholder="0.00"
+              />
             </div>
             <div className={styles.inputGroup}>
-              <label htmlFor="stock">Stock</label>
-              <input type="number" id="stock" name="stock" value={formData.stock} required onChange={handleChange} />
+              <label htmlFor="stock">Stock *</label>
+              <input 
+                type="number" 
+                id="stock" 
+                name="stock" 
+                value={formData.stock} 
+                required 
+                onChange={handleChange}
+                min="0"
+                placeholder="0"
+              />
             </div>
           </div>
           <div className={styles.inputGroup}>
-            <label htmlFor="category">Category</label>
-            <select id="category" name="category" value={formData.category} onChange={handleChange} required>
-              <option value="" disabled>Select a category...</option>
+            <label htmlFor="category">Categoría *</label>
+            <select 
+              id="category" 
+              name="category" 
+              value={formData.category} 
+              onChange={handleChange} 
+              required
+            >
+              <option value="" disabled>Selecciona una categoría...</option>
               {categories.map(cat => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
           </div>
           <div className={styles.inputGroup}>
-            <label htmlFor="image">Product Image</label>
+            <label htmlFor="image">Imagen del Producto</label>
             <input
               type="file"
               id="image"
               name="image"
               accept="image/*"
               onChange={handleImageChange}
+              className={styles.fileInput}
             />
             {imagePreview && (
-              <div style={{ marginTop: '10px', textAlign: 'center' }}>
+              <div className={styles.imagePreview}>
                 <img
                   src={imagePreview}
-                  alt="Preview"
-                  style={{
-                    maxWidth: '150px',
-                    maxHeight: '150px',
-                    objectFit: 'cover',
-                    borderRadius: '8px',
-                    border: '2px solid #ddd'
-                  }}
+                  alt="Vista previa"
                 />
-                <p style={{ fontSize: '0.85rem', color: '#6c757d', marginTop: '5px' }}>
-                  Image preview
-                </p>
+                <p>Vista previa de la imagen</p>
               </div>
             )}
           </div>
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.actions}>
             <button type="button" className={styles.cancelButton} onClick={onClose}>
-              Cancel
+              Cancelar
             </button>
             <button type="submit" className={styles.submitButton} disabled={isLoading}>
-              {isLoading ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Create Product')}
+              {isLoading ? 'Guardando...' : (isEditMode ? 'Guardar Cambios' : 'Crear Producto')}
             </button>
           </div>
         </form>

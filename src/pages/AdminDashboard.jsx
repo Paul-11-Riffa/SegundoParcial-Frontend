@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/AdminDashboard.module.css';
 import SummaryCard from '../components/dashboard/SummaryCard';
-import { FaDollarSign, FaChartLine, FaFileAlt } from 'react-icons/fa';
+import { FaDollarSign, FaChartLine, FaFileAlt, FaBrain, FaClipboardList } from 'react-icons/fa';
 
 // Datos de ejemplo para la lista de ventas recientes
 const recentSales = [
@@ -17,6 +17,14 @@ const AdminDashboard = () => {
 
   const handleNavigateToReports = () => {
     navigate('/reports');
+  };
+
+  const handleNavigateToMLDashboard = () => {
+    navigate('/admin/ml-dashboard');
+  };
+
+  const handleNavigateToAudit = () => {
+    navigate('/admin/audit');
   };
 
   return (
@@ -45,6 +53,22 @@ const AdminDashboard = () => {
           <button onClick={handleNavigateToReports}>
             <FaFileAlt style={{ marginRight: '8px' }} />
             Ir a Reportes
+          </button>
+        </div>
+        <div className={styles.upgradeCard} style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+          <h4>Predicciones ML 🚀</h4>
+          <p>Dashboard de predicciones con inteligencia artificial.</p>
+          <button onClick={handleNavigateToMLDashboard} style={{ backgroundColor: 'white', color: '#667eea' }}>
+            <FaBrain style={{ marginRight: '8px' }} />
+            Ver Predicciones
+          </button>
+        </div>
+        <div className={styles.upgradeCard} style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }}>
+          <h4>Auditoría y Bitácora 🔍</h4>
+          <p>Monitoreo completo de todas las acciones del sistema.</p>
+          <button onClick={handleNavigateToAudit} style={{ backgroundColor: 'white', color: '#f59e0b' }}>
+            <FaClipboardList style={{ marginRight: '8px' }} />
+            Ver Auditoría
           </button>
         </div>
       </div>

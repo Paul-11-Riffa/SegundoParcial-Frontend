@@ -1,24 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {NavLink, useNavigate} from 'react-router-dom';
 import styles from '../styles/Sidebar.module.css';
 import {useAuth} from '../hooks/useAuth';
 import { logoutUser } from '../services/api';
 import {
-    FaTachometerAlt,
     FaUsers,
     FaSignOutAlt,
     FaBoxOpen,
-    FaStore,
     FaShoppingCart,
     FaHistory,
     FaListAlt,
     FaChartBar,
-    FaChartLine
+    FaBrain,
+    FaChevronDown,
+    FaChevronRight,
+    FaCog,
+    FaUser,
+    FaClipboardList
 } from 'react-icons/fa';
 
 const Sidebar = () => {
     const {user, isAdmin} = useAuth();
     const navigate = useNavigate();
+    const [openModules, setOpenModules] = useState({
+        gestion: true,
+        analisis: true,
+        reportes: true
+    });
+
+    const toggleModule = (module) => {
+        setOpenModules(prev => ({
+            ...prev,
+            [module]: !prev[module]
+        }));
+    };
 
     const handleLogout = async () => {
         try {
@@ -49,67 +64,99 @@ const Sidebar = () => {
                 </div>
             </div>
             <nav className={styles.nav}>
-                <NavLink to="/dashboard"
-                         className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                    <FaTachometerAlt/>
-                    <span>Panel</span>
-                </NavLink>
-                <NavLink to="/shop"
-                         className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                    <FaStore/>
-                    <span>Tienda</span>
-                </NavLink>
-                <NavLink to="/cart"
-                         className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                    <FaShoppingCart/>
-                    <span>Carrito</span>
-                </NavLink>
-                <NavLink to="/my-orders"
-                         className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                    <FaListAlt/>
-                    <span>Mis Órdenes</span>
-                </NavLink>
-                {isAdmin && (
+                {isAdmin ? (
                     <>
-                        <NavLink to="/admin/users"
-                                 className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                            <FaUsers/>
-                            <span>Gestionar Usuarios</span>
-                        </NavLink>
-                        <NavLink to="/admin/products"
+                        {/* MÓDULO 1: GESTIÓN */}
+                        <div className={styles.moduleSection}>
+                            <button 
+                                className={styles.moduleHeader}
+                                onClick={() => toggleModule('gestion')}
+                            >
+                                <div className={styles.moduleTitle}>
+                                    <FaCog className={styles.moduleIcon} />
+                                    <span>Módulo 1: Gestión</span>
+                                </div>
+                                {openModules.gestion ? <FaChevronDown /> : <FaChevronRight />}
+                            </button>
+                            {openModules.gestion && (
+                                <div className={styles.moduleLinks}>
+                                    <NavLink to="/admin/users"
+                                             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                                        <FaUsers/>
+                                        <span>Clientes</span>
+                                    </NavLink>
+                                    <NavLink to="/admin/products"
+                                             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                                        <FaBoxOpen/>
+                                        <span>Inventario</span>
+                                    </NavLink>
+                                    <NavLink to="/admin/sales-history"
+                                             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                                        <FaHistory/>
+                                        <span>Ventas</span>
+                                    </NavLink>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* MÓDULO 2: ANÁLISIS Y REPORTES */}
+                        <div className={styles.moduleSection}>
+                            <button 
+                                className={styles.moduleHeader}
+                                onClick={() => toggleModule('analisis')}
+                            >
+                                <div className={styles.moduleTitle}>
+                                    <FaBrain className={styles.moduleIcon} />
+                                    <span>Módulo 2: Análisis</span>
+                                </div>
+                                {openModules.analisis ? <FaChevronDown /> : <FaChevronRight />}
+                            </button>
+                            {openModules.analisis && (
+                                <div className={styles.moduleLinks}>
+                                    <NavLink to="/admin/ml-dashboard"
+                                             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                                        <FaBrain/>
+                                        <span>Dashboard ML</span>
+                                    </NavLink>
+                                    <NavLink to="/admin/ai-reports"
+                                             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                                        <FaChartBar/>
+                                        <span>Reportes con IA</span>
+                                    </NavLink>
+                                    <NavLink to="/admin/audit"
+                                             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                                        <FaClipboardList/>
+                                        <span>Auditoría</span>
+                                    </NavLink>
+                                </div>
+                            )}
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        {/* OPCIONES PARA CLIENTES */}
+                        <NavLink to="/shop"
                                  className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                             <FaBoxOpen/>
-                            <span>Gestionar Productos</span>
+                            <span>Tienda</span>
                         </NavLink>
-                        <NavLink to="/admin/sales-history"
+                        <NavLink to="/cart"
                                  className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                            <FaHistory/>
-                            <span>Historial de Ventas</span>
+                            <FaShoppingCart/>
+                            <span>Carrito</span>
                         </NavLink>
-                        <NavLink to="/reports"
+                        <NavLink to="/my-orders"
                                  className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                            <FaChartBar/>
-                            <span>Reportes Dinámicos</span>
+                            <FaListAlt/>
+                            <span>Mis Órdenes</span>
                         </NavLink>
-                        <NavLink to="/advanced-reports"
+                        <NavLink to="/account/profile"
                                  className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                            <FaChartLine/>
-                            <span>Reportes Avanzados</span>
+                            <FaUser/>
+                            <span>Mi Perfil</span>
                         </NavLink>
                     </>
                 )}
-                {!isAdmin && (
-                    <>
-                        <NavLink to="/profile"
-                                 className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                            <FaUsers/>
-                            <span>Perfil</span>
-                        </NavLink>
-
-
-                    </>
-                )}
-
             </nav>
             <div className={styles.footer}>
                 <button onClick={handleLogout} className={styles.logoutButton}>

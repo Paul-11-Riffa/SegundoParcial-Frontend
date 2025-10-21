@@ -19,6 +19,27 @@
   color: #1a222e;
 }
 
+.addButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.addButton:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
 /* --- TARJETAS DE ESTADÍSTICAS --- */
 .statsGrid {
   display: grid;
@@ -71,17 +92,69 @@
   color: #1a222e;
 }
 
-/* --- FILTROS --- */
-.filterSection {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 1rem;
+/* --- MENSAJES --- */
+.successMessage {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+/* --- BÚSQUEDA Y FILTROS --- */
+.searchAndFilters {
   background-color: #f8f9fa;
   padding: 1.5rem;
   border-radius: 12px;
   margin-bottom: 2rem;
   border: 1px solid #dee2e6;
+}
+
+.searchBar {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.filtersRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
 }
 
 .filterGroup {
@@ -97,7 +170,6 @@
   color: #495057;
 }
 
-.dateInput,
 .selectInput,
 .priceInput {
   padding: 0.6rem 0.8rem;
@@ -108,7 +180,6 @@
   transition: border-color 0.2s;
 }
 
-.dateInput:focus,
 .selectInput:focus,
 .priceInput:focus {
   outline: none;
@@ -119,11 +190,12 @@
   width: 120px;
 }
 
-.filterButton,
 .clearButton {
+  background-color: #6c757d;
+  color: white;
   border: none;
-  padding: 0.7rem 1.2rem;
   border-radius: 6px;
+  padding: 0.7rem 1.2rem;
   cursor: pointer;
   font-weight: 600;
   display: inline-flex;
@@ -134,23 +206,8 @@
   margin-top: auto;
 }
 
-.filterButton {
-  background-color: #007bff;
-  color: white;
-}
-
-.filterButton:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-}
-
-.clearButton {
-  background-color: #e9ecef;
-  color: #495057;
-}
-
 .clearButton:hover {
-  background-color: #ced4da;
+  background-color: #5a6268;
 }
 
 /* --- TABLA --- */
@@ -192,16 +249,45 @@
   background-color: #f8f9fa;
 }
 
-.orderNumber {
-  font-weight: 600;
-  color: #007bff;
+/* --- IMAGEN DE PRODUCTO --- */
+.productImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
 }
 
-.username {
-  color: #6c757d;
+.productImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.noImage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #adb5bd;
+  font-size: 1.5rem;
+}
+
+/* --- NOMBRE DE PRODUCTO --- */
+.productName {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.productDesc {
   font-size: 0.85rem;
-  display: block;
-  margin-top: 0.25rem;
+  color: #6c757d;
+  font-style: italic;
 }
 
 .price {
@@ -210,8 +296,17 @@
   font-size: 1.05rem;
 }
 
-/* --- BADGES DE ESTADO --- */
-.statusBadge {
+.centered {
+  text-align: center;
+}
+
+.stockNumber {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* --- BADGES DE STOCK --- */
+.stockBadge {
   display: inline-block;
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
@@ -221,39 +316,29 @@
   letter-spacing: 0.5px;
 }
 
-.statusCompleted {
+.stockOk {
   background-color: #d4edda;
   color: #155724;
 }
 
-.statusPending {
+.stockLow {
   background-color: #fff3cd;
   color: #856404;
 }
 
-.statusProcessing {
-  background-color: #d1ecf1;
-  color: #0c5460;
-}
-
-.statusCancelled {
+.stockOut {
   background-color: #f8d7da;
   color: #721c24;
 }
 
-.statusDefault {
-  background-color: #e9ecef;
-  color: #495057;
-}
-
 /* --- BOTONES DE ACCIÓN --- */
-.actionButtons {
+.actions {
   display: flex;
   gap: 0.5rem;
 }
 
-.viewButton,
-.receiptButton {
+.editButton,
+.deleteButton {
   border: none;
   border-radius: 6px;
   padding: 0.5rem 0.8rem;
@@ -266,22 +351,22 @@
   font-weight: 600;
 }
 
-.viewButton {
+.editButton {
   background-color: #007bff;
   color: white;
 }
 
-.viewButton:hover {
+.editButton:hover {
   background-color: #0056b3;
   transform: translateY(-2px);
 }
 
-.receiptButton {
+.deleteButton {
   background-color: #dc3545;
   color: white;
 }
 
-.receiptButton:hover {
+.deleteButton:hover {
   background-color: #c82333;
   transform: translateY(-2px);
 }
@@ -323,16 +408,6 @@
   font-size: 1.1rem;
 }
 
-.error {
-  color: #721c24;
-  font-weight: 500;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -348,20 +423,33 @@
     padding: 1rem;
   }
 
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .addButton {
+    width: 100%;
+    justify-content: center;
+  }
+
   .statsGrid {
     grid-template-columns: 1fr;
   }
 
-  .filterSection {
+  .searchAndFilters {
+    padding: 1rem;
+  }
+
+  .filtersRow {
     flex-direction: column;
-    align-items: stretch;
   }
 
   .filterGroup {
     width: 100%;
   }
 
-  .filterButton,
   .clearButton {
     width: 100%;
     justify-content: center;
@@ -376,13 +464,18 @@
     padding: 0.75rem 0.5rem;
   }
 
-  .actionButtons {
+  .actions {
     flex-direction: column;
   }
 
-  .viewButton,
-  .receiptButton {
+  .editButton,
+  .deleteButton {
     width: 100%;
     justify-content: center;
+  }
+
+  .productImage {
+    width: 50px;
+    height: 50px;
   }
 }

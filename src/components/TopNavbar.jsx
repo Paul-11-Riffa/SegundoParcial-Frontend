@@ -86,20 +86,52 @@ const TopNavbar = () => {
           <span className={styles.logoText}>DOMUS</span>
         </Link>
 
-        {/* Main Navigation Links - MINIMAL */}
+        {/* Main Navigation Links */}
         <div className={styles.navLinks}>
-          <NavLink
-            to="/shop"
-            className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-          >
-            Tienda
-          </NavLink>
-          {isAdmin && (
+          {isAdmin ? (
+            <>
+              {/* MÓDULO 1: GESTIÓN */}
+              <div className={styles.moduleDropdown}>
+                <button className={styles.moduleButton}>
+                  Gestión
+                </button>
+                <div className={styles.moduleDropdownContent}>
+                  <NavLink to="/admin/users" className={styles.moduleDropdownLink}>
+                    👥 Clientes
+                  </NavLink>
+                  <NavLink to="/admin/products" className={styles.moduleDropdownLink}>
+                    📦 Inventario
+                  </NavLink>
+                  <NavLink to="/admin/sales-history" className={styles.moduleDropdownLink}>
+                    📊 Ventas
+                  </NavLink>
+                </div>
+              </div>
+              
+              {/* MÓDULO 2: ANÁLISIS */}
+              <div className={styles.moduleDropdown}>
+                <button className={styles.moduleButton}>
+                  Análisis
+                </button>
+                <div className={styles.moduleDropdownContent}>
+                  <NavLink to="/admin/ml-dashboard" className={styles.moduleDropdownLink}>
+                    🧠 Dashboard ML
+                  </NavLink>
+                  <NavLink to="/admin/ai-reports" className={styles.moduleDropdownLink}>
+                    📈 Reportes con IA
+                  </NavLink>
+                  <NavLink to="/admin/audit" className={styles.moduleDropdownLink}>
+                    📋 Bitácora
+                  </NavLink>
+                </div>
+              </div>
+            </>
+          ) : (
             <NavLink
-              to="/admin/dashboard"
+              to="/shop"
               className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
             >
-              Admin
+              Tienda
             </NavLink>
           )}
         </div>
@@ -158,20 +190,24 @@ const TopNavbar = () => {
 
         {/* Action Icons */}
         <div className={styles.actions}>
-          {/* Search Icon (mobile-friendly) */}
-          <button className={styles.iconButton} title="Buscar">
-            <FaSearch />
-          </button>
+          {/* Search Icon (mobile-friendly) - Solo para clientes */}
+          {!isAdmin && (
+            <button className={styles.iconButton} title="Buscar">
+              <FaSearch />
+            </button>
+          )}
           
-          {/* Cart with counter */}
-          <Link to="/account/cart" className={styles.iconButton} title="Carrito">
-            <FaShoppingCart />
-            {cartCount > 0 && (
-              <span className={`${styles.badge} ${cartBounce ? styles.bounce : ''}`}>
-                {cartCount}
-              </span>
-            )}
-          </Link>
+          {/* Cart with counter - Solo para clientes */}
+          {!isAdmin && (
+            <Link to="/account/cart" className={styles.iconButton} title="Carrito">
+              <FaShoppingCart />
+              {cartCount > 0 && (
+                <span className={`${styles.badge} ${cartBounce ? styles.bounce : ''}`}>
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+          )}
           
           {/* Profile Dropdown */}
           {user ? (
@@ -180,27 +216,17 @@ const TopNavbar = () => {
                 <FaUser />
               </button>
               <div className={styles.dropdown}>
-                <Link to="/account/profile" className={styles.dropdownItem}>
-                  <FaUser /> Mi Perfil
-                </Link>
-                <Link to="/account/my-orders" className={styles.dropdownItem}>
-                  Mis Órdenes
-                </Link>
-                {isAdmin && (
+                {!isAdmin && (
                   <>
+                    <Link to="/account/profile" className={styles.dropdownItem}>
+                      <FaUser /> Mi Perfil
+                    </Link>
+                    <Link to="/account/my-orders" className={styles.dropdownItem}>
+                      Mis Órdenes
+                    </Link>
                     <div className={styles.dropdownDivider}></div>
-                    <Link to="/admin/products" className={styles.dropdownItem}>
-                      Productos
-                    </Link>
-                    <Link to="/admin/users" className={styles.dropdownItem}>
-                      Usuarios
-                    </Link>
-                    <Link to="/admin/sales-history" className={styles.dropdownItem}>
-                      Ventas
-                    </Link>
                   </>
                 )}
-                <div className={styles.dropdownDivider}></div>
                 <button onClick={handleLogout} className={styles.dropdownItem}>
                   <FaSignOutAlt /> Cerrar Sesión
                 </button>
