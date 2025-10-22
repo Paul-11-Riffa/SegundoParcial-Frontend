@@ -18,10 +18,7 @@ import OrderSuccessPage from './pages/OrderSuccessPage';
 import OrderCancelPage from './pages/OrderCancelPage';
 import SalesHistoryPage from './pages/SalesHistoryPage';
 import MyOrdersPage from './pages/MyOrdersPage';
-import ReportsPage from './pages/ReportsPage';
-import AdvancedReportsPage from './pages/AdvancedReportsPage';
-import MLDashboardPage from './pages/MLDashboardPage';
-import AIReportsPage from './pages/AIReportsPage';
+import VoiceCommandsPage from './pages/VoiceCommandsPage';
 import AuditPage from './pages/AuditPage';
 import { ToastProvider } from './context/ToastContext';
 import { CartProvider } from './context/CartContext';
@@ -89,10 +86,10 @@ function App() {
                 <Route path="users" element={<ManageUsersPage/>}/>
                 <Route path="products" element={<ManageProductsPage/>}/>
                 <Route path="sales-history" element={<SalesHistoryPage />} />
-                <Route path="ml-dashboard" element={<MLDashboardPage />} />
-                <Route path="ai-reports" element={<AIReportsPage />} />
-                <Route path="reports" element={<ReportsPage />} />
-                <Route path="advanced-reports" element={<AdvancedReportsPage />} />
+                {/* Redirigir reportes antiguos al nuevo sistema de comandos de voz */}
+                <Route path="reports" element={<Navigate to="/admin/voice-commands" replace />} />
+                <Route path="advanced-reports" element={<Navigate to="/admin/voice-commands" replace />} />
+                <Route path="voice-commands" element={<VoiceCommandsPage />} />
                 <Route path="audit" element={<AuditPage />} />
             </Route>
         </Routes>

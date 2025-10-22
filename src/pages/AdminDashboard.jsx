@@ -1,99 +1,132 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from '../styles/AdminDashboard.module.css';
-import SummaryCard from '../components/dashboard/SummaryCard';
-import { FaDollarSign, FaChartLine, FaFileAlt, FaBrain, FaClipboardList } from 'react-icons/fa';
-
-// Datos de ejemplo para la lista de ventas recientes
-const recentSales = [
-  { name: 'Steven Summer', avatar: 'S', amount: '+ $52.00', time: 'Justo ahora' },
-  { name: 'Jordan Mabaze', avatar: 'J', amount: '+ $83.00', time: 'Hace 2 minutos' },
-  { name: 'Jessica Alba', avatar: 'J', amount: '+ $61.60', time: 'Hace 5 minutos' },
-  { name: 'Anna Armas', avatar: 'A', amount: '+ $2351.00', time: 'Hace 10 minutos' },
-];
+﻿import React, { useState, useEffect } from 'react';
+import { getCombinedPredictionsDashboard, clearPredictionsCache } from '../services/api';
+import DashboardHeader from '../components/dashboard/DashboardHeader';
+import PeriodSelector from '../components/dashboard/PeriodSelector';
+import SalesPredictionChart from '../components/dashboard/SalesPredictionChart';
+import TopProductsChart from '../components/dashboard/TopProductsChart';
+import LoadingState from '../components/dashboard/LoadingState';
+import ErrorState from '../components/dashboard/ErrorState';
+import styles from '../styles/MLDashboardPage.module.css';
 
 const AdminDashboard = () => {
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedPeriod, setSelectedPeriod] = useState('30d');
+  const [dashboardData, setDashboardData] = useState(null);
+  const [cacheClearing, setCacheClearing] = useState(false);
 
-  const handleNavigateToReports = () => {
-    navigate('/reports');
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
+
+  const loadDashboardData = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await getCombinedPredictionsDashboard(10, false);
+
+      if (response.data.success) {
+        setDashboardData(response.data.data);
+      } else {
+        setError(response.data.error || 'Error al cargar predicciones');
+      }
+    } catch (err) {
+      console.error('Error loading predictions:', err);
+      
+      if (err.response?.status === 424) {
+        setError('El modelo ML necesita ser entrenado. Contacta al administrador del sistema.');
+      } else if (err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError('Error al cargar predicciones: ' + err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleNavigateToMLDashboard = () => {
-    navigate('/admin/ml-dashboard');
+  const handleClearCache = async () => {
+    if (!window.confirm('¿Estás seguro de que quieres limpiar la caché de predicciones?')) {
+      return;
+    }
+
+    setCacheClearing(true);
+    try {
+      await clearPredictionsCache();
+      alert('Caché limpiada exitosamente');
+      loadDashboardData();
+    } catch (err) {
+      console.error('Error clearing cache:', err);
+      alert('Error al limpiar la caché: ' + err.message);
+    } finally {
+      setCacheClearing(false);
+    }
   };
 
-  const handleNavigateToAudit = () => {
-    navigate('/admin/audit');
-  };
+  if (loading) {
+    return <LoadingState />;
+  }
+
+  if (error) {
+    return <ErrorState error={error} onRetry={loadDashboardData} />;
+  }
+
+  if (!dashboardData) {
+    return null;
+  }
 
   return (
-    // Este div es el único contenedor de la página del dashboard
-    <div className={styles.dashboard}>
-      {/* YA NO HAY NINGÚN <header> AQUÍ. Eso es correcto. */}
+    <div className={styles.mlDashboard}>
+      <DashboardHeader overview={dashboardData.overview} />
 
-      <div className={styles.summaryGrid}>
-        <SummaryCard
-          title="Saldo"
-          value="$56,874"
-          change="+17"
-          icon={<FaDollarSign />}
-          color="#28a745"
+      <div className={styles.controls}>
+        <PeriodSelector
+          selectedPeriod={selectedPeriod}
+          onPeriodChange={setSelectedPeriod}
         />
-        <SummaryCard
-          title="Ventas"
-          value="$24,575"
-          change="+23"
-          icon={<FaChartLine />}
-          color="#007bff"
-        />
-        <div className={styles.upgradeCard}>
-          <h4>Reportes Dinámicos</h4>
-          <p>Genera reportes de ventas con texto o voz.</p>
-          <button onClick={handleNavigateToReports}>
-            <FaFileAlt style={{ marginRight: '8px' }} />
-            Ir a Reportes
+        
+        <div className={styles.actions}>
+          <button 
+            onClick={loadDashboardData}
+            className={styles.refreshButton}
+            disabled={loading}
+          >
+            🔄 Actualizar
           </button>
-        </div>
-        <div className={styles.upgradeCard} style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
-          <h4>Predicciones ML 🚀</h4>
-          <p>Dashboard de predicciones con inteligencia artificial.</p>
-          <button onClick={handleNavigateToMLDashboard} style={{ backgroundColor: 'white', color: '#667eea' }}>
-            <FaBrain style={{ marginRight: '8px' }} />
-            Ver Predicciones
-          </button>
-        </div>
-        <div className={styles.upgradeCard} style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }}>
-          <h4>Auditoría y Bitácora 🔍</h4>
-          <p>Monitoreo completo de todas las acciones del sistema.</p>
-          <button onClick={handleNavigateToAudit} style={{ backgroundColor: 'white', color: '#f59e0b' }}>
-            <FaClipboardList style={{ marginRight: '8px' }} />
-            Ver Auditoría
+          <button 
+            onClick={handleClearCache}
+            className={styles.clearCacheButton}
+            disabled={cacheClearing}
+          >
+            🗑️ {cacheClearing ? 'Limpiando...' : 'Limpiar Caché'}
           </button>
         </div>
       </div>
 
-      <div className={styles.mainGrid}>
-        <div className={styles.mainChart}>
-          <h3>Usuarios en la Última Semana</h3>
-          <div className={styles.chartPlaceholder}>[ Gráfico Placeholder ]</div>
+      {dashboardData.cached && (
+        <div className={styles.cacheIndicator}>
+          ℹ️ Datos en caché
         </div>
-        <div className={styles.sideWidget}>
-          <h3>Ventas Recientes</h3>
-          <ul className={styles.salesList}>
-            {recentSales.map((sale, index) => (
-              <li key={index} className={styles.saleItem}>
-                <div className={styles.saleAvatar}>{sale.avatar}</div>
-                <div className={styles.saleInfo}>
-                  <span className={styles.saleName}>{sale.name}</span>
-                  <span className={styles.saleTime}>{sale.time}</span>
-                </div>
-                <span className={styles.saleAmount}>{sale.amount}</span>
-              </li>
-            ))}
-          </ul>
+      )}
+
+      <SalesPredictionChart
+        data={dashboardData.sales_predictions[selectedPeriod]}
+        period={selectedPeriod}
+      />
+
+      <TopProductsChart
+        data={dashboardData.top_products[selectedPeriod]}
+        period={selectedPeriod}
+      />
+
+      {dashboardData.overview?.model_last_trained && (
+        <div className={styles.modelInfo}>
+          <p>
+            🤖 Modelo entrenado el: {new Date(dashboardData.overview.model_last_trained).toLocaleString('es-ES')}
+          </p>
         </div>
-      </div>
+      )}
     </div>
   );
 };

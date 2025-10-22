@@ -95,6 +95,11 @@ const Sidebar = () => {
                                         <FaHistory/>
                                         <span>Ventas</span>
                                     </NavLink>
+                                    <NavLink to="/admin/voice-commands"
+                                             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+                                        <FaChartBar/>
+                                        <span>🎤 Reportes Inteligentes</span>
+                                    </NavLink>
                                 </div>
                             )}
                         </div>
@@ -113,16 +118,7 @@ const Sidebar = () => {
                             </button>
                             {openModules.analisis && (
                                 <div className={styles.moduleLinks}>
-                                    <NavLink to="/admin/ml-dashboard"
-                                             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                                        <FaBrain/>
-                                        <span>Dashboard ML</span>
-                                    </NavLink>
-                                    <NavLink to="/admin/ai-reports"
-                                             className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
-                                        <FaChartBar/>
-                                        <span>Reportes con IA</span>
-                                    </NavLink>
+                                    {/* ❌ ELIMINADO: Reportes con IA - Usar /admin/reports en su lugar */}
                                     <NavLink to="/admin/audit"
                                              className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                                         <FaClipboardList/>

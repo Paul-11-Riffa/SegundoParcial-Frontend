@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getProducts, addToCart } from '../services/api';
+import { getProducts, addToCart, getSimilarProducts } from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { useCart } from '../context/CartContext';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { getProductGalleryImages } from '../config/visualAssets';
 import Rating from '../components/shop/Rating';
 import RecentlyViewed from '../components/shop/RecentlyViewed';
+import ProductCard from '../components/shop/ProductCard';
 import styles from '../styles/ProductDetailPage.module.css';
 import { FaCartPlus, FaHeart, FaCheck, FaArrowLeft, FaRegHeart } from 'react-icons/fa';
 
@@ -34,6 +35,8 @@ const ProductDetailPage = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [similarProducts, setSimilarProducts] = useState([]);
+  const [similarLoading, setSimilarLoading] = useState(false);
 
   // Gallery images - Dinámicamente generadas desde la configuración
   const galleryImages = product ? getProductGalleryImages(product) : null;
@@ -59,6 +62,26 @@ const ProductDetailPage = () => {
       fetchProduct();
     }
   }, [id, navigate, showToast, addToRecentlyViewed]);
+
+  // Cargar productos similares con ML
+  useEffect(() => {
+    const fetchSimilarProducts = async () => {
+      if (!id) return;
+
+      try {
+        setSimilarLoading(true);
+        const response = await getSimilarProducts(id, 6);
+        setSimilarProducts(response.data.results || response.data.similar_products || []);
+      } catch (error) {
+        console.error('Error al cargar productos similares:', error);
+        // No mostrar error, simplemente no mostrar similares
+      } finally {
+        setSimilarLoading(false);
+      }
+    };
+
+    fetchSimilarProducts();
+  }, [id]);
 
   const handleAddToCart = async () => {
     if (isAdding || !product || product.stock <= 0) return;
@@ -238,6 +261,26 @@ const ProductDetailPage = () => {
         </div>
 
       </div>
+
+      {/* Productos Similares con ML */}
+      {!similarLoading && similarProducts.length > 0 && (
+        <div className={styles.similarProductsSection}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>✨ Productos Similares (Recomendados por IA)</h2>
+            <p className={styles.sectionSubtitle}>Seleccionados especialmente según este producto</p>
+            
+            <div className={styles.similarProductsGrid}>
+              {similarProducts.map((similarProduct) => (
+                <ProductCard
+                  key={similarProduct.id}
+                  product={similarProduct}
+                  onProductClick={() => navigate(`/product/${similarProduct.id}`)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Recently Viewed */}
       <div className={styles.recentlyViewedSection}>

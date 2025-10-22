@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getProducts, getCategories } from '../services/api';
+import { getProducts, getCategories, getPersonalizedRecommendations } from '../services/api';
 import ProductCard from '../components/shop/ProductCard';
 import { ProductSkeletonGrid } from '../components/shop/ProductSkeleton';
 import { useToast } from '../context/ToastContext';
@@ -16,8 +16,10 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [realCategories, setRealCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [recommendationsLoading, setRecommendationsLoading] = useState(true);
 
   // Cargar productos destacados y categorías reales
   useEffect(() => {
@@ -45,6 +47,30 @@ const HomePage = () => {
     
     fetchData();
   }, [showToast]);
+
+  // Cargar recomendaciones personalizadas (solo si el usuario está logueado)
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setRecommendationsLoading(false);
+        return; // No cargar recomendaciones si no está logueado
+      }
+
+      try {
+        setRecommendationsLoading(true);
+        const response = await getPersonalizedRecommendations(8);
+        setRecommendedProducts(response.data.results || response.data.recommendations || []);
+      } catch (err) {
+        console.error('Error al cargar recomendaciones:', err);
+        // No mostrar error al usuario, simplemente no mostrar recomendaciones
+      } finally {
+        setRecommendationsLoading(false);
+      }
+    };
+
+    fetchRecommendations();
+  }, []);
 
   // Imágenes por defecto para categorías
   const categoryImages = {
@@ -111,6 +137,28 @@ const HomePage = () => {
       </section>
 
       {/* PRODUCTOS DESTACADOS - CATÁLOGO REAL */}
+      {/* RECOMENDACIONES PERSONALIZADAS (solo si está logueado) */}
+      {!recommendationsLoading && recommendedProducts.length > 0 && (
+        <section className={styles.productsSection} style={{ backgroundColor: '#f8f9fa' }}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>✨ Recomendado para ti</h2>
+            <p className={styles.productsSubtitle}>
+              Productos seleccionados especialmente según tus preferencias
+            </p>
+            
+            <div className={styles.productsGrid}>
+              {recommendedProducts.map((product) => (
+                <ProductCard 
+                  key={product.id}
+                  product={product}
+                  onProductClick={() => navigate(`/product/${product.id}`)}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className={styles.productsSection}>
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>Diseñados para inspirar</h2>

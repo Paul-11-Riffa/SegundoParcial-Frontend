@@ -155,6 +155,7 @@ export const getMyOrders = () => {
 
 /**
  * Genera un reporte dinámico basado en un prompt de texto
+ * Sistema Unificado de Reportes Inteligentes
  * @param {string} prompt - El comando de texto para generar el reporte
  * @returns {Promise} - Respuesta con los datos del reporte o archivo descargable
  */
@@ -165,7 +166,8 @@ export const generateDynamicReport = async (prompt) => {
   
   const config = isFileDownload ? { responseType: 'blob' } : {};
   
-  const response = await apiClient.post('/orders/reports/generate/', { prompt }, config);
+  // ✅ Endpoint correcto del Sistema Unificado de tu compañero
+  const response = await apiClient.post('/sales/reports/unified/generate/', { command: prompt }, config);
   
   // Si es un archivo, descargarlo automáticamente
   if (isFileDownload && response.data instanceof Blob) {
@@ -198,22 +200,24 @@ export const generateDynamicReport = async (prompt) => {
 
 /**
  * Descarga un reporte en formato PDF
+ * Sistema Unificado de Reportes Inteligentes
  * @param {string} prompt - El comando de texto con "en PDF" al final
  * @returns {Promise} - Respuesta con el archivo PDF
  */
 export const downloadReportPDF = (prompt) => {
-  return apiClient.post('/orders/reports/generate/', { prompt }, {
+  return apiClient.post('/sales/reports/unified/generate/', { command: prompt }, {
     responseType: 'blob'
   });
 };
 
 /**
  * Descarga un reporte en formato Excel
+ * Sistema Unificado de Reportes Inteligentes
  * @param {string} prompt - El comando de texto con "en Excel" al final
  * @returns {Promise} - Respuesta con el archivo Excel
  */
 export const downloadReportExcel = (prompt) => {
-  return apiClient.post('/orders/reports/generate/', { prompt }, {
+  return apiClient.post('/sales/reports/unified/generate/', { command: prompt }, {
     responseType: 'blob'
   });
 };
@@ -222,6 +226,7 @@ export const downloadReportExcel = (prompt) => {
 
 /**
  * Análisis RFM de Clientes - Segmenta clientes en VIP, Regular, Nuevo, En Riesgo, Inactivo
+ * Sistema Unificado de Reportes Inteligentes
  * @param {Object} params - { start_date, end_date, format: 'json'|'excel'|'pdf' }
  * @returns {Promise} - Respuesta con datos del análisis o archivo descargable
  */
@@ -231,7 +236,7 @@ export const getCustomerAnalysis = async (params) => {
   
   const config = isFileDownload ? { responseType: 'blob' } : {};
   
-  const response = await apiClient.post('/orders/reports/customer-analysis/', 
+  const response = await apiClient.post('/sales/reports/customer-analysis/', 
     { ...otherParams, format }, 
     config
   );
@@ -259,6 +264,7 @@ export const getCustomerAnalysis = async (params) => {
 
 /**
  * Análisis ABC de Productos - Clasifica productos según Pareto (80/20)
+ * Sistema Unificado de Reportes Inteligentes
  * @param {Object} params - { start_date, end_date, format: 'json'|'excel'|'pdf' }
  * @returns {Promise} - Respuesta con clasificación ABC
  */
@@ -268,7 +274,7 @@ export const getProductABCAnalysis = async (params) => {
   
   const config = isFileDownload ? { responseType: 'blob' } : {};
   
-  const response = await apiClient.post('/orders/reports/product-abc/', 
+  const response = await apiClient.post('/sales/reports/product-abc/', 
     { ...otherParams, format }, 
     config
   );
@@ -295,6 +301,7 @@ export const getProductABCAnalysis = async (params) => {
 
 /**
  * Reporte Comparativo - Compara métricas entre dos períodos
+ * Sistema Unificado de Reportes Inteligentes
  * @param {Object} params - { start_date, end_date, comparison: 'previous_month'|'previous_period', format: 'json'|'excel'|'pdf' }
  * @returns {Promise} - Respuesta con comparación de períodos
  */
@@ -304,7 +311,7 @@ export const getComparativeReport = async (params) => {
   
   const config = isFileDownload ? { responseType: 'blob' } : {};
   
-  const response = await apiClient.post('/orders/reports/comparative/', 
+  const response = await apiClient.post('/sales/reports/comparative/', 
     { ...otherParams, format }, 
     config
   );
@@ -331,15 +338,17 @@ export const getComparativeReport = async (params) => {
 
 /**
  * Dashboard Ejecutivo - Panel con KPIs, tops y alertas
+ * Sistema Unificado de Reportes Inteligentes
  * @param {Object} params - { start_date, end_date }
  * @returns {Promise} - Respuesta con datos del dashboard
  */
 export const getExecutiveDashboard = (params) => {
-  return apiClient.post('/orders/reports/dashboard/', params);
+  return apiClient.post('/sales/reports/dashboard/', params);
 };
 
 /**
  * Análisis de Inventario - Análisis inteligente del inventario
+ * Sistema Unificado de Reportes Inteligentes
  * @param {Object} params - { format: 'json'|'excel'|'pdf' }
  * @returns {Promise} - Respuesta con análisis de inventario
  */
@@ -349,7 +358,7 @@ export const getInventoryAnalysis = async (params = {}) => {
   
   const config = isFileDownload ? { responseType: 'blob' } : {};
   
-  const response = await apiClient.post('/orders/reports/inventory-analysis/', 
+  const response = await apiClient.post('/sales/reports/inventory-analysis/', 
     { format }, 
     config
   );
@@ -473,32 +482,9 @@ export const compareProducts = async (productIds, days = 30) => {
 
 // =================== Voice Commands APIs ===================
 
-/**
- * Procesar comando de texto - Procesa consulta de texto con IA
- * @param {string} text - Texto del comando/consulta
- * @returns {Promise} - Respuesta con resultado del procesamiento
- */
-export const processTextCommand = async (text) => {
-  const response = await apiClient.post('/voice-commands/process-text/', { text });
-  return response;
-};
-
-/**
- * Procesar comando de audio - Procesa archivo de audio con IA
- * @param {File} audioFile - Archivo de audio a procesar
- * @returns {Promise} - Respuesta con transcripción y resultado
- */
-export const processAudioCommand = async (audioFile) => {
-  const formData = new FormData();
-  formData.append('audio', audioFile);
-  
-  const response = await apiClient.post('/voice-commands/process-audio/', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-  return response;
-};
+// ❌ ELIMINADO: processTextCommand y processAudioCommand
+// Estas funciones eran específicas de AIReportsPage que ya no se usa
+// ReportsPage usa generateDynamicReport() del sistema unificado
 
 // --- Funciones de Predicciones ML (Dashboard) ---
 
@@ -509,7 +495,7 @@ export const processAudioCommand = async (audioFile) => {
  * @returns {Promise} - Respuesta con predicciones combinadas
  */
 export const getCombinedPredictionsDashboard = (productsLimit = 5, includeHistorical = false) => {
-  return apiClient.get('/orders/dashboard/predictions/combined/', {
+  return apiClient.get('/sales/dashboard/predictions/combined/', {
     params: {
       products_limit: productsLimit,
       include_historical: includeHistorical
@@ -524,7 +510,7 @@ export const getCombinedPredictionsDashboard = (productsLimit = 5, includeHistor
  * @returns {Promise} - Respuesta con predicciones de ventas
  */
 export const getSalesPredictionsDashboard = (includeHistorical = true, chartFormat = true) => {
-  return apiClient.get('/orders/dashboard/predictions/sales/', {
+  return apiClient.get('/sales/dashboard/predictions/sales/', {
     params: {
       include_historical: includeHistorical,
       chart_format: chartFormat
@@ -549,7 +535,7 @@ export const getTopProductsDashboard = (limit = 10, categoryId = null, chartForm
     params.category = categoryId;
   }
   
-  return apiClient.get('/orders/dashboard/predictions/top-products/', { params });
+  return apiClient.get('/sales/dashboard/predictions/top-products/', { params });
 };
 
 /**
@@ -557,7 +543,7 @@ export const getTopProductsDashboard = (limit = 10, categoryId = null, chartForm
  * @returns {Promise} - Respuesta de confirmación
  */
 export const clearPredictionsCache = () => {
-  return apiClient.post('/orders/predictions/clear-cache/');
+  return apiClient.post('/sales/predictions/clear-cache/');
 };
 
 /**
@@ -565,7 +551,7 @@ export const clearPredictionsCache = () => {
  * @returns {Promise} - Respuesta con estado del modelo
  */
 export const getMLModelStatus = () => {
-  return apiClient.get('/orders/ml/dashboard/');
+  return apiClient.get('/sales/ml/dashboard/');
 };
 
 // --- Funciones de Auditoría/Bitácora (Solo Admin) ---
@@ -686,4 +672,84 @@ export const generateSessionReport = (filters = {}, format = 'pdf') => {
  */
 export const cleanOldLogs = (days) => {
   return apiClient.post('/sales/audit/clean-old-logs/', { days });
+};
+
+// =================== Dashboard en Tiempo Real APIs ===================
+
+/**
+ * Dashboard Principal en Tiempo Real - Métricas actualizadas del negocio
+ * @returns {Promise} - Respuesta con métricas en tiempo real
+ */
+export const getRealtimeDashboard = () => {
+  return apiClient.get('/sales/dashboard/realtime/');
+};
+
+/**
+ * Performance de Productos - Métricas de todos los productos
+ * @returns {Promise} - Respuesta con performance de productos
+ */
+export const getProductsPerformance = () => {
+  return apiClient.get('/sales/dashboard/products/');
+};
+
+/**
+ * Performance de Producto Individual - Métricas de un producto específico
+ * @param {number} productId - ID del producto
+ * @returns {Promise} - Respuesta con performance del producto
+ */
+export const getProductPerformance = (productId) => {
+  return apiClient.get(`/sales/dashboard/products/${productId}/`);
+};
+
+/**
+ * Insights de Clientes - Métricas de todos los clientes
+ * @returns {Promise} - Respuesta con insights de clientes
+ */
+export const getCustomersInsights = () => {
+  return apiClient.get('/sales/dashboard/customers/');
+};
+
+/**
+ * Insights de Cliente Individual - Métricas de un cliente específico
+ * @param {number} customerId - ID del cliente
+ * @returns {Promise} - Respuesta con insights del cliente
+ */
+export const getCustomerInsights = (customerId) => {
+  return apiClient.get(`/sales/dashboard/customers/${customerId}/`);
+};
+
+// =================== Recomendaciones ML APIs ===================
+
+/**
+ * Recomendaciones Personalizadas - Productos recomendados para el usuario actual
+ * Basado en historial de compras, navegación y preferencias
+ * @param {number} limit - Número de recomendaciones (default: 10)
+ * @returns {Promise} - Respuesta con productos recomendados
+ */
+export const getPersonalizedRecommendations = (limit = 10) => {
+  return apiClient.get('/products/ml/recommendations/personalized/', {
+    params: { limit }
+  });
+};
+
+/**
+ * Productos Similares - Productos relacionados basados en ML
+ * @param {number} productId - ID del producto base
+ * @param {number} limit - Número de productos similares (default: 6)
+ * @returns {Promise} - Respuesta con productos similares
+ */
+export const getSimilarProducts = (productId, limit = 6) => {
+  return apiClient.get(`/products/ml/recommendations/similar/${productId}/`, {
+    params: { limit }
+  });
+};
+
+// =================== Reportes Disponibles APIs ===================
+
+/**
+ * Lista de Reportes Disponibles - Obtiene catálogo de reportes con permisos
+ * @returns {Promise} - Respuesta con lista de reportes disponibles
+ */
+export const getAvailableReports = () => {
+  return apiClient.get('/sales/reports/unified/list/');
 };

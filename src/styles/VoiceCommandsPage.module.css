@@ -1,0 +1,1204 @@
+/**
+ * 🎨 Estilos para el Sistema de Comandos de Voz
+ * Diseño profesional, moderno y responsivo
+ */
+
+/* ==================== PÁGINA PRINCIPAL ==================== */
+
+.voiceCommandsPage {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.pageHeader {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.headerIcon {
+  font-size: 3rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.headerText h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #1a202c;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0.5rem 0 0 0;
+  color: #718096;
+  font-size: 1.1rem;
+}
+
+.headerActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.headerButton {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #e2e8f0;
+  background: white;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.headerButton:hover {
+  background: #f7fafc;
+  border-color: #667eea;
+  color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.headerButton.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+}
+
+/* ==================== PANEL DE INFORMACIÓN ==================== */
+
+.infoPanel {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.infoPanel h3 {
+  margin: 0 0 1.5rem 0;
+  color: #1a202c;
+  font-size: 1.5rem;
+}
+
+.infoContent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.infoSection {
+  background: #f7fafc;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.infoSection h4 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.1rem;
+}
+
+.infoSection ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #4a5568;
+  line-height: 1.8;
+}
+
+.infoSection li {
+  margin-bottom: 0.5rem;
+}
+
+.infoSection strong {
+  color: #667eea;
+}
+
+/* ==================== CONTENIDO PRINCIPAL ==================== */
+
+.mainContent {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ==================== COMMAND INPUT ==================== */
+
+.commandInput {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.inputHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: #2d3748;
+  font-size: 1.2rem;
+}
+
+.inputForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.textInput {
+  flex: 1;
+  padding: 1.25rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: all 0.3s ease;
+  min-height: 80px;
+}
+
+.textInput:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.textInput.listening {
+  border-color: #f56565;
+  animation: pulse 1.5s infinite;
+}
+
+.textInput:disabled {
+  background: #f7fafc;
+  cursor: not-allowed;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 101, 101, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(245, 101, 101, 0);
+  }
+}
+
+.voiceButton {
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.voiceButton:hover:not(:disabled) {
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.voiceButton.active {
+  background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+}
+
+.voiceButton.disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+}
+
+.pulseRing {
+  position: absolute;
+  inset: -4px;
+  border: 3px solid #f56565;
+  border-radius: 50%;
+  animation: ring 1.5s infinite;
+}
+
+@keyframes ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.listeningIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #fff5f5;
+  border: 2px solid #feb2b2;
+  border-radius: 12px;
+  color: #c53030;
+  font-weight: 600;
+  animation: fadeIn 0.3s ease;
+}
+
+.pulseDot {
+  width: 12px;
+  height: 12px;
+  background: #f56565;
+  border-radius: 50%;
+  animation: pulseDot 1s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.6;
+  }
+}
+
+.voiceError {
+  padding: 0.75rem 1rem;
+  background: #fff5f5;
+  border-left: 4px solid #f56565;
+  border-radius: 8px;
+  color: #c53030;
+  font-size: 0.95rem;
+}
+
+.inputActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.examplesButton {
+  padding: 0.75rem 1.5rem;
+  background: #edf2f7;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #4a5568;
+  transition: all 0.3s ease;
+}
+
+.examplesButton:hover:not(:disabled) {
+  background: #e2e8f0;
+  border-color: #cbd5e0;
+}
+
+.submitButton {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.submitButton:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ==================== PANEL DE EJEMPLOS ==================== */
+
+.examplesPanel {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: #f7fafc;
+  border-radius: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+.examplesTitle {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.examplesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.exampleCard {
+  padding: 1rem;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.exampleCard:hover:not(:disabled) {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+}
+
+.exampleIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.exampleText {
+  color: #4a5568;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* ==================== MENSAJES DE ESTADO ==================== */
+
+.loadingMessage {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 1.5rem;
+  border: 4px solid #e2e8f0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingMessage p {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.loadingHint {
+  color: #718096;
+  font-size: 0.95rem !important;
+  font-weight: 400 !important;
+}
+
+.errorMessage {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.errorIcon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.errorContent {
+  flex: 1;
+}
+
+.errorContent h3 {
+  margin: 0 0 0.5rem 0;
+  color: #c53030;
+  font-size: 1.3rem;
+}
+
+.errorContent p {
+  margin: 0;
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+.retryButton {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #f56565;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.retryButton:hover {
+  background: #e53e3e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+}
+
+/* ==================== PANEL DE SUGERENCIAS ==================== */
+
+.suggestionsPanel {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+.suggestionsHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.suggestionIcon {
+  font-size: 3rem;
+  color: #f6ad55;
+  margin-bottom: 1rem;
+}
+
+.suggestionsHeader h3 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-size: 1.5rem;
+}
+
+.suggestionsHeader p {
+  margin: 0;
+  color: #718096;
+}
+
+.suggestionsList {
+  display: grid;
+  gap: 1rem;
+}
+
+.suggestionCard {
+  background: #f7fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.suggestionCard:hover {
+  border-color: #667eea;
+  background: white;
+  transform: translateX(8px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.suggestionContent {
+  flex: 1;
+}
+
+.suggestionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.suggestionEmoji {
+  font-size: 1.5rem;
+}
+
+.suggestionDescription {
+  margin: 0.5rem 0;
+  color: #718096;
+  line-height: 1.6;
+}
+
+.suggestionFooter {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.suggestionType {
+  font-size: 0.85rem;
+  color: #667eea;
+  background: #eef2ff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.suggestionConfidence {
+  font-size: 0.85rem;
+  color: #48bb78;
+  background: #f0fff4;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.suggestionArrow {
+  font-size: 1.5rem;
+  color: #cbd5e0;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.suggestionCard:hover .suggestionArrow {
+  color: #667eea;
+  transform: translateX(5px);
+}
+
+/* ==================== RESULT DISPLAY ==================== */
+
+.resultDisplay {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+.resultHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.resultIcon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.successIcon {
+  color: #48bb78;
+  animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.resultTitle {
+  flex: 1;
+}
+
+.resultTitle h2 {
+  margin: 0 0 0.75rem 0;
+  color: #1a202c;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reportEmoji {
+  font-size: 2rem;
+}
+
+.commandText {
+  margin: 0;
+  color: #718096;
+  font-style: italic;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.copyIcon {
+  cursor: pointer;
+  color: #cbd5e0;
+  transition: color 0.2s ease;
+}
+
+.copyIcon:hover {
+  color: #667eea;
+}
+
+.metadataSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f7fafc;
+  border-radius: 12px;
+}
+
+.metadataItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.metadataLabel {
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.metadataValue {
+  color: #2d3748;
+  font-weight: 700;
+}
+
+.confidenceHigh {
+  color: #48bb78 !important;
+}
+
+.confidenceMedium {
+  color: #ed8936 !important;
+}
+
+.confidenceLow {
+  color: #f56565 !important;
+}
+
+.parametersSection {
+  margin-bottom: 2rem;
+}
+
+.parametersSection h4 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.2rem;
+}
+
+.parametersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.paramCard {
+  background: #eef2ff;
+  padding: 1rem;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.paramLabel {
+  display: block;
+  color: #4a5568;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.paramValue {
+  display: block;
+  color: #1a202c;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.descriptionSection {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #fffaf0;
+  border-left: 4px solid #f6ad55;
+  border-radius: 12px;
+}
+
+.descriptionSection p {
+  margin: 0;
+  color: #2d3748;
+  line-height: 1.6;
+}
+
+.downloadSection {
+  margin-bottom: 2rem;
+}
+
+.downloadSection h4 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.2rem;
+}
+
+.downloadButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.downloadButton {
+  flex: 1;
+  min-width: 150px;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.downloadButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.pdfButton {
+  background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+}
+
+.excelButton {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+}
+
+.jsonButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.dataPreview {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #e2e8f0;
+}
+
+.dataPreview h4 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.2rem;
+}
+
+.dataContent {
+  background: #1a202c;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.dataContent pre {
+  margin: 0;
+  color: #48bb78;
+  font-size: 0.9rem;
+  font-family: 'Courier New', monospace;
+  line-height: 1.6;
+}
+
+/* ==================== HISTORIAL ==================== */
+
+.commandHistory {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+.historyHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.historyHeader h3 {
+  flex: 1;
+  margin: 0;
+  color: #2d3748;
+  font-size: 1.5rem;
+}
+
+.historyCount {
+  background: #667eea;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.emptyHistory {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.emptyHistory p {
+  margin: 0.5rem 0;
+  color: #718096;
+  font-size: 1.1rem;
+}
+
+.emptyHint {
+  font-size: 0.95rem !important;
+  color: #a0aec0 !important;
+}
+
+.historyList {
+  display: grid;
+  gap: 1rem;
+}
+
+.historyCard {
+  background: #f7fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.historyCard:hover {
+  border-color: #cbd5e0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.statusSuccess {
+  border-left: 4px solid #48bb78;
+}
+
+.statusError {
+  border-left: 4px solid #f56565;
+}
+
+.statusProcessing {
+  border-left: 4px solid #ed8936;
+}
+
+.historyCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.historyStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.statusIconSuccess {
+  color: #48bb78;
+}
+
+.statusIconError {
+  color: #f56565;
+}
+
+.statusIconProcessing {
+  color: #ed8936;
+  animation: spin 2s linear infinite;
+}
+
+.historyDate {
+  color: #718096;
+  font-size: 0.85rem;
+}
+
+.historyCommandText {
+  margin-bottom: 1rem;
+}
+
+.historyCommandText p {
+  margin: 0;
+  color: #2d3748;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.historyMetadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.historyMeta {
+  font-size: 0.85rem;
+  color: #4a5568;
+  background: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.historyActions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.historyButton {
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.historyButton:hover:not(:disabled) {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.historyButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.historyError {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #fff5f5;
+  border-radius: 8px;
+  color: #c53030;
+  font-size: 0.9rem;
+}
+
+/* ==================== ESTADÍSTICAS RÁPIDAS ==================== */
+
+.quickStats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.statCard {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.statIcon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.statContent h4 {
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+  font-size: 1.1rem;
+}
+
+.statContent p {
+  margin: 0;
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+/* ==================== FOOTER ==================== */
+
+.pageFooter {
+  text-align: center;
+  margin-top: 3rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  color: white;
+}
+
+.pageFooter p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.footerHint {
+  font-size: 0.85rem !important;
+  opacity: 0.8;
+}
+
+/* ==================== ANIMACIONES ==================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+  .voiceCommandsPage {
+    padding: 1rem;
+  }
+
+  .pageHeader {
+    padding: 1.5rem;
+  }
+
+  .headerContent {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .headerText h1 {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .headerActions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .inputWrapper {
+    flex-direction: column;
+  }
+
+  .voiceButton {
+    align-self: flex-end;
+  }
+
+  .inputActions {
+    flex-direction: column;
+  }
+
+  .examplesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .infoContent {
+    grid-template-columns: 1fr;
+  }
+
+  .downloadButtons {
+    flex-direction: column;
+  }
+
+  .downloadButton {
+    width: 100%;
+  }
+
+  .quickStats {
+    grid-template-columns: 1fr;
+  }
+
+  .metadataSection {
+    flex-direction: column;
+  }
+
+  .parametersGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerText h1 {
+    font-size: 1.3rem;
+  }
+
+  .commandInput,
+  .resultDisplay,
+  .suggestionsPanel,
+  .commandHistory {
+    padding: 1.5rem;
+  }
+
+  .resultTitle h2 {
+    font-size: 1.3rem;
+  }
+}

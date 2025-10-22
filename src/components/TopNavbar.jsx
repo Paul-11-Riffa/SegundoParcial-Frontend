@@ -105,6 +105,9 @@ const TopNavbar = () => {
                   <NavLink to="/admin/sales-history" className={styles.moduleDropdownLink}>
                     📊 Ventas
                   </NavLink>
+                  <NavLink to="/admin/reports" className={styles.moduleDropdownLink}>
+                    📋 Reportes
+                  </NavLink>
                 </div>
               </div>
               
@@ -114,12 +117,7 @@ const TopNavbar = () => {
                   Análisis
                 </button>
                 <div className={styles.moduleDropdownContent}>
-                  <NavLink to="/admin/ml-dashboard" className={styles.moduleDropdownLink}>
-                    🧠 Dashboard ML
-                  </NavLink>
-                  <NavLink to="/admin/ai-reports" className={styles.moduleDropdownLink}>
-                    📈 Reportes con IA
-                  </NavLink>
+                  {/* ❌ ELIMINADO: Reportes con IA - Usar /admin/reports en su lugar */}
                   <NavLink to="/admin/audit" className={styles.moduleDropdownLink}>
                     📋 Bitácora
                   </NavLink>
