@@ -3,7 +3,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ResponsiveContainer, Area, AreaChart
 } from 'recharts';
-import styles from '../../styles/MLDashboardPage.module.css';
+import styles from '../../styles/AdminDashboard.module.css';
 
 const PERIOD_COLORS = {
   '7d': '#3B82F6',   // Azul

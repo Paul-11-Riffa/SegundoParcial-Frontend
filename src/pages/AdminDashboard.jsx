@@ -6,7 +6,7 @@ import SalesPredictionChart from '../components/dashboard/SalesPredictionChart';
 import TopProductsChart from '../components/dashboard/TopProductsChart';
 import LoadingState from '../components/dashboard/LoadingState';
 import ErrorState from '../components/dashboard/ErrorState';
-import styles from '../styles/MLDashboardPage.module.css';
+import styles from '../styles/AdminDashboard.module.css';
 
 const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);

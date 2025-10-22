@@ -81,6 +81,11 @@ export const getProducts = (filters = {}) => {
   return apiClient.get('/shop/products/', { params: filters });
 };
 
+export const getProductDetail = (productId) => {
+  // Obtiene un producto específico con todos sus detalles incluyendo el campo 'category' (ID)
+  return apiClient.get(`/shop/products/${productId}/`);
+};
+
 export const createProduct = (productData) => {
   // Si productData es FormData (contiene imagen), debemos cambiar el Content-Type
   const config = productData instanceof FormData
@@ -101,6 +106,40 @@ export const updateProduct = (productId, productData) => {
 
 export const deleteProduct = (productId) => {
   return apiClient.delete(`/shop/products/${productId}/`);
+};
+
+// ✅ NUEVAS FUNCIONES PARA GESTIÓN DE IMÁGENES (según backend actualizado)
+
+/**
+ * Subir o actualizar imagen de un producto
+ * @param {number} productId - ID del producto
+ * @param {File} imageFile - Archivo de imagen
+ * @returns {Promise} Respuesta con el producto actualizado
+ */
+export const uploadProductImage = (productId, imageFile) => {
+  const formData = new FormData();
+  formData.append('image', imageFile);
+  
+  return apiClient.post(`/shop/products/${productId}/upload_image/`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+};
+
+/**
+ * Eliminar imagen de un producto
+ * @param {number} productId - ID del producto
+ * @returns {Promise} Respuesta con el producto actualizado
+ */
+export const deleteProductImage = (productId) => {
+  return apiClient.delete(`/shop/products/${productId}/delete_image/`);
+};
+
+/**
+ * Limpiar imágenes rotas del sistema (solo admin)
+ * @returns {Promise} Respuesta con cantidad de imágenes limpiadas
+ */
+export const cleanBrokenImages = () => {
+  return apiClient.post('/shop/products/clean_broken_images/');
 };
 
 // --- Funciones del Carrito (Cliente) ---
@@ -557,22 +596,62 @@ export const getMLModelStatus = () => {
 // --- Funciones de Auditoría/Bitácora (Solo Admin) ---
 
 /**
- * Obtener logs de auditoría con filtros
- * @param {Object} filters - Filtros opcionales (user, action_type, start_date, end_date, severity, success, ip_address, limit)
- * @returns {Promise} - Lista de logs
+ * Obtener logs de auditoría con filtros y paginación
+ * @param {Object} filters - Filtros opcionales
+ * @param {number} page - Número de página (default: 1)
+ * @param {number} pageSize - Tamaño de página (default: 50, max: 500)
+ * @returns {Promise} - Respuesta paginada { count, next, previous, results }
  */
-export const getAuditLogs = (filters = {}) => {
+export const getAuditLogs = (filters = {}, page = 1, pageSize = 50) => {
   const params = new URLSearchParams();
   
+  // Paginación
+  params.append('page', page);
+  params.append('page_size', pageSize);
+  
+  // Filtros simples
   if (filters.user) params.append('user', filters.user);
-  if (filters.action_type) params.append('action_type', filters.action_type);
   if (filters.start_date) params.append('start_date', filters.start_date);
   if (filters.end_date) params.append('end_date', filters.end_date);
-  if (filters.severity) params.append('severity', filters.severity);
-  if (filters.success !== undefined) params.append('success', filters.success);
+  if (filters.success !== undefined && filters.success !== '') {
+    params.append('success', filters.success);
+  }
   if (filters.ip_address) params.append('ip_address', filters.ip_address);
+  if (filters.endpoint) params.append('endpoint', filters.endpoint);
   if (filters.search) params.append('search', filters.search);
-  if (filters.limit) params.append('limit', filters.limit);
+  
+  // Filtros múltiples (arrays)
+  if (filters.action_type) {
+    if (Array.isArray(filters.action_type)) {
+      filters.action_type.forEach(type => params.append('action_type', type));
+    } else if (filters.action_type !== '') {
+      params.append('action_type', filters.action_type);
+    }
+  }
+  
+  if (filters.severity) {
+    if (Array.isArray(filters.severity)) {
+      filters.severity.forEach(sev => params.append('severity', sev));
+    } else if (filters.severity !== '') {
+      params.append('severity', filters.severity);
+    }
+  }
+  
+  if (filters.http_method) {
+    if (Array.isArray(filters.http_method)) {
+      filters.http_method.forEach(method => params.append('http_method', method));
+    } else if (filters.http_method !== '') {
+      params.append('http_method', filters.http_method);
+    }
+  }
+  
+  // Filtros de response status
+  if (filters.response_status) params.append('response_status', filters.response_status);
+  if (filters.response_status_gte) params.append('response_status_gte', filters.response_status_gte);
+  if (filters.response_status_lte) params.append('response_status_lte', filters.response_status_lte);
+  
+  // Ordenamiento
+  if (filters.ordering) params.append('ordering', filters.ordering);
   
   return apiClient.get(`/sales/audit/logs/?${params.toString()}`);
 };
@@ -606,33 +685,63 @@ export const getUserActivity = (username, days = 30) => {
 };
 
 /**
- * Obtener sesiones activas
- * @returns {Promise} - Lista de sesiones activas
+ * Obtener sesiones activas con filtros y paginación
+ * @param {Object} filters - Filtros opcionales
+ * @param {number} page - Número de página (default: 1)
+ * @param {number} pageSize - Tamaño de página (default: 50)
+ * @returns {Promise} - Lista de sesiones activas paginada
  */
-export const getActiveSessions = () => {
-  return apiClient.get('/sales/audit/sessions/active/');
+export const getActiveSessions = (filters = {}, page = 1, pageSize = 50) => {
+  const params = new URLSearchParams();
+  
+  // Paginación
+  params.append('page', page);
+  params.append('page_size', pageSize);
+  
+  // Filtros
+  if (filters.user) params.append('user', filters.user);
+  if (filters.ip_address) params.append('ip_address', filters.ip_address);
+  if (filters.search) params.append('search', filters.search);
+  if (filters.ordering) params.append('ordering', filters.ordering);
+  
+  return apiClient.get(`/sales/audit/sessions/active/?${params.toString()}`);
 };
 
 /**
- * Obtener historial de sesiones
- * @param {Object} filters - Filtros opcionales (user, limit)
- * @returns {Promise} - Historial de sesiones
+ * Obtener historial de sesiones con filtros y paginación
+ * @param {Object} filters - Filtros opcionales
+ * @param {number} page - Número de página (default: 1)
+ * @param {number} pageSize - Tamaño de página (default: 50)
+ * @returns {Promise} - Historial de sesiones paginado
  */
-export const getSessionHistory = (filters = {}) => {
+export const getSessionHistory = (filters = {}, page = 1, pageSize = 50) => {
   const params = new URLSearchParams();
   
+  // Paginación
+  params.append('page', page);
+  params.append('page_size', pageSize);
+  
+  // Filtros
   if (filters.user) params.append('user', filters.user);
-  if (filters.limit) params.append('limit', filters.limit);
+  if (filters.is_active !== undefined && filters.is_active !== '') {
+    params.append('is_active', filters.is_active);
+  }
+  if (filters.login_start) params.append('login_start', filters.login_start);
+  if (filters.login_end) params.append('login_end', filters.login_end);
+  if (filters.ip_address) params.append('ip_address', filters.ip_address);
+  if (filters.search) params.append('search', filters.search);
+  if (filters.ordering) params.append('ordering', filters.ordering);
   
   return apiClient.get(`/sales/audit/sessions/history/?${params.toString()}`);
 };
 
 /**
  * Obtener alertas de seguridad
+ * @param {number} hours - Horas hacia atrás para analizar (default: 24)
  * @returns {Promise} - Alertas de seguridad
  */
-export const getSecurityAlerts = () => {
-  return apiClient.get('/sales/audit/security-alerts/');
+export const getSecurityAlerts = (hours = 24) => {
+  return apiClient.get(`/sales/audit/security-alerts/?hours=${hours}`);
 };
 
 /**

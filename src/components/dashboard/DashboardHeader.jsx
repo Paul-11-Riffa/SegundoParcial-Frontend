@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/MLDashboardPage.module.css';
+import styles from '../../styles/AdminDashboard.module.css';
 
 function DashboardHeader({ overview }) {
   if (!overview) return null;

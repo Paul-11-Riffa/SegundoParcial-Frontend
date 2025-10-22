@@ -1,0 +1,448 @@
+/* 
+   LOG DETAIL MODAL - Modal para ver detalles completos de un log de auditoría
+   ========================================================================== 
+*/
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 2rem;
+  overflow-y: auto;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  max-width: 1200px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  background: rgba(102, 126, 234, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.headerTitle h2 {
+  font-size: 1.75rem;
+  color: white;
+  margin: 0;
+  font-weight: 700;
+}
+
+.severityBadge {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.closeButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* Body */
+.modalBody {
+  padding: 2rem;
+  background: white;
+}
+
+.section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.section h3 {
+  font-size: 1.25rem;
+  color: #2d3748;
+  margin: 0 0 1.5rem 0;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.infoItem label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.infoItem span {
+  font-size: 1rem;
+  color: #1a202c;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  word-break: break-word;
+}
+
+/* Specific Styles */
+.username {
+  font-weight: 700;
+  color: #667eea !important;
+}
+
+.actionType {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.httpMethod {
+  background: #48bb78 !important;
+  color: white !important;
+  font-weight: 700;
+  text-align: center;
+}
+
+.endpoint {
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  background: #2d3748 !important;
+  color: #68d391 !important;
+}
+
+.ipAddress {
+  font-family: 'Courier New', monospace;
+  background: #2c5282 !important;
+  color: #90cdf4 !important;
+}
+
+.statusCode {
+  font-size: 1.5rem !important;
+  font-weight: 700;
+  text-align: center;
+}
+
+.statusCode.success {
+  background: #48bb78 !important;
+  color: white !important;
+}
+
+.statusCode.error {
+  background: #f56565 !important;
+  color: white !important;
+}
+
+.successBadge,
+.errorBadge {
+  text-align: center;
+  font-weight: 700;
+  padding: 0.75rem !important;
+}
+
+.successBadge {
+  background: #48bb78 !important;
+  color: white !important;
+}
+
+.errorBadge {
+  background: #f56565 !important;
+  color: white !important;
+}
+
+.responseTime {
+  background: #ed8936 !important;
+  color: white !important;
+  font-weight: 700;
+  text-align: center;
+}
+
+.severityInline {
+  display: inline-block;
+  padding: 0.75rem !important;
+  color: white !important;
+  font-weight: 700;
+  text-align: center;
+}
+
+.userAgent {
+  font-size: 0.875rem;
+  font-family: 'Courier New', monospace;
+  background: #edf2f7 !important;
+  color: #4a5568 !important;
+}
+
+/* Code Blocks */
+.codeBlock {
+  margin-top: 1rem;
+}
+
+.codeBlock label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.codeBlock pre {
+  background: #2d3748;
+  color: #68d391;
+  padding: 1.5rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  border: 2px solid #4a5568;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.errorBlock {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #fff5f5;
+  border-left: 4px solid #f56565;
+  border-radius: 8px;
+}
+
+.errorBlock label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #c53030;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.errorMessage {
+  background: #fed7d7;
+  color: #742a2a;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0;
+  border: 1px solid #fc8181;
+}
+
+/* Loading State */
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1.5rem;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loader p {
+  font-size: 1rem;
+  color: #4a5568;
+  margin: 0;
+}
+
+/* Footer */
+.modalFooter {
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top: 2px solid rgba(0, 0, 0, 0.05);
+  border-radius: 0 0 20px 20px;
+}
+
+.closeButtonBottom {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+}
+
+.closeButtonBottom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Scrollbar Styling */
+.modal::-webkit-scrollbar {
+  width: 12px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0 20px 20px 0;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+}
+
+.modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modalOverlay {
+    padding: 1rem;
+  }
+
+  .modal {
+    max-height: 95vh;
+  }
+
+  .modalHeader {
+    padding: 1.5rem;
+  }
+
+  .headerTitle h2 {
+    font-size: 1.25rem;
+  }
+
+  .modalBody {
+    padding: 1rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .modalFooter {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerTitle {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .section h3 {
+    font-size: 1.1rem;
+  }
+
+  .codeBlock pre,
+  .errorMessage {
+    font-size: 0.75rem;
+    padding: 1rem;
+  }
+}

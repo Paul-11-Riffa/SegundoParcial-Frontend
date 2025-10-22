@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/MLDashboardPage.module.css';
+import styles from '../../styles/AdminDashboard.module.css';
 
 const PERIOD_OPTIONS = [
   { value: '7d', label: 'Próxima Semana', days: 7 },

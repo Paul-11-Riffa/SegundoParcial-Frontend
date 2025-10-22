@@ -147,6 +147,8 @@ const ManageProductsPage = () => {
   };
 
   const handleOpenEditModal = (product) => {
+    // El ProductFormModal ahora carga automáticamente el producto completo desde el backend
+    // para asegurar que el campo 'category' (ID) esté disponible para el auto-relleno del formulario
     setEditingProduct(product);
     setFormModalOpen(true);
   };
@@ -378,13 +380,19 @@ const ManageProductsPage = () => {
                   <tr key={product.id}>
                     <td>
                       <div className={styles.productImage}>
-                        {product.image ? (
-                          <img src={product.image} alt={product.name} />
-                        ) : (
-                          <div className={styles.noImage}>
-                            <FaBox />
-                          </div>
-                        )}
+                        {product.image_url || product.image ? (
+                          <img 
+                            src={product.image_url || product.image} 
+                            alt={product.name}
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextSibling.style.display = 'flex';
+                            }}
+                          />
+                        ) : null}
+                        <div className={styles.noImage} style={{ display: product.image_url || product.image ? 'none' : 'flex' }}>
+                          <FaBox />
+                        </div>
                       </div>
                     </td>
                     <td>

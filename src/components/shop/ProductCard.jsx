@@ -8,8 +8,11 @@ const ProductCard = ({ product, onAddToCart, onProductClick, viewMode = 'grid' }
   const [showQuickView, setShowQuickView] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
-  const imageUrl = product.image || 'https://via.placeholder.com/400x400.png?text=No+Image';
+  // ✅ Usar image_url del backend (URL completa y validada)
+  const imageUrl = product.image_url || product.image || 'https://via.placeholder.com/400x400.png?text=No+Image';
+  const hasValidImage = product.has_valid_image && !imageError;
   const isLowStock = product.stock > 0 && product.stock <= 5;
   const isOutOfStock = product.stock <= 0;
 
@@ -45,7 +48,12 @@ const ProductCard = ({ product, onAddToCart, onProductClick, viewMode = 'grid' }
       style={{ cursor: onProductClick ? 'pointer' : 'default' }}
     >
       <div className={styles.imageContainer}>
-        <img src={imageUrl} alt={product.name} className={styles.image} />
+        <img 
+          src={imageUrl} 
+          alt={product.name} 
+          className={styles.image}
+          onError={() => setImageError(true)}
+        />
 
         {/* Badges */}
         <div className={styles.badges}>

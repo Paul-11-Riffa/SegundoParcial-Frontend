@@ -25,6 +25,13 @@
   box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
 }
 
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
 .header h1 {
   margin: 0;
   font-size: 2.5rem;
@@ -36,6 +43,42 @@
   margin: 0.5rem 0 0 0;
   font-size: 1.1rem;
   opacity: 0.95;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.userActivityButton,
+.cleanLogsButton {
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+}
+
+.userActivityButton:hover,
+.cleanLogsButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cleanLogsButton {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.cleanLogsButton:hover {
+  background: rgba(239, 68, 68, 0.4);
 }
 
 /* ============================================
@@ -66,6 +109,10 @@
   border-radius: 8px;
   transition: all 0.3s ease;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .tab:hover {
@@ -77,6 +124,39 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.alertBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border-radius: 11px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.tab.active .alertBadge {
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  border: 2px solid white;
 }
 
 /* ============================================
@@ -660,6 +740,22 @@
     padding: 1rem;
   }
 
+  .headerContent {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .headerActions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .userActivityButton,
+  .cleanLogsButton {
+    width: 100%;
+    justify-content: center;
+  }
+
   .header h1 {
     font-size: 1.8rem;
   }
@@ -717,4 +813,136 @@
   .sessionsTable td {
     padding: 0.5rem;
   }
+
+  .paginationContainer {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch !important;
+  }
+
+  .paginationInfo,
+  .paginationControls,
+  .pageSizeSelector {
+    justify-content: center;
+  }
 }
+
+/* ============================================
+   PAGINACIÓN
+   ============================================ */
+
+.paginationContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.paginationInfo {
+  font-size: 0.95rem;
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.paginationControls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.paginationButton {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+}
+
+.paginationButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+.paginationButton:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.6;
+}
+
+.paginationText {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  padding: 0 1rem;
+}
+
+.pageSizeSelector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pageSizeSelector label {
+  font-size: 0.95rem;
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.pageSizeSelector select {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  color: #2d3748;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pageSizeSelector select:hover {
+  border-color: #667eea;
+}
+
+.pageSizeSelector select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* ============================================
+   FILAS CLICKEABLES
+   ============================================ */
+
+.clickableRow {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.clickableRow:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%) !important;
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.clickableRow:active {
+  transform: scale(0.99);
+}
+
+.logId {
+  font-weight: 700;
+  color: #667eea !important;
+  font-size: 0.95rem;
+}
+

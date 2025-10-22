@@ -98,9 +98,10 @@ const CartPage = () => {
             {cart.items.map(item => (
               <div key={item.id} className={styles.cartItem}>
                 <img
-                  src={item.product.image || 'https://via.placeholder.com/100x100.png?text=No+Image'}
+                  src={item.product.image_url || item.product.image || 'https://via.placeholder.com/100x100.png?text=No+Image'}
                   alt={item.product.name}
                   className={styles.itemImage}
+                  onError={(e) => { e.target.src = 'https://via.placeholder.com/100x100.png?text=No+Image'; }}
                 />
                 <div className={styles.itemDetails}>
                   <span className={styles.itemName}>{item.product.name}</span>

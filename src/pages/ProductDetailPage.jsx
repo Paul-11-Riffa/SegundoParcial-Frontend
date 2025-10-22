@@ -42,45 +42,82 @@ const ProductDetailPage = () => {
   const galleryImages = product ? getProductGalleryImages(product) : null;
 
   useEffect(() => {
+    let isMounted = true; // ✅ Prevenir actualizaciones después del unmount
+    
     const fetchProduct = async () => {
       try {
         setLoading(true);
         const response = await getProducts({ id });
         const productData = response.data.results?.[0] || response.data;
-        setProduct(productData);
-        addToRecentlyViewed(productData);
+        
+        // ✅ Solo actualizar si el componente sigue montado
+        if (isMounted) {
+          setProduct(productData);
+          // ✅ Agregar a recién vistos sin causar re-render
+          addToRecentlyViewed(productData);
+        }
       } catch (error) {
         console.error('Error al cargar el producto:', error);
-        showToast('No se pudo cargar el producto', 'error');
-        navigate('/shop');
+        if (isMounted) {
+          showToast('No se pudo cargar el producto', 'error');
+          navigate('/shop');
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     if (id) {
       fetchProduct();
     }
-  }, [id, navigate, showToast, addToRecentlyViewed]);
+    
+    // ✅ Cleanup function
+    return () => {
+      isMounted = false;
+    };
+  }, [id]); // ✅ CORREGIDO: Solo depende de 'id'
 
   // Cargar productos similares con ML
   useEffect(() => {
+    let isMounted = true; // ✅ Prevenir actualizaciones después del unmount
+    
     const fetchSimilarProducts = async () => {
       if (!id) return;
 
       try {
         setSimilarLoading(true);
         const response = await getSimilarProducts(id, 6);
-        setSimilarProducts(response.data.results || response.data.similar_products || []);
+        
+        // ✅ CORREGIDO: Estructura correcta según backend
+        // Backend retorna: { success: true, data: { similar_products: [...] } }
+        if (isMounted) {
+          const similarData = response.data?.data?.similar_products 
+            || response.data?.similar_products 
+            || response.data?.results 
+            || [];
+          setSimilarProducts(Array.isArray(similarData) ? similarData : []);
+        }
       } catch (error) {
         console.error('Error al cargar productos similares:', error);
         // No mostrar error, simplemente no mostrar similares
+        if (isMounted) {
+          setSimilarProducts([]);
+        }
       } finally {
-        setSimilarLoading(false);
+        if (isMounted) {
+          setSimilarLoading(false);
+        }
       }
     };
 
     fetchSimilarProducts();
+    
+    // ✅ Cleanup function
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   const handleAddToCart = async () => {

@@ -90,6 +90,14 @@ const TopNavbar = () => {
         <div className={styles.navLinks}>
           {isAdmin ? (
             <>
+              {/* BOTÓN DASHBOARD */}
+              <NavLink
+                to="/admin/dashboard"
+                className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
+              >
+                📊 Dashboard
+              </NavLink>
+              
               {/* MÓDULO 1: GESTIÓN */}
               <div className={styles.moduleDropdown}>
                 <button className={styles.moduleButton}>
@@ -160,9 +168,10 @@ const TopNavbar = () => {
                   onClick={() => handleProductClick(product.id)}
                 >
                   <img
-                    src={product.image || 'https://via.placeholder.com/60'}
+                    src={product.image_url || product.image || 'https://via.placeholder.com/60'}
                     alt={product.name}
                     className={styles.resultImage}
+                    onError={(e) => { e.target.src = 'https://via.placeholder.com/60'; }}
                   />
                   <div className={styles.resultInfo}>
                     <span className={styles.resultName}>{product.name}</span>

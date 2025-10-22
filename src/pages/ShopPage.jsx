@@ -40,6 +40,8 @@ const ShopPage = () => {
 
   // Cargar productos con filtros
   useEffect(() => {
+    let isMounted = true; // ✅ Prevenir actualizaciones si se desmonta
+    
     const fetchProducts = async () => {
       try {
         setLoading(true);
@@ -68,16 +70,32 @@ const ShopPage = () => {
         }
         
         const response = await getProducts(filters);
-        setProducts(response.data);
+        
+        // ✅ CORREGIDO: Manejar respuesta paginada (results) o directa (array)
+        if (isMounted) {
+          const productsData = response.data.results || response.data;
+          setProducts(Array.isArray(productsData) ? productsData : []);
+        }
       } catch (err) {
-        showToast('No se pudieron cargar los productos. Por favor, intenta más tarde.', 'error');
+        console.error('Error al cargar productos:', err);
+        if (isMounted) {
+          showToast('No se pudieron cargar los productos. Por favor, intenta más tarde.', 'error');
+          setProducts([]); // ✅ Array vacío en caso de error
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
     
     fetchProducts();
-  }, [selectedCategory, sortBy, searchQuery, showToast]);
+    
+    // ✅ Cleanup function
+    return () => {
+      isMounted = false;
+    };
+  }, [selectedCategory, sortBy, searchQuery]); // ✅ REMOVIDO showToast de dependencias
 
   const handleAddToCart = async (productId) => {
     try {

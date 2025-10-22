@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCategories, createProduct, updateProduct } from '../../services/api';
+import { getCategories, createProduct, updateProduct, getProductDetail } from '../../services/api';
 import styles from '../../styles/UserFormModal.module.css'; // Reutilizaremos el estilo del modal de usuario
 
 const ProductFormModal = ({ isOpen, onClose, onProductSaved, editingProduct }) => {
@@ -30,23 +30,49 @@ const ProductFormModal = ({ isOpen, onClose, onProductSaved, editingProduct }) =
 
   // Rellena el formulario si estamos en modo de edición
   useEffect(() => {
-    if (isEditMode && editingProduct) {
-      setFormData({
-        name: editingProduct.name || '',
-        description: editingProduct.description || '',
-        price: editingProduct.price || '',
-        stock: editingProduct.stock || 0,
-        category: editingProduct.category || '',
-      });
-      // Mostrar imagen existente si hay una
-      setImagePreview(editingProduct.image || null);
-      setImageFile(null);
-    } else {
-      setFormData({
-        name: '', description: '', price: '', stock: 0, category: '',
-      });
-      setImagePreview(null);
-      setImageFile(null);
+    const loadProductData = async () => {
+      if (isEditMode && editingProduct && editingProduct.id) {
+        try {
+          // Cargar el producto completo desde el backend para asegurar que tenemos el campo 'category' (ID)
+          const response = await getProductDetail(editingProduct.id);
+          const productData = response.data;
+          
+          setFormData({
+            name: productData.name || '',
+            description: productData.description || '',
+            price: productData.price || '',
+            stock: productData.stock || 0,
+            category: productData.category || '', // ✅ Ahora obtenemos el ID de la categoría del backend
+          });
+          // ✅ Usar image_url del backend (URL completa y validada)
+          setImagePreview(productData.image_url || productData.image || null);
+          setImageFile(null);
+        } catch (err) {
+          console.error('Error al cargar producto:', err);
+          // Fallback: usar datos del producto pasado (puede no tener category ID)
+          setFormData({
+            name: editingProduct.name || '',
+            description: editingProduct.description || '',
+            price: editingProduct.price || '',
+            stock: editingProduct.stock || 0,
+            category: editingProduct.category || '',
+          });
+          // ✅ Usar image_url del backend como fallback
+          setImagePreview(editingProduct.image_url || editingProduct.image || null);
+          setImageFile(null);
+        }
+      } else {
+        // Modo creación: resetear formulario
+        setFormData({
+          name: '', description: '', price: '', stock: 0, category: '',
+        });
+        setImagePreview(null);
+        setImageFile(null);
+      }
+    };
+
+    if (isOpen) {
+      loadProductData();
     }
   }, [isOpen, editingProduct, isEditMode]);
 

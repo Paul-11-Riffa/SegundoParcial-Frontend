@@ -17,7 +17,7 @@ const AdminRoute = ({ children }) => {
   }
 
   if (!isAdmin) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/shop" />;
   }
 
   return children ? children : <Outlet />;

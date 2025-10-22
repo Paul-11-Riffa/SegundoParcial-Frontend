@@ -9,6 +9,12 @@ import { useToast } from '../context/ToastContext';
 import ReportFilters from '../components/reports/ReportFilters';
 import ReportViewer from '../components/reports/ReportViewer';
 import ReportGenerator from '../components/reports/ReportGenerator';
+import LogDetailModal from '../components/admin/LogDetailModal';
+import UserActivityModal from '../components/admin/UserActivityModal';
+import CleanLogsModal from '../components/admin/CleanLogsModal';
+import AuditCharts from '../components/admin/AuditCharts';
+import EnhancedAlerts from '../components/admin/EnhancedAlerts';
+import { TableSkeleton, StatsSkeleton, ChartsGridSkeleton, AlertsSkeleton, StatsListSkeleton } from '../components/common/SkeletonLoaders';
 import styles from '../styles/AuditPage.module.css';
 
 const AuditPage = () => {
@@ -19,23 +25,52 @@ const AuditPage = () => {
   const [alerts, setAlerts] = useState(null);
   const [loading, setLoading] = useState(false);
   const [reportData, setReportData] = useState(null);
+  const [selectedLogId, setSelectedLogId] = useState(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showUserActivityModal, setShowUserActivityModal] = useState(false);
+  const [showCleanLogsModal, setShowCleanLogsModal] = useState(false);
+  const [criticalAlertsCount, setCriticalAlertsCount] = useState(0);
   const { showToast } = useToast();
 
   // ✅ SOLUCIÓN 1: Usar ref para prevenir llamadas duplicadas
   const isLoadingRef = useRef(false);
   const hasLoadedRef = useRef({});
+  const alertsIntervalRef = useRef(null);
+
+  // Estado de paginación para logs
+  const [logsPagination, setLogsPagination] = useState({
+    currentPage: 1,
+    pageSize: 50,
+    totalCount: 0,
+    totalPages: 0,
+    hasNext: false,
+    hasPrevious: false
+  });
+
+  // Estado de paginación para sesiones
+  const [sessionsPagination, setSessionsPagination] = useState({
+    currentPage: 1,
+    pageSize: 50,
+    totalCount: 0,
+    totalPages: 0,
+    hasNext: false,
+    hasPrevious: false
+  });
 
   // Filtros para logs y reportes de auditoría
   const [filters, setFilters] = useState({
     user: '',
-    action_type: '',
+    action_type: [],      // ✅ Cambiado a array para múltiples
     start_date: '',
     end_date: '',
-    severity: '',
+    severity: [],         // ✅ Cambiado a array para múltiples
     success: '',
     ip_address: '',
     endpoint: '',
-    limit: 100
+    http_method: [],      // ✅ Nuevo filtro
+    response_status: '',  // ✅ Nuevo filtro
+    search: '',           // ✅ Nuevo filtro de búsqueda global
+    ordering: '-timestamp' // ✅ Nuevo filtro de ordenamiento
   });
 
   // Filtros para reportes de sesiones
@@ -52,13 +87,39 @@ const AuditPage = () => {
     try {
       const cleanFilters = {};
       Object.keys(filters).forEach(key => {
-        if (filters[key] !== '') {
-          cleanFilters[key] = filters[key];
+        const value = filters[key];
+        // Para arrays, solo agregar si no está vacío
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            cleanFilters[key] = value;
+          }
+        } 
+        // Para otros valores, agregar si no está vacío
+        else if (value !== '' && value !== undefined && value !== null) {
+          cleanFilters[key] = value;
         }
       });
 
-      const response = await getAuditLogs(cleanFilters);
-      setLogs(response.data);
+      const response = await getAuditLogs(
+        cleanFilters,
+        logsPagination.currentPage,
+        logsPagination.pageSize
+      );
+      
+      // ✅ Manejar respuesta paginada correctamente
+      const results = response.data.results || response.data || [];
+      setLogs(results);
+      
+      // ✅ Actualizar estado de paginación
+      if (response.data.count !== undefined) {
+        setLogsPagination(prev => ({
+          ...prev,
+          totalCount: response.data.count,
+          totalPages: Math.ceil(response.data.count / prev.pageSize),
+          hasNext: !!response.data.next,
+          hasPrevious: !!response.data.previous
+        }));
+      }
     } catch (error) {
       console.error('❌ Error al cargar logs:', error);
       // Si es 403, el usuario no tiene permisos
@@ -72,7 +133,7 @@ const AuditPage = () => {
       // ⚠️ IMPORTANTE: Lanzar error para que loadData lo capture
       throw error;
     }
-  }, [filters, showToast]);
+  }, [filters, logsPagination.currentPage, logsPagination.pageSize, showToast]);
 
   const loadStatistics = useCallback(async () => {
     try {
@@ -93,8 +154,26 @@ const AuditPage = () => {
 
   const loadSessions = useCallback(async () => {
     try {
-      const response = await getActiveSessions();
-      setSessions(response.data);
+      const response = await getActiveSessions(
+        {},
+        sessionsPagination.currentPage,
+        sessionsPagination.pageSize
+      );
+      
+      // ✅ Manejar respuesta paginada correctamente
+      const results = response.data.results || response.data || [];
+      setSessions(results);
+      
+      // ✅ Actualizar estado de paginación
+      if (response.data.count !== undefined) {
+        setSessionsPagination(prev => ({
+          ...prev,
+          totalCount: response.data.count,
+          totalPages: Math.ceil(response.data.count / prev.pageSize),
+          hasNext: !!response.data.next,
+          hasPrevious: !!response.data.previous
+        }));
+      }
     } catch (error) {
       console.error('❌ Error al cargar sesiones:', error);
       if (error.response?.status === 403) {
@@ -106,19 +185,35 @@ const AuditPage = () => {
       }
       throw error;
     }
-  }, [showToast]);
+  }, [sessionsPagination.currentPage, sessionsPagination.pageSize, showToast]);
 
-  const loadAlerts = useCallback(async () => {
+  const loadAlerts = useCallback(async (silent = false) => {
     try {
       const response = await getSecurityAlerts();
       setAlerts(response.data);
+      
+      // Contar alertas críticas
+      const criticalCount = response.data.alerts.filter(
+        alert => alert.severity === 'CRITICAL' || alert.severity === 'HIGH'
+      ).length;
+      
+      // Si hay nuevas alertas críticas y no es la carga inicial, notificar
+      if (!silent && criticalCount > criticalAlertsCount) {
+        showToast(`⚠️ ${criticalCount} alerta(s) crítica(s) detectada(s)`, 'warning');
+      }
+      
+      setCriticalAlertsCount(criticalCount);
     } catch (error) {
       console.error('❌ Error al cargar alertas:', error);
       if (error.response?.status === 403) {
-        showToast('No tienes permisos para acceder a las alertas. Requiere rol ADMIN.', 'error');
+        if (!silent) {
+          showToast('No tienes permisos para acceder a las alertas. Requiere rol ADMIN.', 'error');
+        }
         setAlerts(null);
       } else {
-        showToast('Error al cargar las alertas', 'error');
+        if (!silent) {
+          showToast('Error al cargar las alertas', 'error');
+        }
         setAlerts(null);
       }
       throw error;
@@ -201,6 +296,39 @@ const AuditPage = () => {
     };
   }, [loadData]);
 
+  // ✅ Auto-refresh para alertas de seguridad (cada 5 minutos)
+  useEffect(() => {
+    // Limpiar intervalo previo si existe
+    if (alertsIntervalRef.current) {
+      clearInterval(alertsIntervalRef.current);
+      alertsIntervalRef.current = null;
+    }
+
+    // Solo activar auto-refresh si estamos en el tab de alertas
+    if (activeTab === 'alerts') {
+      console.log('🔄 Auto-refresh de alertas activado (cada 5 minutos)');
+      
+      // Configurar intervalo de 5 minutos (300000 ms)
+      alertsIntervalRef.current = setInterval(async () => {
+        console.log('🔄 Refrescando alertas automáticamente...');
+        try {
+          await loadAlerts(true); // silent = true para no mostrar toasts en refresh automático
+        } catch (error) {
+          console.error('Error en auto-refresh de alertas:', error);
+        }
+      }, 300000); // 5 minutos
+    }
+
+    // Cleanup al cambiar de tab o desmontar
+    return () => {
+      if (alertsIntervalRef.current) {
+        console.log('🛑 Auto-refresh de alertas desactivado');
+        clearInterval(alertsIntervalRef.current);
+        alertsIntervalRef.current = null;
+      }
+    };
+  }, [activeTab, loadAlerts]);
+
   const handleFilterChange = (key, value) => {
     if (activeTab === 'audit-reports') {
       setFilters(prev => ({ ...prev, [key]: value }));
@@ -213,7 +341,8 @@ const AuditPage = () => {
 
   const handleApplyFilters = useCallback(() => {
     if (activeTab === 'logs') {
-      // ✅ Invalidar caché para forzar recarga con nuevos filtros (incluso si hubo error)
+      // ✅ Resetear a página 1 y invalidar caché
+      setLogsPagination(prev => ({ ...prev, currentPage: 1 }));
       delete hasLoadedRef.current['logs'];
       loadData();
     }
@@ -223,14 +352,17 @@ const AuditPage = () => {
     if (activeTab === 'audit-reports') {
       setFilters({
         user: '',
-        action_type: '',
+        action_type: [],
         start_date: '',
         end_date: '',
-        severity: '',
+        severity: [],
         success: '',
         ip_address: '',
         endpoint: '',
-        limit: 100
+        http_method: [],
+        response_status: '',
+        search: '',
+        ordering: '-timestamp'
       });
       setReportData(null);
     } else if (activeTab === 'session-reports') {
@@ -245,21 +377,66 @@ const AuditPage = () => {
     } else {
       setFilters({
         user: '',
-        action_type: '',
+        action_type: [],
         start_date: '',
         end_date: '',
-        severity: '',
+        severity: [],
         success: '',
         ip_address: '',
         endpoint: '',
-        limit: 100
+        http_method: [],
+        response_status: '',
+        search: '',
+        ordering: '-timestamp'
       });
-      // ✅ Invalidar caché para forzar recarga (incluso si hubo error)
+      // ✅ Resetear paginación y recargar
+      setLogsPagination(prev => ({ ...prev, currentPage: 1 }));
       delete hasLoadedRef.current['logs'];
-      // ✅ IMPORTANTE: No usar setTimeout, llamar directamente
       loadData();
     }
   }, [activeTab, loadData]);
+
+  // ✅ Funciones de paginación para logs
+  const handleLogsPageChange = useCallback((newPage) => {
+    setLogsPagination(prev => ({ ...prev, currentPage: newPage }));
+    delete hasLoadedRef.current['logs'];
+  }, []);
+
+  const handleLogsPageSizeChange = useCallback((newPageSize) => {
+    setLogsPagination(prev => ({ 
+      ...prev, 
+      pageSize: parseInt(newPageSize),
+      currentPage: 1 
+    }));
+    delete hasLoadedRef.current['logs'];
+  }, []);
+
+  // ✅ Funciones de paginación para sesiones
+  const handleSessionsPageChange = useCallback((newPage) => {
+    setSessionsPagination(prev => ({ ...prev, currentPage: newPage }));
+    delete hasLoadedRef.current['sessions'];
+  }, []);
+
+  const handleSessionsPageSizeChange = useCallback((newPageSize) => {
+    setSessionsPagination(prev => ({ 
+      ...prev, 
+      pageSize: parseInt(newPageSize),
+      currentPage: 1 
+    }));
+    delete hasLoadedRef.current['sessions'];
+  }, []);
+
+  // ✅ Función para abrir modal de detalle
+  const handleLogClick = useCallback((logId) => {
+    setSelectedLogId(logId);
+    setShowDetailModal(true);
+  }, []);
+
+  // ✅ Función para cerrar modal
+  const handleCloseModal = useCallback(() => {
+    setShowDetailModal(false);
+    setSelectedLogId(null);
+  }, []);
 
   const handleReportGenerated = (data) => {
     setReportData(data);
@@ -303,8 +480,28 @@ const AuditPage = () => {
   return (
     <div className={styles.auditPage}>
       <div className={styles.header}>
-        <h1>🔍 Sistema de Auditoría y Bitácora</h1>
-        <p>Monitoreo completo de todas las acciones del sistema con generación de reportes avanzados</p>
+        <div className={styles.headerContent}>
+          <div>
+            <h1>🔍 Sistema de Auditoría y Bitácora</h1>
+            <p>Monitoreo completo de todas las acciones del sistema con generación de reportes avanzados</p>
+          </div>
+          <div className={styles.headerActions}>
+            <button 
+              className={styles.userActivityButton}
+              onClick={() => setShowUserActivityModal(true)}
+              title="Ver actividad de usuario específico"
+            >
+              👤 Ver Actividad de Usuario
+            </button>
+            <button 
+              className={styles.cleanLogsButton}
+              onClick={() => setShowCleanLogsModal(true)}
+              title="Limpiar logs antiguos"
+            >
+              🗑️ Limpiar Logs
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -332,6 +529,9 @@ const AuditPage = () => {
           onClick={() => setActiveTab('alerts')}
         >
           ⚠️ Alertas
+          {criticalAlertsCount > 0 && (
+            <span className={styles.alertBadge}>{criticalAlertsCount}</span>
+          )}
         </button>
         <button
           className={`${styles.tab} ${activeTab === 'audit-reports' ? styles.active : ''}`}
@@ -435,30 +635,40 @@ const AuditPage = () => {
             </div>
 
             {/* Logs Table */}
-            <div className={styles.tableContainer}>
-              <table className={styles.logsTable}>
-                <thead>
-                  <tr>
-                    <th>Fecha/Hora</th>
-                    <th>Usuario</th>
-                    <th>Acción</th>
-                    <th>Endpoint</th>
-                    <th>IP</th>
-                    <th>Estado</th>
-                    <th>Tiempo (ms)</th>
-                    <th>Severidad</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {logs.length === 0 ? (
+            {loading ? (
+              <TableSkeleton rows={10} columns={9} />
+            ) : (
+              <div className={styles.tableContainer}>
+                <table className={styles.logsTable}>
+                  <thead>
                     <tr>
-                      <td colSpan="8" className={styles.noData}>
-                        No se encontraron registros
-                      </td>
+                      <th>ID</th>
+                      <th>Fecha/Hora</th>
+                      <th>Usuario</th>
+                      <th>Acción</th>
+                      <th>Endpoint</th>
+                      <th>IP</th>
+                      <th>Estado</th>
+                      <th>Tiempo (ms)</th>
+                      <th>Severidad</th>
                     </tr>
-                  ) : (
+                  </thead>
+                  <tbody>
+                    {logs.length === 0 ? (
+                      <tr>
+                        <td colSpan="9" className={styles.noData}>
+                          No se encontraron registros
+                        </td>
+                      </tr>
+                    ) : (
                     logs.map((log) => (
-                      <tr key={log.id}>
+                      <tr 
+                        key={log.id} 
+                        onClick={() => handleLogClick(log.id)}
+                        className={styles.clickableRow}
+                        title="Click para ver detalles completos"
+                      >
+                        <td className={styles.logId}>#{log.id}</td>
                         <td>{formatDate(log.timestamp)}</td>
                         <td className={styles.username}>{log.username}</td>
                         <td>
@@ -489,13 +699,69 @@ const AuditPage = () => {
                 </tbody>
               </table>
             </div>
+            )}
+
+            {/* Paginación */}
+            {logs.length > 0 && (
+              <div className={styles.paginationContainer}>
+                <div className={styles.paginationInfo}>
+                  Mostrando {logs.length} de {logsPagination.totalCount} registros
+                </div>
+                
+                <div className={styles.paginationControls}>
+                  <button
+                    className={styles.paginationButton}
+                    onClick={() => handleLogsPageChange(logsPagination.currentPage - 1)}
+                    disabled={!logsPagination.hasPrevious || loading}
+                  >
+                    ← Anterior
+                  </button>
+                  
+                  <span className={styles.paginationText}>
+                    Página {logsPagination.currentPage} de {logsPagination.totalPages}
+                  </span>
+                  
+                  <button
+                    className={styles.paginationButton}
+                    onClick={() => handleLogsPageChange(logsPagination.currentPage + 1)}
+                    disabled={!logsPagination.hasNext || loading}
+                  >
+                    Siguiente →
+                  </button>
+                </div>
+
+                <div className={styles.pageSizeSelector}>
+                  <label>Registros por página:</label>
+                  <select
+                    value={logsPagination.pageSize}
+                    onChange={(e) => handleLogsPageSizeChange(e.target.value)}
+                    disabled={loading}
+                  >
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                  </select>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
         {/* STATISTICS TAB */}
-        {activeTab === 'statistics' && statistics && (
-          <div className={styles.statisticsTab}>
-            <div className={styles.statsGrid}>
+        {activeTab === 'statistics' && (
+          loading ? (
+            <div className={styles.statisticsTab}>
+              <ChartsGridSkeleton charts={4} />
+              <StatsSkeleton cards={4} />
+              <StatsListSkeleton items={8} />
+            </div>
+          ) : statistics ? (
+            <div className={styles.statisticsTab}>
+              {/* Gráficas Interactivas */}
+              <AuditCharts statistics={statistics} />
+
+              <div className={styles.statsGrid}>
               {/* Summary Cards */}
               <div className={styles.statsCard}>
                 <div className={styles.statsIcon}>📊</div>
@@ -575,13 +841,19 @@ const AuditPage = () => {
               </div>
             </div>
           </div>
+          ) : (
+            <div className={styles.noData}>No hay estadísticas disponibles</div>
+          )
         )}
 
         {/* SESSIONS TAB */}
         {activeTab === 'sessions' && (
-          <div className={styles.sessionsTab}>
-            <h3>👥 Sesiones Activas ({sessions.length})</h3>
-            <div className={styles.tableContainer}>
+          loading ? (
+            <TableSkeleton rows={8} columns={6} />
+          ) : (
+            <div className={styles.sessionsTab}>
+              <h3>👥 Sesiones Activas ({sessions.length})</h3>
+              <div className={styles.tableContainer}>
               <table className={styles.sessionsTable}>
                 <thead>
                   <tr>
@@ -620,39 +892,18 @@ const AuditPage = () => {
               </table>
             </div>
           </div>
+          )
         )}
 
         {/* ALERTS TAB */}
-        {activeTab === 'alerts' && alerts && (
-          <div className={styles.alertsTab}>
-            <h3>⚠️ Alertas de Seguridad ({alerts.total_alerts})</h3>
-            <p className={styles.alertsPeriod}>Últimas {alerts.period}</p>
-            
-            <div className={styles.alertsList}>
-              {alerts.alerts.length === 0 ? (
-                <div className={styles.noAlerts}>
-                  ✓ No hay alertas de seguridad
-                </div>
-              ) : (
-                alerts.alerts.map((alert, index) => (
-                  <div key={index} className={`${styles.alertCard} ${styles[alert.severity.toLowerCase()]}`}>
-                    <div className={styles.alertHeader}>
-                      <span className={styles.alertType}>
-                        {alert.type === 'failed_login_attempts' && '🔒 Intentos de Login Fallidos'}
-                        {alert.type === 'multiple_ips' && '🌐 Múltiples IPs'}
-                        {alert.type === 'critical_actions' && '🚨 Acciones Críticas'}
-                      </span>
-                      <span className={styles.alertSeverity}>{alert.severity}</span>
-                    </div>
-                    <p className={styles.alertMessage}>{alert.message}</p>
-                    {alert.ip && <p className={styles.alertDetail}>IP: {alert.ip}</p>}
-                    {alert.username && <p className={styles.alertDetail}>Usuario: {alert.username}</p>}
-                    {alert.count && <p className={styles.alertDetail}>Cantidad: {alert.count}</p>}
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+        {activeTab === 'alerts' && (
+          loading ? (
+            <AlertsSkeleton items={6} />
+          ) : alerts ? (
+            <EnhancedAlerts alerts={alerts} />
+          ) : (
+            <div className={styles.noData}>No hay alertas disponibles</div>
+          )
         )}
 
         {/* AUDIT REPORTS TAB */}
@@ -707,6 +958,35 @@ const AuditPage = () => {
           </div>
         )}
       </div>
+
+      {/* Modal de Detalle de Log */}
+      {showDetailModal && selectedLogId && (
+        <LogDetailModal 
+          logId={selectedLogId}
+          onClose={handleCloseModal}
+        />
+      )}
+
+      {/* Modal de Actividad de Usuario */}
+      {showUserActivityModal && (
+        <UserActivityModal 
+          onClose={() => setShowUserActivityModal(false)}
+        />
+      )}
+
+      {/* Modal de Limpieza de Logs */}
+      {showCleanLogsModal && (
+        <CleanLogsModal 
+          onClose={() => setShowCleanLogsModal(false)}
+          onSuccess={() => {
+            // Recargar los logs después de la limpieza
+            delete hasLoadedRef.current['logs'];
+            if (activeTab === 'logs') {
+              loadData();
+            }
+          }}
+        />
+      )}
     </div>
   );
 };

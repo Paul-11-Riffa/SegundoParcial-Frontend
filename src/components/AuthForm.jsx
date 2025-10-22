@@ -46,7 +46,7 @@ const AuthForm = ({formType, onSubmit, title, subtitle}) => {
                 // 4. Redirigir según el rol del usuario
                 const userRole = profileResponse.data.profile?.role;
                 if (userRole === 'ADMIN') {
-                    navigate('/admin/ml-dashboard');
+                    navigate('/admin/dashboard');
                 } else {
                     navigate('/shop');
                 }

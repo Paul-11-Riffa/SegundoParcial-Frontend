@@ -3,7 +3,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ResponsiveContainer, Cell
 } from 'recharts';
-import styles from '../../styles/MLDashboardPage.module.css';
+import styles from '../../styles/AdminDashboard.module.css';
 
 const RANK_COLORS = {
   1: '#FFD700', // Oro
