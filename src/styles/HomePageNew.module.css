@@ -1,0 +1,356 @@
+/* ========================================
+   HOMEPAGE - LA TIENDA ABIERTA
+   Estilo Apple/Nike - Sin fricción
+   ======================================== */
+
+.homePage {
+  width: 100%;
+  background: #ffffff;
+}
+
+/* SECCIÓN HERO - La Imagen Aspiracional */
+.heroSection {
+  position: relative;
+  width: 100%;
+  height: 85vh;
+  min-height: 600px;
+  overflow: hidden;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(25, 35, 56, 0.7) 0%,
+    rgba(30, 46, 79, 0.5) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroContent {
+  text-align: center;
+  color: white;
+  max-width: 800px;
+  padding: 2rem;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0 0 2.5rem 0;
+  opacity: 0.95;
+}
+
+.heroCTA {
+  padding: 1.25rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  background: white;
+  color: #192338;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.heroCTA:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  background: #f8f9fa;
+}
+
+/* CONTENEDOR GENERAL */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* TÍTULOS DE SECCIÓN */
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 0 0 1rem 0;
+  letter-spacing: -1px;
+}
+
+/* CATEGORÍAS VISUALES */
+.categoriesSection {
+  padding: 6rem 0;
+  background: #f8f9fa;
+}
+
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.categoryCard {
+  position: relative;
+  height: 400px;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.categoryCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.categoryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.categoryCard:hover .categoryImage {
+  transform: scale(1.1);
+}
+
+.categoryOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    transparent 100%
+  );
+  color: white;
+}
+
+.categoryName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.categoryDesc {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* MARCAS DE CONFIANZA */
+.brandsSection {
+  padding: 6rem 0;
+  background: white;
+}
+
+.brandsSubtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin: 0 0 3rem 0;
+}
+
+.brandsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.brandCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+  transition: all 0.2s ease;
+}
+
+.brandCard:hover {
+  border-color: #192338;
+  background: white;
+  box-shadow: 0 4px 12px rgba(25, 35, 56, 0.1);
+}
+
+.brandName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #192338;
+}
+
+/* CTA FINAL */
+.finalCTA {
+  padding: 6rem 0;
+  background: linear-gradient(135deg, #192338 0%, #1E2E4F 100%);
+  color: white;
+  text-align: center;
+}
+
+.finalTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  letter-spacing: -1px;
+}
+
+.finalSubtitle {
+  font-size: 1.3rem;
+  opacity: 0.9;
+  margin: 0 0 2.5rem 0;
+}
+
+.finalButton {
+  padding: 1.25rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: 2px solid white;
+  border-radius: 50px;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.finalButton:hover {
+  background: white;
+  color: #192338;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* PRODUCTOS DESTACADOS - CATÁLOGO REAL */
+.productsSection {
+  padding: 6rem 0;
+  background: white;
+}
+
+.productsSubtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin: 0 0 4rem 0;
+}
+
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.loadingCategories {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+.viewAllContainer {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.viewAllButton {
+  padding: 1rem 3rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: 2px solid #192338;
+  border-radius: 50px;
+  background: transparent;
+  color: #192338;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.viewAllButton:hover {
+  background: #192338;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(25, 35, 56, 0.2);
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.2rem;
+  }
+
+  .categoriesGrid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .categoryCard {
+    height: 350px;
+  }
+}
+
+@media (max-width: 576px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .heroCTA,
+  .finalButton {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .finalTitle {
+    font-size: 2rem;
+  }
+
+  .categoriesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .productsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+}

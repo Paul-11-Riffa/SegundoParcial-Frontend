@@ -1,23 +1,50 @@
-/* Grid View Card */
+/* ========================================
+   PRODUCT CARD - PREMIUM ART STYLE
+   Inspirado en: Apple Store, Nike SNKRS
+   Filosofía: El producto como obra de arte
+   ======================================== */
+
+/* ========================================
+   GRID VIEW CARD - Borderless, Shadow-only
+   ======================================== */
+
 .card {
-  background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: var(--surface);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--transition-slow);
+  border: none; /* SIN BORDES - Solo sombra */
   position: relative;
+  cursor: pointer;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: var(--shadow-2xl);
 }
 
-/* List View Card */
+.card:hover::before {
+  opacity: 0.03;
+}
+
+/* ========================================
+   LIST VIEW CARD
+   ======================================== */
+
 .card.listView {
   flex-direction: row;
   max-width: 100%;
@@ -31,210 +58,309 @@
 
 .card.listView .content {
   flex: 1;
-  padding: 2rem;
+  padding: var(--space-8);
 }
 
 .card.listView .footer {
-  margin-top: 1.5rem;
+  margin-top: var(--space-6);
 }
 
-/* Image Container */
+/* ========================================
+   IMAGE CONTAINER - Clean Float Style (Apple)
+   ======================================== */
+
 .imageContainer {
   width: 100%;
-  height: 320px;
+  height: 380px; /* Más alto, más impactante */
   overflow: hidden;
   position: relative;
-  background-color: #f9fafb;
+  /* Fondo neutro limpio - permite que el producto "flote" */
+  background: #f5f5f7;
+}
+
+.imageContainer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, transparent 60%, rgba(0, 0, 0, 0.6) 100%);
+  opacity: 1; /* Siempre visible para legibilidad del texto */
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+
+.card:hover .imageContainer::after {
+  opacity: 0.8;
 }
 
 .image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* REGLA DE ORO: El producto flota en su espacio */
+  object-fit: contain;
+  transition: transform var(--transition-slow);
+  /* Pequeño padding para que el producto respire */
+  padding: var(--space-4);
 }
 
 .card:hover .image {
-  transform: scale(1.08);
+  transform: scale(1.05); /* Escala reducida para contain */
 }
 
-/* Badges Container */
+/* ========================================
+   BADGES - Estado del producto
+   ======================================== */
+
 .badges {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
+  top: var(--space-4);
+  left: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
   z-index: 2;
 }
 
 .badge {
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-xs);
+  font-weight: var(--font-bold);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-sm);
 }
 
 .outOfStockBadge {
-  background-color: rgba(239, 68, 68, 0.95);
+  background: rgba(239, 68, 68, 0.95);
   color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .lowStockBadge {
-  background-color: rgba(251, 191, 36, 0.95);
-  color: #000000;
+  background: rgba(251, 191, 36, 0.95);
+  color: var(--gray-900);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Category Badge */
+/* ========================================
+   CATEGORY BADGE - Top Right, subtle
+   ======================================== */
+
 .categoryBadge {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  background-color: rgba(0, 0, 0, 0.75);
-  color: #ffffff;
-  padding: 0.4rem 0.9rem;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  font-weight: 600;
+  top: var(--space-4);
+  right: var(--space-4);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text-secondary);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 2;
+  border: 1px solid var(--border-light);
+  opacity: 0.9;
+  transition: all var(--transition-base);
 }
 
-/* Quick Actions Overlay */
+.card:hover .categoryBadge {
+  opacity: 1;
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.05);
+}
+
+/* ========================================
+   QUICK ACTIONS - Botones flotantes
+   ======================================== */
+
 .quickActions {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: var(--space-4);
+  right: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  animation: fadeInRight 0.3s ease;
+  gap: var(--space-2);
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all var(--transition-base);
   z-index: 3;
 }
 
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.card:hover .quickActions {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .quickActionBtn {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: var(--radius-lg);
   border: none;
-  background-color: rgba(255, 255, 255, 0.95);
-  color: #000000;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-size: var(--text-lg);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .quickActionBtn:hover {
-  background-color: #000000;
+  background: var(--gradient-primary);
   color: #ffffff;
-  transform: scale(1.1);
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: var(--shadow-primary);
 }
 
-/* Content */
+.quickActionBtn:active {
+  transform: scale(0.95);
+}
+
+/* ========================================
+   CONTENT - OVERLAYED ON IMAGE (Apple Style)
+   ======================================== */
+
 .content {
-  padding: 1.5rem;
-  flex-grow: 1;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
+  gap: var(--space-2);
+  z-index: 3;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.95) 20%, rgba(255, 255, 255, 1) 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform: translateY(0);
+  transition: all var(--transition-base);
+}
+
+.card:hover .content {
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.98) 10%, rgba(255, 255, 255, 1) 90%);
 }
 
 .name {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin: 0 0 0.75rem;
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.3;
+  transition: color var(--transition-fast);
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 2.8em;
-  line-height: 1.4;
-  transition: color 0.2s ease;
 }
 
 .card:hover .name {
-  color: #e5e7eb;
+  color: var(--primary);
 }
 
 .description {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
-  flex-grow: 1;
-  margin-bottom: 1.25rem;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* Footer */
+/* ========================================
+   FOOTER - Precio y botón (dentro de content)
+   ======================================== */
+
 .footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto;
-  gap: 1rem;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
 }
 
 .priceSection {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--space-1);
 }
 
 .price {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -0.5px;
+  font-size: var(--text-3xl);
+  font-weight: var(--font-extrabold);
+  color: var(--text-primary);
+  letter-spacing: -1px;
 }
 
 .stockWarning {
-  font-size: 0.7rem;
-  color: #fbbf24;
-  font-weight: 600;
+  font-size: var(--text-xs);
+  color: var(--warning);
+  font-weight: var(--font-semibold);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
 }
 
-/* Add Button */
+.stockWarning::before {
+  content: '⚠';
+  font-size: var(--text-sm);
+}
+
+/* ========================================
+   ADD BUTTON - Botón premium
+   ======================================== */
+
 .addButton {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: var(--gradient-primary);
   color: white;
   border: none;
-  border-radius: 50px;
-  padding: 0.75rem 1.25rem;
-  font-size: 1rem;
-  font-weight: 500;
+  border-radius: var(--radius-full);
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.addButton::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
 
 .addButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+  box-shadow: var(--shadow-primary);
+}
+
+.addButton:hover:not(:disabled)::before {
+  opacity: 1;
 }
 
 .addButton:active:not(:disabled) {
@@ -242,26 +368,20 @@
 }
 
 .addButton:disabled {
-  background-color: #d1d5db;
+  background: var(--gray-200);
   cursor: not-allowed;
-  color: #9ca3af;
+  color: var(--gray-500);
+  box-shadow: none;
 }
 
-/* Adding State - Loading Animation */
+/* ========================================
+   ADDING STATE - Loading animation
+   ======================================== */
+
 .addButton.adding {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: var(--gradient-primary);
   pointer-events: none;
   position: relative;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
 }
 
 .addButton.adding::after {
@@ -270,8 +390,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: #ffffff;
   border-radius: 50%;
@@ -284,19 +404,22 @@
   }
 }
 
-/* Added State - Success Animation */
+/* ========================================
+   ADDED STATE - Success feedback
+   ======================================== */
+
 .addButton.added {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  animation: successPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  background: linear-gradient(135deg, var(--success) 0%, var(--success-600) 100%);
+  animation: successBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   pointer-events: none;
 }
 
-@keyframes successPop {
+@keyframes successBounce {
   0% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.15);
+    transform: scale(1.1);
   }
   100% {
     transform: scale(1);
@@ -304,12 +427,15 @@
 }
 
 .addButton.added:hover {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--success) 0%, var(--success-600) 100%);
   transform: scale(1);
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+  box-shadow: var(--shadow-success);
 }
 
-/* Responsive */
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
 @media (max-width: 768px) {
   .card.listView {
     flex-direction: column;
@@ -321,7 +447,7 @@
   }
 
   .card.listView .content {
-    padding: 1.5rem;
+    padding: var(--space-6);
   }
 
   .imageContainer {
@@ -329,6 +455,16 @@
   }
 
   .price {
-    font-size: 1.3rem;
+    font-size: var(--text-xl);
+  }
+
+  .quickActions {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .categoryBadge {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

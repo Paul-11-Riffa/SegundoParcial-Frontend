@@ -4,9 +4,9 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { FaMicrophone, FaFilePdf, FaFileExcel, FaSearch, FaSpinner } from 'react-icons/fa';
+import { FaMicrophone, FaFilePdf, FaFileExcel, FaSearch, FaSpinner, FaList } from 'react-icons/fa';
 import useSpeechRecognition from '../hooks/useSpeechRecognition';
-import { generateDynamicReport } from '../services/api';
+import { generateDynamicReport, getAvailableReports } from '../services/api';
 import ReportViewer from '../components/reports/ReportViewer';
 import '../styles/ReportsPage.css';
 
@@ -15,6 +15,8 @@ const ReportsPage = () => {
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [availableReports, setAvailableReports] = useState([]);
+  const [loadingReports, setLoadingReports] = useState(true);
   const wasListeningRef = useRef(false);
   
   const {
@@ -43,6 +45,25 @@ const ReportsPage = () => {
     }
     wasListeningRef.current = isListening;
   }, [isListening, transcript]);
+
+  // Cargar reportes disponibles
+  useEffect(() => {
+    const fetchAvailableReports = async () => {
+      try {
+        setLoadingReports(true);
+        const response = await getAvailableReports();
+        if (response.data && Array.isArray(response.data)) {
+          setAvailableReports(response.data);
+        }
+      } catch (err) {
+        console.error('Error fetching available reports:', err);
+      } finally {
+        setLoadingReports(false);
+      }
+    };
+
+    fetchAvailableReports();
+  }, []);
 
   // Ejemplos de prompts
   const examplePrompts = [
@@ -171,6 +192,40 @@ const ReportsPage = () => {
             )}
           </button>
         </div>
+
+        {/* Available Reports */}
+        {!loadingReports && availableReports.length > 0 && (
+          <div className="available-reports-section">
+            <h3>
+              <FaList />
+              {' '}Reportes Disponibles
+            </h3>
+            <div className="reports-grid">
+              {availableReports.map((report, index) => (
+                <div key={index} className="report-card">
+                  <div className="report-header">
+                    <h4>{report.name || report.title}</h4>
+                    {report.requires_admin && (
+                      <span className="admin-badge">Admin</span>
+                    )}
+                  </div>
+                  {report.description && (
+                    <p className="report-description">{report.description}</p>
+                  )}
+                  {report.example_prompt && (
+                    <button
+                      className="use-prompt-btn"
+                      onClick={() => handleExampleClick(report.example_prompt)}
+                      disabled={loading}
+                    >
+                      Usar ejemplo
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Ejemplos de prompts */}
         <div className="examples-section">

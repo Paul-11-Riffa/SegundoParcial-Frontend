@@ -1,100 +1,132 @@
-.authPage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #1e1e1e;
-  padding: 2rem;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cpath d="M0,50 C25,25 75,75 100,50 L100,100 L0,100 Z" fill="%23242424"/%3E%3Cpath d="M0,50 C25,75 75,25 100,50 L100,0 L0,0 Z" fill="%23282828"/%3E%3C/svg%3E');
+/* ========================================
+   SPLIT SCREEN - DISEÑO PROFESIONAL
+   Inspirado en Apple, Nike, Samsung
+   ======================================== */
+
+/* Paleta Oxford Blue */
+:root {
+  --oxford-blue: #192338;
+  --space-cadet: #1E2E4F;
+  --yinmn-blue: #31487A;
+  --jordy-blue: #8FB3E2;
+  --lavender: #D9E1F1;
+  --white: #FFFFFF;
+  --light-gray: #F8F9FA;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6c757d;
 }
 
-.container {
-  display: flex;
-  width: 90%;
-  max-width: 900px; /* Tamaño reducido */
-  min-height: 500px; /* Altura reducida */
-  background-color: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+/* Contenedor principal - Sin padding, sin márgenes */
+.authPage {
+  min-height: 100vh;
+  width: 100vw;
   overflow: hidden;
 }
 
-/* Añadir al final del archivo AuthPages.module.css */
-.container.singlePanel {
-    max-width: 500px; /* Ancho más adecuado para un solo panel */
+/* Split Screen 50/50 */
+.splitScreen {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
 }
 
-.formPanel {
+/* ========================================
+   LADO A - EL FORMULARIO (La Acción)
+   Fondo limpio, funcional, ordenado
+   ======================================== */
+
+.formSide {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem;
-  background-color: #f7f7f8;
+  background: var(--white);
+  padding: 3rem 2rem;
+  min-height: 100vh;
 }
 
-.formWrapper {
+.formContainer {
   width: 100%;
-  max-width: 380px; /* Ancho del formulario reducido */
+  max-width: 440px;
 }
 
-.brandingPanel {
+/* Footer links */
+.footerLinks {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.footerLinks p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.linkText {
+  color: var(--oxford-blue);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.linkText:hover {
+  color: var(--jordy-blue);
+}
+
+/* ========================================
+   LADO B - LA IMAGEN (La Emoción)
+   Imagen full-bleed, sin texto
+   ======================================== */
+
+.imageSide {
   flex: 1;
   position: relative;
-  display: flex;
-  color: white;
   overflow: hidden;
+  min-height: 100vh;
 }
 
-.brandingImage {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* Imagen aspiracional - ocupa 100% del espacio */
+.aspirationalImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.1);
-  transition: transform 0.5s ease-out;
+  object-position: center;
+  display: block;
+  /* Sin overlay, sin texto - la imagen habla por sí sola */
 }
 
-.container:hover .brandingImage {
-    transform: scale(1);
-}
-
-.brandingOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(13, 27, 62, 0.8), rgba(28, 54, 128, 0.4));
-    z-index: 1;
-}
-
-.brandingContent {
-    position: relative;
-    z-index: 2;
-    margin: auto 3rem 3rem 3rem;
-    align-self: flex-end;
-}
-
-.brandingContent p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.brandingContent p:first-child {
-    font-weight: 600;
-     color: white;
-     margin-bottom: 0.5rem;
-}
+/* ========================================
+   RESPONSIVE - Mobile First
+   ======================================== */
 
 @media (max-width: 992px) {
-  .brandingPanel {
-    display: none;
+  .splitScreen {
+    flex-direction: column;
   }
-  .formPanel {
-    flex-basis: 100%;
+
+  .imageSide {
+    min-height: 40vh;
+    order: -1; /* Imagen arriba en móvil */
+  }
+
+  .formSide {
+    min-height: 60vh;
+    padding: 2rem 1.5rem;
+  }
+
+  .formContainer {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .imageSide {
+    min-height: 30vh;
+  }
+
+  .formSide {
+    padding: 1.5rem 1rem;
   }
 }

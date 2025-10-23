@@ -1,163 +1,470 @@
+/* ========================================
+   SIDEBAR - Premium Design con Glassmorphism
+   Inspirado en: macOS Big Sur, Windows 11, Linear
+   ======================================== */
+
 .sidebar {
   width: 280px;
-  background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
-  color: #d1d5db;
+  background: var(--gradient-dark);
+  color: var(--text-on-dark);
   display: flex;
   flex-direction: column;
-  padding: 2rem 1.5rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+  padding: var(--space-8) var(--space-6);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-xl);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Efecto glassmorphism overlay */
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Decorative gradient orb */
+.sidebar::after {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========================================
+   HEADER - Logo y Perfil
+   ======================================== */
+
 .header {
-  margin-bottom: 2.5rem;
+  margin-bottom: var(--space-10);
+  position: relative;
+  z-index: 1;
 }
 
 .logo {
-  color: #ffffff;
-  font-size: 1.75rem;
+  font-size: var(--text-3xl);
   text-align: left;
-  margin-bottom: 2rem;
-  letter-spacing: 3px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
+  margin-bottom: var(--space-8);
+  letter-spacing: -0.5px;
+  font-weight: var(--font-extrabold);
+  background: linear-gradient(135deg, #ffffff 0%, var(--primary-200) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
+  display: inline-block;
 }
+
+.logo::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+/* ========================================
+   PERFIL - Tarjeta moderna
+   ======================================== */
 
 .profile {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: var(--space-3);
+  background: rgba(255, 255, 255, 0.08);
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-base);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
 
 .profile:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.profile:hover::before {
+  opacity: 0.1;
 }
 
 .avatar {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: var(--radius-xl);
+  background: var(--gradient-primary);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  font-weight: var(--font-bold);
+  font-size: var(--text-lg);
+  box-shadow: var(--shadow-primary);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.avatar::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-xl);
+  z-index: -1;
+  opacity: 0.3;
+  filter: blur(8px);
 }
 
 .profileInfo {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: var(--space-1);
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .name {
   color: #ffffff;
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .role {
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
-  color: #9ca3af;
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: var(--font-medium);
   letter-spacing: 0.5px;
 }
+
+/* ========================================
+   NAVEGACIÓN - Enlaces modernos
+   ======================================== */
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: var(--space-2);
   flex-grow: 1;
-  margin-top: 0.5rem;
+  margin-top: var(--space-4);
+  position: relative;
+  z-index: 1;
 }
 
 .navLink {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
-  padding: 0.85rem 1rem;
-  border-radius: 10px;
-  color: #d1d5db;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 500;
-  font-size: 0.9rem;
+  transition: all var(--transition-base);
+  font-weight: var(--font-medium);
+  font-size: var(--text-sm);
   position: relative;
+  overflow: hidden;
 }
 
-.navLink:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  transform: translateX(4px);
-}
-
-.navLink.active {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.navLink.active::before {
+.navLink::before {
   content: '';
   position: absolute;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 4px;
-  height: 70%;
-  background-color: #ffffff;
-  border-radius: 0 4px 4px 0;
+  width: 0;
+  height: 60%;
+  background: var(--primary);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  transition: width var(--transition-base);
+  box-shadow: 0 0 20px var(--primary);
 }
+
+.navLink svg {
+  font-size: var(--text-lg);
+  transition: all var(--transition-base);
+  position: relative;
+  z-index: 1;
+}
+
+.navLink span {
+  position: relative;
+  z-index: 1;
+}
+
+.navLink:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.95);
+  transform: translateX(4px);
+}
+
+.navLink:hover svg {
+  transform: scale(1.1);
+}
+
+.navLink.active {
+  background: rgba(14, 165, 233, 0.15);
+  color: #ffffff;
+  font-weight: var(--font-semibold);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+.navLink.active::before {
+  width: 4px;
+}
+
+.navLink.active svg {
+  color: var(--primary-300);
+  filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.5));
+}
+
+/* ========================================
+   FOOTER - Botón de logout
+   ======================================== */
 
 .footer {
   margin-top: auto;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .logoutButton {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.9rem;
-  padding: 0.85rem 1rem;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
   background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   color: #fca5a5;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: left;
-  border-radius: 10px;
-  transition: all 0.3s ease;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  text-align: center;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.logoutButton::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--error-500) 0%, var(--error-700) 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.logoutButton svg,
+.logoutButton span {
+  position: relative;
+  z-index: 1;
 }
 
 .logoutButton:hover {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: #ffffff;
   border-color: transparent;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-error);
 }
 
-/* Responsive */
+.logoutButton:hover::before {
+  opacity: 1;
+}
+
+.logoutButton:hover {
+  color: #ffffff;
+}
+
+.logoutButton:active {
+  transform: translateY(0);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
 @media (max-width: 1024px) {
   .sidebar {
     width: 240px;
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .logo {
+    font-size: var(--text-2xl);
+  }
+
+  .navLink {
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform var(--transition-slow);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+/* ========================================
+   MÓDULOS COLAPSABLES - Nueva Estructura
+   ======================================== */
+
+.moduleSection {
+  margin-bottom: var(--space-3);
+  position: relative;
+  z-index: 1;
+}
+
+.moduleHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+  color: #ffffff;
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.moduleHeader:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.moduleTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.moduleIcon {
+  font-size: var(--text-lg);
+  color: var(--primary-300);
+}
+
+.moduleHeader svg:last-child {
+  font-size: var(--text-sm);
+  opacity: 0.7;
+  transition: transform var(--transition-base);
+}
+
+.moduleLinks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  padding-left: var(--space-4);
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+  margin-left: var(--space-4);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.moduleLinks .navLink {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.moduleLinks .navLink svg {
+  font-size: var(--text-base);
+}
+
+/* Responsive para módulos */
+@media (max-width: 1024px) {
+  .moduleHeader {
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .moduleTitle {
+    gap: var(--space-2);
+  }
+
+  .moduleIcon {
+    font-size: var(--text-base);
+  }
+
+  .moduleLinks {
+    padding-left: var(--space-3);
+    margin-left: var(--space-3);
+  }
+
+  .moduleLinks .navLink {
+    padding: var(--space-2);
+    font-size: var(--text-xs);
   }
 }

@@ -1,0 +1,147 @@
+/* ========================================
+   TRUST BADGES - Premium Style
+   Sin logos genéricos. Texto elegante + íconos.
+   ======================================== */
+
+.trustBadges {
+  display: flex;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+.trustBadges.horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.trustBadges.vertical {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ========================================
+   INDIVIDUAL BADGE
+   ======================================== */
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-base);
+  border: 1px solid var(--border-light);
+  flex: 1;
+  min-width: 240px;
+}
+
+.badge:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Ícono del badge */
+.icon {
+  font-size: var(--text-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+  transition: all var(--transition-base);
+}
+
+/* Texto del badge */
+.text {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  line-height: var(--leading-tight);
+  flex: 1;
+}
+
+/* ========================================
+   COLOR VARIANTS - Usa paleta DOMUS
+   ======================================== */
+
+.badge.primary .icon {
+  background: var(--primary-50);
+  color: var(--primary-600);
+}
+
+.badge.primary:hover .icon {
+  background: var(--primary-100);
+  transform: scale(1.1);
+}
+
+.badge.success .icon {
+  background: var(--success-50);
+  color: var(--success-600);
+}
+
+.badge.success:hover .icon {
+  background: var(--success-100);
+  transform: scale(1.1);
+}
+
+.badge.info .icon {
+  background: var(--info-50);
+  color: var(--info-600);
+}
+
+.badge.info:hover .icon {
+  background: var(--info-100);
+  transform: scale(1.1);
+}
+
+.badge.secondary .icon {
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+.badge.secondary:hover .icon {
+  background: var(--gray-200);
+  transform: scale(1.1);
+}
+
+/* ========================================
+   COMPACT VARIANT (for cart page)
+   ======================================== */
+
+.trustBadges.compact .badge {
+  padding: var(--space-2) var(--space-4);
+  min-width: auto;
+  border: none;
+  background: transparent;
+}
+
+.trustBadges.compact .icon {
+  width: 24px;
+  height: 24px;
+  font-size: var(--text-base);
+}
+
+.trustBadges.compact .text {
+  font-size: var(--text-xs);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .trustBadges.horizontal {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .badge {
+    min-width: auto;
+    width: 100%;
+  }
+}

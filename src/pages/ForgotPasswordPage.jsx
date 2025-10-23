@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { requestPasswordReset } from '../services/api';
-import styles from '../styles/AuthPages.module.css'; // Reutilizamos estilos
-import formStyles from '../styles/AuthForm.module.css'; // Reutilizamos estilos
+import styles from '../styles/AuthPages.module.css';
+import formStyles from '../styles/AuthForm.module.css';
+import domusLogo from '../assets/domus-logo.jpg';
+import forgotPasswordImage from '../assets/cocina-atardecer.jpg';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
@@ -25,20 +27,29 @@ const ForgotPasswordPage = () => {
 
   return (
     <div className={styles.authPage}>
-      <div className={`${styles.container} ${styles.singlePanel}`}>
-        <div className={styles.formPanel}>
-          <div className={styles.formWrapper}>
+      <div className={styles.splitScreen}>
+        {/* LADO A - EL FORMULARIO */}
+        <div className={styles.formSide}>
+          <div className={styles.formContainer}>
+            {/* Logo DOMUS */}
+            <div className={formStyles.logoContainer}>
+              <img src={domusLogo} alt="DOMUS" className={formStyles.logo} />
+            </div>
+
+            {/* Título */}
             <div className={formStyles.header}>
-              <h1 className={formStyles.title}>¿Olvidaste tu Contraseña?</h1>
+              <h1 className={formStyles.title}>¿Olvidaste tu contraseña?</h1>
               <p className={formStyles.subtitle}>
-                ¡No te preocupes! Ingresa tu correo y te enviaremos un enlace de recuperación.
+                No te preocupes, te enviaremos instrucciones de recuperación
               </p>
             </div>
 
             {message ? (
               <div className={formStyles.successMessage}>
                 <p>{message}</p>
-                <Link to="/login" className={formStyles.backLink}>Volver al Inicio de Sesión</Link>
+                <Link to="/login" className={formStyles.backLink}>
+                  Volver al inicio de sesión
+                </Link>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className={formStyles.form}>
@@ -46,19 +57,37 @@ const ForgotPasswordPage = () => {
                   <input
                     type="email"
                     name="email"
-                    placeholder="Ingresa tu correo electrónico"
+                    placeholder="Correo electrónico"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     className={formStyles.input}
                   />
                 </div>
-                <button type="submit" className={formStyles.submitButton} disabled={isLoading}>
-                  {isLoading ? 'Enviando...' : 'Enviar Enlace de Recuperación'}
+                
+                <button 
+                  type="submit" 
+                  className={formStyles.submitButton} 
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Enviando...' : 'Enviar enlace'}
                 </button>
               </form>
             )}
+
+            <div className={styles.footerLinks}>
+              <p>
+                <Link to="/login" className={styles.linkText}>
+                  ← Volver al inicio de sesión
+                </Link>
+              </p>
+            </div>
           </div>
+        </div>
+
+        {/* LADO B - LA IMAGEN */}
+        <div className={styles.imageSide}>
+          <img src={forgotPasswordImage} alt="" className={styles.aspirationalImage} />
         </div>
       </div>
     </div>

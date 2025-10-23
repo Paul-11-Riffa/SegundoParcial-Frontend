@@ -38,10 +38,11 @@ const RecentlyViewed = () => {
               onClick={() => handleProductClick(product.id)}
             >
               <div className={styles.imageContainer}>
-                <img
-                  src={product.image || 'https://via.placeholder.com/200x200.png?text=No+Image'}
+                <img 
+                  src={product.image_url || product.image || 'https://via.placeholder.com/200x200.png?text=No+Image'}
                   alt={product.name}
                   className={styles.image}
+                  onError={(e) => { e.target.src = 'https://via.placeholder.com/200x200.png?text=No+Image'; }}
                 />
                 {product.stock <= 0 && (
                   <div className={styles.outOfStockOverlay}>

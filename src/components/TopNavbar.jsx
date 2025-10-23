@@ -4,7 +4,7 @@ import styles from '../styles/TopNavbar.module.css';
 import { FaSearch, FaShoppingCart, FaUser, FaHeart, FaSignOutAlt, FaTimes } from 'react-icons/fa';
 import { useAuth } from '../hooks/useAuth';
 import { useCart } from '../context/CartContext';
-import { getProducts } from '../services/api';
+import { getProducts, logoutUser } from '../services/api';
 
 const TopNavbar = () => {
   const { user, isAdmin } = useAuth();
@@ -54,10 +54,17 @@ const TopNavbar = () => {
     }
   }, [cartCount]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    } finally {
+      // Limpiar localStorage siempre, incluso si falla la petición al backend
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+      navigate('/login');
+    }
   };
 
   const clearSearch = () => {
@@ -75,51 +82,63 @@ const TopNavbar = () => {
     <nav className={styles.topNavbar}>
       <div className={styles.container}>
         {/* Logo Section */}
-        <Link to="/dashboard" className={styles.logo}>
-          <span className={styles.logoText}>ZARSS</span>
+        <Link to="/" className={styles.logo}>
+          <span className={styles.logoText}>DOMUS</span>
         </Link>
 
         {/* Main Navigation Links */}
         <div className={styles.navLinks}>
-          <NavLink
-            to="/dashboard"
-            className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-          >
-            Panel
-          </NavLink>
-          <NavLink
-            to="/shop"
-            className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-          >
-            Tienda
-          </NavLink>
-          <NavLink
-            to="/my-orders"
-            className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-          >
-            Mis Órdenes
-          </NavLink>
-          {isAdmin && (
+          {isAdmin ? (
             <>
+              {/* BOTÓN DASHBOARD */}
               <NavLink
-                to="/admin/products"
+                to="/admin/dashboard"
                 className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
               >
-                Productos
+                📊 Dashboard
               </NavLink>
-              <NavLink
-                to="/admin/users"
-                className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-              >
-                Usuarios
-              </NavLink>
-              <NavLink
-                to="/admin/sales-history"
-                className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
-              >
-                Ventas
-              </NavLink>
+              
+              {/* MÓDULO 1: GESTIÓN */}
+              <div className={styles.moduleDropdown}>
+                <button className={styles.moduleButton}>
+                  Gestión
+                </button>
+                <div className={styles.moduleDropdownContent}>
+                  <NavLink to="/admin/users" className={styles.moduleDropdownLink}>
+                    👥 Clientes
+                  </NavLink>
+                  <NavLink to="/admin/products" className={styles.moduleDropdownLink}>
+                    📦 Inventario
+                  </NavLink>
+                  <NavLink to="/admin/sales-history" className={styles.moduleDropdownLink}>
+                    📊 Ventas
+                  </NavLink>
+                  <NavLink to="/admin/reports" className={styles.moduleDropdownLink}>
+                    📋 Reportes
+                  </NavLink>
+                </div>
+              </div>
+              
+              {/* MÓDULO 2: ANÁLISIS */}
+              <div className={styles.moduleDropdown}>
+                <button className={styles.moduleButton}>
+                  Análisis
+                </button>
+                <div className={styles.moduleDropdownContent}>
+                  {/* ❌ ELIMINADO: Reportes con IA - Usar /admin/reports en su lugar */}
+                  <NavLink to="/admin/audit" className={styles.moduleDropdownLink}>
+                    📋 Bitácora
+                  </NavLink>
+                </div>
+              </div>
             </>
+          ) : (
+            <NavLink
+              to="/shop"
+              className={({isActive}) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
+            >
+              Tienda
+            </NavLink>
           )}
         </div>
 
@@ -149,9 +168,10 @@ const TopNavbar = () => {
                   onClick={() => handleProductClick(product.id)}
                 >
                   <img
-                    src={product.image || 'https://via.placeholder.com/60'}
+                    src={product.image_url || product.image || 'https://via.placeholder.com/60'}
                     alt={product.name}
                     className={styles.resultImage}
+                    onError={(e) => { e.target.src = 'https://via.placeholder.com/60'; }}
                   />
                   <div className={styles.resultInfo}>
                     <span className={styles.resultName}>{product.name}</span>
@@ -177,24 +197,53 @@ const TopNavbar = () => {
 
         {/* Action Icons */}
         <div className={styles.actions}>
-          <Link to="/wishlist" className={styles.iconButton} title="Lista de Deseos">
-            <FaHeart />
-            <span className={styles.badge}>0</span>
-          </Link>
-          <Link to="/cart" className={styles.iconButton} title="Carrito">
-            <FaShoppingCart />
-            {cartCount > 0 && (
-              <span className={`${styles.badge} ${cartBounce ? styles.bounce : ''}`}>
-                {cartCount}
-              </span>
-            )}
-          </Link>
-          <Link to="/profile" className={styles.iconButton} title="Perfil">
-            <FaUser />
-          </Link>
-          <button onClick={handleLogout} className={styles.iconButton} title="Cerrar Sesión">
-            <FaSignOutAlt />
-          </button>
+          {/* Search Icon (mobile-friendly) - Solo para clientes */}
+          {!isAdmin && (
+            <button className={styles.iconButton} title="Buscar">
+              <FaSearch />
+            </button>
+          )}
+          
+          {/* Cart with counter - Solo para clientes */}
+          {!isAdmin && (
+            <Link to="/account/cart" className={styles.iconButton} title="Carrito">
+              <FaShoppingCart />
+              {cartCount > 0 && (
+                <span className={`${styles.badge} ${cartBounce ? styles.bounce : ''}`}>
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+          )}
+          
+          {/* Profile Dropdown */}
+          {user ? (
+            <div className={styles.profileMenu}>
+              <button className={styles.iconButton} title="Perfil">
+                <FaUser />
+              </button>
+              <div className={styles.dropdown}>
+                {!isAdmin && (
+                  <>
+                    <Link to="/account/profile" className={styles.dropdownItem}>
+                      <FaUser /> Mi Perfil
+                    </Link>
+                    <Link to="/account/my-orders" className={styles.dropdownItem}>
+                      Mis Órdenes
+                    </Link>
+                    <div className={styles.dropdownDivider}></div>
+                  </>
+                )}
+                <button onClick={handleLogout} className={styles.dropdownItem}>
+                  <FaSignOutAlt /> Cerrar Sesión
+                </button>
+              </div>
+            </div>
+          ) : (
+            <Link to="/login" className={styles.iconButton} title="Iniciar Sesión">
+              <FaUser />
+            </Link>
+          )}
         </div>
       </div>
     </nav>

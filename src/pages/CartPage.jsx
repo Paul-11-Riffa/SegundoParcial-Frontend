@@ -108,16 +108,12 @@ const CartPage = () => {
           <div className={styles.itemsList}>
             {cart.items.map(item => (
               <div key={item.id} className={styles.cartItem}>
-                <div className={styles.itemImageContainer}>
-                  <img
-                    src={getImageUrl(item.product.image) || 'https://via.placeholder.com/100x100/e0e0e0/666666?text=Sin+Imagen'}
-                    alt={item.product.name}
-                    className={styles.itemImage}
-                    onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/100x100/e0e0e0/666666?text=Sin+Imagen';
-                    }}
-                  />
-                </div>
+                <img
+                  src={item.product.image_url || item.product.image || 'https://via.placeholder.com/100x100.png?text=No+Image'}
+                  alt={item.product.name}
+                  className={styles.itemImage}
+                  onError={(e) => { e.target.src = 'https://via.placeholder.com/100x100.png?text=No+Image'; }}
+                />
                 <div className={styles.itemDetails}>
                   <h3 className={styles.itemName}>{item.product.name}</h3>
                   <p className={styles.itemPrice}>${parseFloat(item.product.price).toFixed(2)} c/u</p>
