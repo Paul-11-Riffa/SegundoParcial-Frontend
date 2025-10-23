@@ -1,326 +1,120 @@
 .myOrdersPage {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  padding-bottom: 2rem;
   animation: fadeIn 0.5s ease-in-out;
-}
-
-.pageHeader {
-  margin-bottom: 2.5rem;
 }
 
 .myOrdersPage h1 {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  color: #f8fafc;
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-.myOrdersPage h1 svg {
-  color: #f8fafc;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
-.subtitle {
-  text-align: center;
-  color: #cbd5e1;
-  font-size: 1rem;
-  margin-top: 0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  color: #1a222e;
+  margin-bottom: 2rem;
 }
 
 .orderList {
   display: grid;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .orderCard {
   background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.orderCard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.orderCard:hover::before {
-  opacity: 1;
-}
-
-.orderCard:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
-}
-
-.orderCard.expanded {
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
-}
-
-.orderCard.expanded::before {
-  opacity: 1;
+  border: 1px solid #e9ecef;
 }
 
 .orderHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 1.8rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  border-bottom: 2px solid #e2e8f0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.orderHeader:hover {
-  background: linear-gradient(135deg, #f1f5f9 0%, #f8fafc 100%);
-}
-
-.headerLeft {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.headerRight {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .orderId {
   font-weight: 700;
-  font-size: 1.15rem;
-  color: #0f172a;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.orderDate {
-  color: #64748b;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.orderTotal {
-  font-weight: 700;
-  font-size: 1.3rem;
-  color: #0f172a;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.toggleButton {
-  background: none;
-  border: none;
-  color: #64748b;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  transition: color 0.2s;
-}
-
-.toggleButton:hover {
-  color: #1e293b;
+  color: #1a222e;
+  font-size: 1.1rem;
 }
 
 .statusBadge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-transform: capitalize;
 }
 
-.pending { 
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  color: #92400e;
-  border: 1px solid #fbbf24;
-}
-.completed { 
-  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-  color: #065f46;
-  border: 1px solid #34d399;
-}
-.cancelled { 
-  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-  color: #991b1b;
-  border: 1px solid #f87171;
-}
+.pending { background-color: #fff3cd; color: #856404; }
+.completed { background-color: #d1e7dd; color: #0f5132; }
+.cancelled { background-color: #f8d7da; color: #721c24; }
 
-.pendingIcon { font-size: 1rem; }
-.completedIcon { font-size: 1rem; }
-.cancelledIcon { font-size: 1rem; }
+.pendingIcon { color: #ffc107; }
+.completedIcon { color: #198754; }
+.cancelledIcon { color: #dc3545; }
 
-.orderContent {
-  animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    max-height: 0;
-  }
-  to {
-    opacity: 1;
-    max-height: 1000px;
-  }
-}
-
-.orderInfo {
+.orderDetails {
   padding: 1.5rem;
-  background: white;
-  display: flex;
-  gap: 2rem;
-  border-bottom: 1px solid #e2e8f0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  color: #495057;
 }
 
-.infoItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.infoLabel {
-  color: #64748b;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.infoValue {
-  color: #1e293b;
-  font-size: 1rem;
-  font-weight: 600;
+.orderDetails strong {
+  color: #1a222e;
 }
 
 /* Estilos para lista de productos dentro de la orden */
 .orderItems {
-  padding: 1.8rem;
-  background: white;
+  padding: 0 1.5rem 1.5rem;
+  border-top: 1px solid #e9ecef;
 }
 
 .orderItems h4 {
-  margin: 0 0 1.2rem;
-  font-size: 1.05rem;
-  color: #334155;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 2px solid #e2e8f0;
-}
-
-.orderItems h4::before {
-  content: '';
-  width: 4px;
-  height: 20px;
-  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
-  border-radius: 2px;
-}
-
-.itemsTable {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  margin: 1rem 0 0.75rem;
+  font-size: 1rem;
+  color: #495057;
+  font-weight: 600;
 }
 
 .orderItem {
   display: grid;
   grid-template-columns: 2fr auto auto auto;
   gap: 1rem;
-  padding: 1.2rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  border-radius: 10px;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
   align-items: center;
-  transition: all 0.3s ease;
-  border: 2px solid #e2e8f0;
-  position: relative;
-  overflow: hidden;
-}
-
-.orderItem::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
-  transform: scaleY(0);
-  transition: transform 0.3s ease;
-}
-
-.orderItem:hover::before {
-  transform: scaleY(1);
-}
-
-.orderItem:hover {
-  background: linear-gradient(135deg, #f1f5f9 0%, #f8fafc 100%);
-  border-color: #cbd5e1;
-  transform: translateX(4px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .itemName {
   font-weight: 600;
-  color: #1e293b;
-  font-size: 1rem;
+  color: #1a222e;
 }
 
 .itemQuantity {
-  color: #475569;
-  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-weight: 600;
-  text-align: center;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  color: #6c757d;
+  font-size: 0.95rem;
 }
 
 .itemPrice {
-  color: #64748b;
+  color: #495057;
   font-size: 0.95rem;
-  font-weight: 500;
 }
 
 .itemSubtotal {
-  color: #0f172a;
-  font-weight: 700;
+  color: #1a222e;
+  font-weight: 600;
   text-align: right;
-  font-size: 1.05rem;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 /* Estilos para mensajes y estado vacío */
@@ -328,26 +122,18 @@
   text-align: center;
   margin-top: 3rem;
   font-size: 1.2rem;
-  color: #64748b;
+  color: #5a6472;
 }
 
 .noOrders {
-  background-color: #fff;
-  padding: 3rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e2e8f0;
-}
-
-.emptyIcon {
-  font-size: 4rem;
-  color: #cbd5e1;
-  margin-bottom: 1rem;
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 16px;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .noOrders p {
-  margin-bottom: 1.5rem;
-  color: #475569;
+    margin-bottom: 1.5rem;
 }
 
 .error {
@@ -369,111 +155,7 @@
     background-color: #343a40;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .myOrdersPage {
-    padding: 1rem;
-  }
-
-  .myOrdersPage h1 {
-    font-size: 2rem;
-    padding: 1rem;
-  }
-
-  .orderHeader {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-
-  .orderDetails {
-    grid-template-columns: 1fr;
-    padding: 1.5rem;
-  }
-
-  .orderItem {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
-    padding: 1rem;
-  }
-
-  .itemQuantity,
-  .itemPrice,
-  .itemSubtotal {
-    text-align: left;
-  }
-
-  .receiptSection {
-    justify-content: center;
-    padding: 1.5rem;
-  }
-
-  .downloadButton {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* Estilos para la sección del comprobante */
-.receiptSection {
-  padding: 1.8rem;
-  border-top: 2px solid #e2e8f0;
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  display: flex;
-  justify-content: flex-end;
-}
-
-.downloadButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 1rem 2rem;
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.downloadButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.downloadButton:hover::before {
-  left: 100%;
-}
-
-.downloadButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(30, 41, 59, 0.4);
-}
-
-.downloadButton:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.3);
-}
-
-.downloadButton:disabled {
-  background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
-  cursor: not-allowed;
-  opacity: 0.6;
-  box-shadow: none;
-}
-
-.downloadButton svg {
-  font-size: 1.1rem;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
