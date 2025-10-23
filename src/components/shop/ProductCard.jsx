@@ -16,6 +16,10 @@ const ProductCard = ({ product, onAddToCart, onProductClick, viewMode = 'grid' }
   const isLowStock = product.stock > 0 && product.stock <= 5;
   const isOutOfStock = product.stock <= 0;
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   const cardClass = viewMode === 'list' ? `${styles.card} ${styles.listView}` : styles.card;
 
   const handleAddToCartClick = async (e) => {

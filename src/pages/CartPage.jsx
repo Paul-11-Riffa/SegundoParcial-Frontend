@@ -80,14 +80,25 @@ const CartPage = () => {
 
   const isEmpty = !cart || !cart.items || cart.items.length === 0;
 
+  // Construir URL completa de la imagen
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return null;
+    if (imagePath.startsWith('http')) return imagePath;
+    return `http://127.0.0.1:8000${imagePath}`;
+  };
+
   return (
     <div className={styles.cartPage}>
-      <h1><FaShoppingCart /> Tu Carrito de Compras</h1>
+      <div className={styles.header}>
+        <FaShoppingCart className={styles.headerIcon} />
+        <h1>Tu Carrito de Compras</h1>
+      </div>
 
       {feedback && <div className={styles.feedbackMessage}>{feedback}</div>}
 
       {isEmpty ? (
         <div className={styles.emptyCart}>
+          <FaShoppingCart className={styles.emptyIcon} />
           <p>Tu carrito está actualmente vacío.</p>
           <Link to="/shop" className={styles.shopLink}>Continuar Comprando</Link>
         </div>
@@ -104,21 +115,37 @@ const CartPage = () => {
                   onError={(e) => { e.target.src = 'https://via.placeholder.com/100x100.png?text=No+Image'; }}
                 />
                 <div className={styles.itemDetails}>
-                  <span className={styles.itemName}>{item.product.name}</span>
-                  <span className={styles.itemPrice}>${parseFloat(item.product.price).toFixed(2)} c/u</span>
+                  <h3 className={styles.itemName}>{item.product.name}</h3>
+                  <p className={styles.itemPrice}>${parseFloat(item.product.price).toFixed(2)} c/u</p>
                   <div className={styles.quantityControl}>
-                    <button onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)} disabled={updatingItemId === item.id || item.quantity <= 1}>
+                    <button 
+                      onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)} 
+                      disabled={updatingItemId === item.id || item.quantity <= 1}
+                      className={styles.quantityBtn}
+                    >
                       <FaMinus />
                     </button>
-                    <span>{updatingItemId === item.id ? '...' : item.quantity}</span>
-                    <button onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)} disabled={updatingItemId === item.id}>
+                    <span className={styles.quantity}>{updatingItemId === item.id ? '...' : item.quantity}</span>
+                    <button 
+                      onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)} 
+                      disabled={updatingItemId === item.id}
+                      className={styles.quantityBtn}
+                    >
                       <FaPlus />
                     </button>
                   </div>
                 </div>
                 <div className={styles.itemActions}>
-                  <span className={styles.itemSubtotal}>${calculateSubtotal(item)}</span>
-                  <button onClick={() => handleRemoveItem(item.id)} className={styles.removeButton} disabled={updatingItemId === item.id}>
+                  <div className={styles.itemSubtotal}>
+                    <span className={styles.subtotalLabel}>Subtotal:</span>
+                    <span className={styles.subtotalAmount}>${calculateSubtotal(item)}</span>
+                  </div>
+                  <button 
+                    onClick={() => handleRemoveItem(item.id)} 
+                    className={styles.removeButton} 
+                    disabled={updatingItemId === item.id}
+                    title="Eliminar producto"
+                  >
                     <FaTrashAlt />
                   </button>
                 </div>
@@ -129,21 +156,27 @@ const CartPage = () => {
           {/* Columna de Resumen */}
           <div className={styles.summary}>
             <h2>Resumen de Orden</h2>
-            <div className={styles.summaryLine}>
-              <span>Subtotal</span>
-              <span>${parseFloat(cart.total_price).toFixed(2)}</span>
+            <div className={styles.summaryContent}>
+              <div className={styles.summaryLine}>
+                <span>Subtotal ({cart.items.length} {cart.items.length === 1 ? 'producto' : 'productos'})</span>
+                <span>${parseFloat(cart.total_price).toFixed(2)}</span>
+              </div>
+              <div className={styles.summaryLine}>
+                <span>Envío</span>
+                <span className={styles.freeShipping}>GRATIS</span>
+              </div>
+              <div className={styles.divider}></div>
+              <div className={`${styles.summaryLine} ${styles.total}`}>
+                <span>Total</span>
+                <span>${parseFloat(cart.total_price).toFixed(2)}</span>
+              </div>
+              <button className={styles.checkoutButton} onClick={handleCheckout} disabled={loading}>
+                {loading ? 'Procesando...' : <><FaCreditCard /> Proceder al Pago</>}
+              </button>
+              <Link to="/shop" className={styles.continueShoppingLink}>
+                Continuar Comprando
+              </Link>
             </div>
-            <div className={styles.summaryLine}>
-              <span>Envío</span>
-              <span>GRATIS</span>
-            </div>
-            <div className={`${styles.summaryLine} ${styles.total}`}>
-              <span>Total</span>
-              <span>${parseFloat(cart.total_price).toFixed(2)}</span>
-            </div>
-            <button className={styles.checkoutButton} onClick={handleCheckout} disabled={loading}>
-              {loading ? 'Procesando...' : <><FaCreditCard /> Proceder al Pago</>}
-            </button>
           </div>
         </div>
       )}
