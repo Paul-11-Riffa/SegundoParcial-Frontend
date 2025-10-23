@@ -203,3 +203,10 @@ export const downloadReportExcel = (prompt) => {
     responseType: 'blob'
   });
 };
+
+// --- Función para descargar comprobante de una orden del cliente ---
+export const downloadMyOrderReceipt = (orderId) => {
+  return apiClient.get(`/orders/my-orders/${orderId}/receipt/`, {
+    responseType: 'blob', // Importante para recibir el PDF como archivo binario
+  });
+};

@@ -12,6 +12,7 @@ const SalesHistoryPage = () => {
   const [filters, setFilters] = useState({
     start_date: '',
     end_date: '',
+    customer_name: '',
   });
   // --------------------------------
 
@@ -23,6 +24,7 @@ const SalesHistoryPage = () => {
       const activeFilters = {};
       if (currentFilters.start_date) activeFilters.start_date = currentFilters.start_date;
       if (currentFilters.end_date) activeFilters.end_date = currentFilters.end_date;
+      if (currentFilters.customer_name) activeFilters.customer_name = currentFilters.customer_name;
 
       const response = await getSalesHistory(activeFilters);
       setSales(response.data);
@@ -53,7 +55,7 @@ const SalesHistoryPage = () => {
   };
 
   const handleClearFilters = () => {
-    const clearedFilters = { start_date: '', end_date: '' };
+    const clearedFilters = { start_date: '', end_date: '', customer_name: '' };
     setFilters(clearedFilters);
     fetchSales(clearedFilters); // Carga todas las ventas de nuevo
   };
@@ -105,6 +107,18 @@ const SalesHistoryPage = () => {
             value={filters.end_date}
             onChange={handleFilterChange}
             className={styles.dateInput}
+          />
+        </div>
+        <div className={styles.filterGroup}>
+          <label htmlFor="customer_name">Cliente:</label>
+          <input
+            type="text"
+            id="customer_name"
+            name="customer_name"
+            value={filters.customer_name}
+            onChange={handleFilterChange}
+            placeholder="Nombre o usuario..."
+            className={styles.textInput}
           />
         </div>
         <button className={styles.filterButton} onClick={handleApplyFilters}>

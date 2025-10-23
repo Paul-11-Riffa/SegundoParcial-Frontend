@@ -7,10 +7,24 @@ const ProductCard = ({ product, onAddToCart, onProductClick, viewMode = 'grid' }
   const [showQuickView, setShowQuickView] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
-  const imageUrl = product.image || 'https://via.placeholder.com/400x400.png?text=No+Image';
+  // Construir la URL completa de la imagen
+  const getImageUrl = () => {
+    if (!product.image || imageError) return 'https://via.placeholder.com/400x400.png?text=Sin+Imagen';
+    // Si la imagen ya tiene http/https, devolverla tal cual
+    if (product.image.startsWith('http')) return product.image;
+    // Si no, agregar el dominio del backend
+    return `http://127.0.0.1:8000${product.image}`;
+  };
+
+  const imageUrl = getImageUrl();
   const isLowStock = product.stock > 0 && product.stock <= 5;
   const isOutOfStock = product.stock <= 0;
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   const cardClass = viewMode === 'list' ? `${styles.card} ${styles.listView}` : styles.card;
 
@@ -44,7 +58,12 @@ const ProductCard = ({ product, onAddToCart, onProductClick, viewMode = 'grid' }
       style={{ cursor: onProductClick ? 'pointer' : 'default' }}
     >
       <div className={styles.imageContainer}>
-        <img src={imageUrl} alt={product.name} className={styles.image} />
+        <img 
+          src={imageUrl} 
+          alt={product.name} 
+          className={styles.image}
+          onError={handleImageError}
+        />
 
         {/* Badges */}
         <div className={styles.badges}>
